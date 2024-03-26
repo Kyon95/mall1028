@@ -22,4 +22,12 @@ public class Constants {
     // 未登录编码 ，前端收到返回代码419 就知道了，是未登录，会把用户踢到登陆页面
     public static final int NO_LOGIN = 419;
 
+    /**
+     * 首页 商品板块 在GoodsInfoServiceImpl中，查询用到
+     * 3-热销  4-新品  5-推荐
+     */
+    public static final int CONFIG_TYPE_HOT = 3;
+    public static final int CONFIG_TYPE_NEW = 4;
+    public static final int CONFIG_TYPE_RECOMMEND = 5;
+
 }
