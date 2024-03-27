@@ -1,6 +1,7 @@
 package com.geekaca.mall.controller.admin;
 
 import com.auth0.jwt.interfaces.Claim;
+import com.geekaca.mall.common.Constants;
 import com.geekaca.mall.controller.admin.param.AdminLoginParam;
 import com.geekaca.mall.domain.AdminUser;
 import com.geekaca.mall.service.AdminUserService;
@@ -9,18 +10,26 @@ import com.geekaca.mall.utils.Result;
 import com.geekaca.mall.utils.ResultGenerator;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
+import java.lang.invoke.ConstantBootstraps;
 import java.util.Map;
 
 /**
  * 后台用户管理接口
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/manage-api/v1")
 public class AdminUserController {
+    @Value("${upload.path}")
+    private String UPLOAD_PATH;
 
     @Autowired
     private AdminUserService adminUserService;
@@ -37,6 +46,8 @@ public class AdminUserController {
         }
     }
 
+
+
     @GetMapping("/adminUser/profile")
     @ApiOperation(value = "获取管理员信息",notes = "获取管理员信息显示在前端界面")
     public Result profile(HttpServletRequest request){
@@ -52,5 +63,31 @@ public class AdminUserController {
 
         Result result = ResultGenerator.genSuccessResult(adminUser);
         return  result;
+    }
+
+    @PostMapping("/upload/file")
+    @ResponseBody
+    public Result uploadFile(@RequestParam("file") MultipartFile fileUpload) {
+        System.out.println("upload....");
+        Result rs = new Result();
+        String fileName = fileUpload.getOriginalFilename();
+
+        String tmpFilePath = UPLOAD_PATH;
+        String dataPath = "/goods-img/" + fileName;
+
+//        String resourcesPath = tmpFilePath;
+        File upFile = new File(tmpFilePath, fileName);
+        try {
+            fileUpload.transferTo(upFile);
+            rs.setResultCode(200);
+            rs.setData(dataPath);
+            rs.setMessage("图片上传成功");
+
+        } catch (IOException e) {
+            rs.setResultCode(500);
+            rs.setMessage("图片上传失败");
+            e.printStackTrace();
+        }
+        return rs;
     }
 }

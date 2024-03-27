@@ -85,4 +85,10 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         VO.setGoodsCarouselList(list);
         return VO;
     }
+
+    @Override
+    public int insertGood(GoodsInfo goodsInfo) {
+        int inserted = goodsInfoMapper.insertSelective(goodsInfo);
+        return inserted;
+    }
 }
