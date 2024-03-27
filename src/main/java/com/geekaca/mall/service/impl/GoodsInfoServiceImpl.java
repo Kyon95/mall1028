@@ -84,4 +84,5 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         //最后把list放进VO
         VO.setGoodsCarouselList(list);
         return VO;
+    }
 }
