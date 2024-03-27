@@ -23,6 +23,15 @@
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <resultMap id="HotGInfoVOResultMap" type="com.geekaca.mall.controller.vo.IndexHotGoodsInfoVO">
+        <id property="goodsId" column="goods_id" jdbcType="BIGINT"/>
+        <result property="goodsCoverImg" column="goods_cover_img" jdbcType="VARCHAR"/>
+        <result property="goodsName" column="goods_name" jdbcType="VARCHAR"/>
+        <result property="goodsIntro" column="goods_intro" jdbcType="VARCHAR"/>
+        <result property="sellingPrice" column="selling_price" jdbcType="INTEGER"/>
+        <result property="tag" column="tag" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
         goods_id
         ,goods_name,goods_intro,
@@ -201,5 +210,34 @@
             </if>
         </where>
 
+    </select>
+
+    <select id="selectHotNewCommendGoods" resultMap="HotGInfoVOResultMap">
+        SELECT Ginfo.goods_cover_img,
+               Ginfo.goods_id,
+               Ginfo.goods_name,
+               Ginfo.goods_intro,
+               Ginfo.selling_price,
+               Ginfo.tag
+        FROM tb_newbee_mall_goods_info AS Ginfo
+                 LEFT JOIN
+             tb_newbee_mall_index_config AS config
+             ON config.goods_id = Ginfo.goods_id
+        WHERE config.config_type = #{configType}
+          AND config.is_deleted = 0
+        ORDER BY config_rank DESC limit #{limit}
+    </select>
+
+    <select id="selectDetailById" resultMap="BaseResultMap">
+        SELECT goods_id,
+               goods_carousel,
+               goods_cover_img,
+               goods_detail_content,
+               goods_intro,
+               goods_name,
+               selling_price,
+               tag
+        FROM tb_newbee_mall_goods_info
+        WHERE goods_id = #{goodsId}
     </select>
 </mapper>
