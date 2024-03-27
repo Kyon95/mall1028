@@ -9,4 +9,6 @@ import com.geekaca.mall.controller.fore.param.MallUserLoginParam;
  */
 public interface MallUserService {
     String login(MallUserLoginParam userLoginParam);
+
+    boolean register(String username, String password);
 }

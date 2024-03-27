@@ -110,5 +110,8 @@
         where login_name = #{loginName} and password_md5 = #{passwordMd5}
         and is_deleted = 0
     </select>
+    <select id="isRegistered" resultMap="BaseResultMap">
+        select * from tb_newbee_mall_user where login_name = #{loginName}
+    </select>
 
 </mapper>

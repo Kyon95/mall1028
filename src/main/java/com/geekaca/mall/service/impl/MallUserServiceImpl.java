@@ -17,12 +17,30 @@ public class MallUserServiceImpl implements MallUserService {
 
     @Override
     public String login(MallUserLoginParam userLoginParam) {
-        String passMd5 = SecureUtil.md5(userLoginParam.getPasswordMd5());
-        MallUser checkLogin = userMapper.checkLogin(userLoginParam.getUsername(), passMd5);
+        //String passMd5 = SecureUtil.md5(userLoginParam.getPasswordMd5());
+        MallUser checkLogin = userMapper.checkLogin(userLoginParam.getLoginName(), userLoginParam.getPasswordMd5());
         if (checkLogin == null) {
             return null;
         }
         String token = JwtUtil.createToken(checkLogin.getUserId().toString(), checkLogin.getLoginName());
         return token;
+    }
+
+    @Override
+    public boolean register(String loginName, String password) {
+        if (userMapper.isRegistered(loginName) != null) {
+            return false;
+        }
+
+        MallUser mallUser = new MallUser();
+        mallUser.setLoginName(loginName);
+        String passMd5 = SecureUtil.md5(password);
+        mallUser.setPasswordMd5(passMd5);
+        int isRegister = userMapper.insertSelective(mallUser);
+        if (isRegister > 0) {
+            return true;
+        }else {
+            return false;
+        }
     }
 }

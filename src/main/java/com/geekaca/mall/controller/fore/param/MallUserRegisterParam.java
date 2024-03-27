@@ -6,10 +6,9 @@ import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 @Data
-public class MallUserLoginParam implements Serializable {
-
+public class MallUserRegisterParam implements Serializable {
     @NotEmpty(message = "登录名不能为空")
     private String loginName;
     @NotEmpty(message = "密码不能为空")
-    private String passwordMd5;
+    private String password;
 }
