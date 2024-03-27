@@ -180,7 +180,13 @@
                category_name
         FROM tb_newbee_mall_goods_info goodInfo,
              tb_newbee_mall_goods_category cate
-        WHERE goodInfo.goods_category_id = cate.category_id
+        <where>
+            goodInfo.goods_category_id = cate.category_id
+        <if test="goodsName!=null">
+            and goodInfo.goods_name like concat("%",#{goodsName},"%")
+        </if>
+        </where>
+
             limit #{limit}
             , #{pageSize}
     </select>
@@ -188,7 +194,12 @@
         SELECT count(*)
         FROM tb_newbee_mall_goods_info goodInfo,
              tb_newbee_mall_goods_category cate
-        WHERE goodInfo.goods_category_id = cate.category_id
+        <where>
+            goodInfo.goods_category_id = cate.category_id
+            <if test="goodsName!=null">
+                and goodInfo.goods_name like concat("%",#{goodsName},"%")
+            </if>
+        </where>
 
     </select>
 </mapper>

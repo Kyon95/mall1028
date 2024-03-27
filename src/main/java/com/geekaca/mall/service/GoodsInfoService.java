@@ -29,5 +29,5 @@ public interface GoodsInfoService {
 
 
 
-    PageResult findAllGoods(Integer pageNo, Integer pageSize);
+    PageResult findAllGoods(Integer pageNo, Integer pageSize,String goodsName);
 }

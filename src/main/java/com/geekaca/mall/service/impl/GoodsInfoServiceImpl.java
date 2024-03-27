@@ -48,10 +48,10 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
                 .copyToList(hotGoodsVO, IndexRecommendGoodsInfoVO.class);
         return recommendGoodsVO;
     }
-    public PageResult findAllGoods(Integer pageNo, Integer pageSize) {
+    public PageResult findAllGoods(Integer pageNo, Integer pageSize,String goodsName) {
         Integer limit = (pageNo - 1) * pageSize;
-        List<GoodsInfo> goodsList = goodsInfoMapper.findGoodsList(limit, pageSize);
-        int goodsCount = goodsInfoMapper.findGoodsCount();
+        List<GoodsInfo> goodsList = goodsInfoMapper.findGoodsList(limit, pageSize,goodsName);
+        int goodsCount = goodsInfoMapper.findGoodsCount(goodsName);
         PageResult pageResult = new PageResult(goodsList, goodsCount, pageSize, pageNo);
         return pageResult;
 

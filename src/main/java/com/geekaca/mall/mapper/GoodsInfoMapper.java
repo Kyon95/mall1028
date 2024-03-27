@@ -37,7 +37,8 @@ public interface GoodsInfoMapper {
      */
     List<IndexHotGoodsInfoVO> selectHotNewCommendGoods(@Param("configType") Integer configType,
                                                        @Param("limit")Integer limit);
-    List<GoodsInfo> findGoodsList(@Param("limit") Integer limit, @Param("pageSize")Integer pageSize);
+    List<GoodsInfo> findGoodsList(@Param("limit") Integer limit, @Param("pageSize") Integer pageSize,
+                                  @Param("goodsName") String goodsName);
 
-    int findGoodsCount();
+    int findGoodsCount(@Param("goodsName") String goodsName);
 }

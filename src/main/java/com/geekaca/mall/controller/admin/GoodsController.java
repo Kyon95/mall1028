@@ -26,13 +26,14 @@ public class GoodsController {
                        @RequestParam(required = false) @ApiParam(value = "每页条数") Integer pageSize,
                        @RequestParam(required = false) @ApiParam(value = "商品名称") String goodsName,
                        @RequestParam(required = false) @ApiParam(value = "上架状态 0-上架 1-下架") Integer goodsSellStatus) {
+
         if(pageNumber==null){
             pageNumber=1;
         }
         if(pageSize==null){
             pageSize=20;
         }
-        PageResult pageResult = goodsInfoService.findAllGoods(pageNumber, pageSize);
+        PageResult pageResult = goodsInfoService.findAllGoods(pageNumber, pageSize,goodsName);
 
         Result result = ResultGenerator.genSuccessResult();
         result.setData(pageResult);
