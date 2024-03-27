@@ -2,6 +2,7 @@ package com.geekaca.mall.mapper;
 
 import com.geekaca.mall.domain.AdminUser;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author Peter
@@ -24,5 +25,6 @@ public interface AdminUserMapper {
 
     int updateByPrimaryKey(AdminUser record);
 
-    AdminUser checkLogin(String userName, String passwordMd5);
+    AdminUser checkLogin(@Param("loginName") String loginName, @Param("passwordMD5") String passworldMD5);
+
 }
