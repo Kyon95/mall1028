@@ -202,4 +202,17 @@
           AND config.is_deleted = 0
         ORDER BY config_rank DESC limit #{limit}
     </select>
+
+    <select id="selectDetailById" resultMap="BaseResultMap">
+        SELECT goods_id,
+               goods_carousel,
+               goods_cover_img,
+               goods_detail_content,
+               goods_intro,
+               goods_name,
+               selling_price,
+               tag
+        FROM tb_newbee_mall_goods_info
+        WHERE goods_id = #{goodsId}
+    </select>
 </mapper>

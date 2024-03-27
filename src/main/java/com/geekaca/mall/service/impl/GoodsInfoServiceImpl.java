@@ -1,6 +1,7 @@
 package com.geekaca.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.geekaca.mall.controller.vo.GoodsDetailVO;
 import com.geekaca.mall.controller.vo.IndexHotGoodsInfoVO;
 import com.geekaca.mall.controller.vo.IndexNewGoodsInfoVO;
 import com.geekaca.mall.controller.vo.IndexRecommendGoodsInfoVO;
@@ -9,8 +10,10 @@ import com.geekaca.mall.mapper.GoodsInfoMapper;
 import com.geekaca.mall.service.GoodsInfoService;
 import com.geekaca.mall.utils.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.geekaca.mall.common.Constants.*;
@@ -54,6 +57,31 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         int goodsCount = goodsInfoMapper.findGoodsCount(goodsName);
         PageResult pageResult = new PageResult(goodsList, goodsCount, pageSize, pageNo);
         return pageResult;
-
     }
+
+    @Override
+    public GoodsDetailVO getById(Long goodsId) {
+        GoodsInfo goodsInfo = goodsInfoMapper.selectDetailById(goodsId);
+        if (goodsInfo == null) {
+            return null;
+        }
+        //前端页面要求：
+        //"resultCode": 200,
+        //"message": "SUCCESS",
+        //"data": {
+        //    "goodsCarouselList": ["https://.../images/p40-silver.png"],
+        //    "goodsCoverImg": "https://.../images/p40-silver.png",
+        //    "goodsDetailContent": "https://.../images/p40-detail.jpg"
+        //    "goodsId"
+        //    ........
+        //}
+        //要把goods_carousel字段信息放进集合list
+        String goodsCarousel = goodsInfo.getGoodsCarousel();
+        List list = new ArrayList();
+        list.add(goodsCarousel);
+        //其余字段信息，利用工具赋值给VO
+        GoodsDetailVO VO = BeanUtil.copyProperties(goodsInfo,GoodsDetailVO.class);
+        //最后把list放进VO
+        VO.setGoodsCarouselList(list);
+        return VO;
 }

@@ -37,8 +37,19 @@ public interface GoodsInfoMapper {
      */
     List<IndexHotGoodsInfoVO> selectHotNewCommendGoods(@Param("configType") Integer configType,
                                                        @Param("limit")Integer limit);
+
     List<GoodsInfo> findGoodsList(@Param("limit") Integer limit, @Param("pageSize") Integer pageSize,
                                   @Param("goodsName") String goodsName);
 
     int findGoodsCount(@Param("goodsName") String goodsName);
+
+
+    /**
+     * 前台  点击商品  获取商品详情
+     * 凭goods_id获取 商品信息
+     * @param goodsId
+     * @return
+     */
+    GoodsInfo selectDetailById(Long goodsId);
+
 }

@@ -1,6 +1,6 @@
 package com.geekaca.mall.service;
 
-
+import com.geekaca.mall.controller.vo.GoodsDetailVO;
 import com.geekaca.mall.controller.vo.IndexHotGoodsInfoVO;
 import com.geekaca.mall.controller.vo.IndexNewGoodsInfoVO;
 import com.geekaca.mall.controller.vo.IndexRecommendGoodsInfoVO;
@@ -29,5 +29,12 @@ public interface GoodsInfoService {
 
 
 
+
     PageResult findAllGoods(Integer pageNo, Integer pageSize,String goodsName);
+
+    /**
+     * 前台  点击商品  获取商品详情
+     * 凭goods_id获取 商品信息
+     */
+    GoodsDetailVO getById(Long goodsId);
 }
