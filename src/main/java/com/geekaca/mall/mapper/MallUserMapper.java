@@ -28,4 +28,6 @@ public interface MallUserMapper {
     MallUser checkLogin(@Param("loginName")String loginName, @Param("passwordMd5")String passwordMd5);
 
     MallUser isRegistered(String loginName);
+
+    MallUser getUserInfo(String loginName);
 }

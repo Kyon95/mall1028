@@ -43,4 +43,9 @@ public class MallUserServiceImpl implements MallUserService {
             return false;
         }
     }
+
+    @Override
+    public MallUser getUserInfo(String loginName) {
+        return userMapper.getUserInfo(loginName);
+    }
 }

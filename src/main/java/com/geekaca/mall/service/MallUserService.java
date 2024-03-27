@@ -2,6 +2,7 @@ package com.geekaca.mall.service;
 
 
 import com.geekaca.mall.controller.fore.param.MallUserLoginParam;
+import com.geekaca.mall.domain.MallUser;
 
 /**
  * todo：
@@ -11,4 +12,6 @@ public interface MallUserService {
     String login(MallUserLoginParam userLoginParam);
 
     boolean register(String username, String password);
+
+    MallUser getUserInfo(String loginName);
 }

@@ -113,5 +113,10 @@
     <select id="isRegistered" resultMap="BaseResultMap">
         select * from tb_newbee_mall_user where login_name = #{loginName}
     </select>
+    <select id="getUserInfo" resultMap="BaseResultMap">
+        select nick_name,nick_name,introduce_sign
+        from tb_newbee_mall_user
+        where login_name = #{loginName}
+    </select>
 
 </mapper>

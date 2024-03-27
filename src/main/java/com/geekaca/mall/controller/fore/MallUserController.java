@@ -1,18 +1,20 @@
 package com.geekaca.mall.controller.fore;
 
+import com.auth0.jwt.interfaces.Claim;
 import com.geekaca.mall.controller.fore.param.MallUserLoginParam;
 import com.geekaca.mall.controller.fore.param.MallUserRegisterParam;
+import com.geekaca.mall.domain.MallUser;
 import com.geekaca.mall.service.MallUserService;
+import com.geekaca.mall.utils.JwtUtil;
 import com.geekaca.mall.utils.Result;
 import com.geekaca.mall.utils.ResultGenerator;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Map;
 
 
 /**
@@ -47,6 +49,24 @@ public class MallUserController {
         }else {
             return ResultGenerator.genSuccessResult();
         }
+    }
+
+    @GetMapping("/user/info")
+    @ApiOperation(value = "展示用户信息")
+    private Result getUserInfo(@RequestHeader("Token")String token){
+        Map<String, Claim> userToken = JwtUtil.verifyToken(token);
+        Claim userNameClaim = userToken.get("userName");
+        String userName = userNameClaim.asString();
+
+        MallUser userInfo = userService.getUserInfo(userName);
+        if (userInfo == null) {
+            return ResultGenerator.genFailResult("展示用户信息失败");
+        }else {
+            Result result = ResultGenerator.genSuccessResult();
+            result.setData(userInfo);
+            return result;
+        }
+
     }
 
 
