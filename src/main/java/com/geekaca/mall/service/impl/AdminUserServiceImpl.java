@@ -27,4 +27,10 @@ public class AdminUserServiceImpl implements AdminUserService {
         String token = JwtUtil.createToken(adminUser.getAdminUserId().toString(), adminUser.getLoginUserName());
         return token;
     }
+
+    @Override
+    public AdminUser selectAdminById(Long id) {
+        AdminUser adminUser = adminUserMapper.selectByPrimaryKey(id);
+        return adminUser;
+    }
 }

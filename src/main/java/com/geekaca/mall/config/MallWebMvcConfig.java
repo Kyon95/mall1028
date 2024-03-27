@@ -13,5 +13,8 @@ public class MallWebMvcConfig extends WebMvcConfigurationSupport {
                 addResourceHandler("/swagger-ui/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
                 .resourceChain(false);
+        registry.addResourceHandler("/upload/**").addResourceLocations("file:" + "c:\\dev\\codes\\newbee-mall-api\\static-files\\goods-img\\");
+        registry.addResourceHandler("/goods-img/**").addResourceLocations("file:" + "c:\\dev\\codes\\newbee-mall-api" +
+                "\\static-files\\goods-img\\");
     }
 }

@@ -8,9 +8,9 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * @author katagiri
+ * @author Peter
  * @description 针对表【tb_newbee_mall_goods_info】的数据库操作Mapper
- * @createDate 2024-03-27 04:11:10
+ * @createDate 2024-03-26 17:55:17
  * @Entity com.geekaca.mall.domain.GoodsInfo
  */
 @Mapper
@@ -28,6 +28,7 @@ public interface GoodsInfoMapper {
 
     int updateByPrimaryKey(GoodsInfo record);
 
+
     /**
      * 前台  查询首页的   热销商品、新品上线、推荐商品
      * @param configType
@@ -36,4 +37,7 @@ public interface GoodsInfoMapper {
      */
     List<IndexHotGoodsInfoVO> selectHotNewCommendGoods(@Param("configType") Integer configType,
                                                        @Param("limit")Integer limit);
+    List<GoodsInfo> findGoodsList(@Param("limit") Integer limit, @Param("pageSize")Integer pageSize);
+
+    int findGoodsCount();
 }

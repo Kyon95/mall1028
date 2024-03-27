@@ -1,8 +1,10 @@
 package com.geekaca.mall.service;
 
+
 import com.geekaca.mall.controller.vo.IndexHotGoodsInfoVO;
 import com.geekaca.mall.controller.vo.IndexNewGoodsInfoVO;
 import com.geekaca.mall.controller.vo.IndexRecommendGoodsInfoVO;
+import com.geekaca.mall.utils.PageResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -24,4 +26,8 @@ public interface GoodsInfoService {
      */
     List<IndexRecommendGoodsInfoVO> getRecommendGoods();
 
+
+
+
+    PageResult findAllGoods(Integer pageNo, Integer pageSize);
 }
