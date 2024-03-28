@@ -14,4 +14,6 @@ public interface MallUserService {
     boolean register(String username, String password);
 
     MallUser getUserInfo(String loginName);
+
+    MallUser editUserInfo(Long userId,String nickMame,String passwordMd5,String introduceSign);
 }

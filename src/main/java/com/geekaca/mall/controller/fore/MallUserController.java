@@ -3,6 +3,7 @@ package com.geekaca.mall.controller.fore;
 import com.auth0.jwt.interfaces.Claim;
 import com.geekaca.mall.controller.fore.param.MallUserLoginParam;
 import com.geekaca.mall.controller.fore.param.MallUserRegisterParam;
+import com.geekaca.mall.controller.fore.param.MallUserUpdateParam;
 import com.geekaca.mall.domain.MallUser;
 import com.geekaca.mall.service.MallUserService;
 import com.geekaca.mall.utils.JwtUtil;
@@ -68,6 +69,26 @@ public class MallUserController {
         }
 
     }
+    @RequestMapping("/user/info")
+    @ApiOperation(value = "修改用户信息")
+    private Result editUserInfo(@RequestHeader("Token")String token, @RequestBody MallUserUpdateParam mallUser){
+        Map<String, Claim> userToken = JwtUtil.verifyToken(token);
+        Claim id = userToken.get("id");
+        String userId = id.asString();
+        String introduceSign = mallUser.getIntroduceSign();
+        String nickName = mallUser.getNickName();
+        String passwordMd5 = mallUser.getPasswordMd5();
+        MallUser editUserInfo = userService.editUserInfo(Long.parseLong(userId), nickName, passwordMd5,introduceSign);
+        System.out.println(editUserInfo);
+        if (editUserInfo == null) {
+            return ResultGenerator.genFailResult("编辑用户信息失败");
+        }else {
+            Result result = ResultGenerator.genSuccessResult();
+            result.setData(editUserInfo);
+            return result;
+        }
+    }
+
 
 
 }

@@ -48,4 +48,22 @@ public class MallUserServiceImpl implements MallUserService {
     public MallUser getUserInfo(String loginName) {
         return userMapper.getUserInfo(loginName);
     }
+
+    @Override
+    public MallUser editUserInfo(Long userId,String nickName,String passwordMd5,String introduceSign) {
+        if (nickName == null && introduceSign == null && passwordMd5 == null ) {
+            return null;
+        }
+        MallUser mallUser = new MallUser();
+        mallUser.setUserId(userId);
+        mallUser.setIntroduceSign(introduceSign);
+        mallUser.setPasswordMd5(SecureUtil.md5(passwordMd5));
+        mallUser.setNickName(nickName);
+        int isEdit = userMapper.updateByPrimaryKeySelective(mallUser);
+        if(isEdit > 0){
+            return mallUser;
+        }else {
+            return null;
+        }
+    }
 }

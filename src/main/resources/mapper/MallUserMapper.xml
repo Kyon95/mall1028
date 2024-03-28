@@ -114,7 +114,7 @@
         select * from tb_newbee_mall_user where login_name = #{loginName}
     </select>
     <select id="getUserInfo" resultMap="BaseResultMap">
-        select nick_name,login_name,introduce_sign
+        select user_id,nick_name,login_name,introduce_sign
         from tb_newbee_mall_user
         where login_name = #{loginName}
     </select>
