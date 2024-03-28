@@ -73,7 +73,7 @@ public class AdminUserController {
         String fileName = fileUpload.getOriginalFilename();
 
         String tmpFilePath = UPLOAD_PATH;
-        String dataPath = "/goods-img/" + fileName;
+        String dataPath = "http://localhost:28019/goods-img/" + fileName;
 
 //        String resourcesPath = tmpFilePath;
         File upFile = new File(tmpFilePath, fileName);
