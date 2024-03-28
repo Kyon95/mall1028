@@ -1,7 +1,9 @@
 package com.geekaca.mall.controller.fore;
 
 import com.geekaca.mall.controller.vo.*;
+import com.geekaca.mall.domain.MallCarousel;
 import com.geekaca.mall.service.GoodsInfoService;
+import com.geekaca.mall.utils.PageResult;
 import com.geekaca.mall.utils.Result;
 import com.geekaca.mall.utils.ResultGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +30,14 @@ public class IndexConfigController {
         List<IndexHotGoodsInfoVO> hotGoodses = goodsInfoService.getHotGoods();
         List<IndexNewGoodsInfoVO> newGoodses = goodsInfoService.getNewGoods();
         List<IndexRecommendGoodsInfoVO> recommendGoodses = goodsInfoService.getRecommendGoods();
+        List<MallCarousel>  carousels = goodsInfoService.getCarouselGoods();
 
 
         IndexCarouselAndGoodsVO data = new IndexCarouselAndGoodsVO();
         data.setHotGoodses(hotGoodses);
         data.setNewGoodses(newGoodses);
         data.setRecommendGoodses(recommendGoodses);
+        data.setCarousels(carousels);
 
         return ResultGenerator.genSuccessResult(data);
     }

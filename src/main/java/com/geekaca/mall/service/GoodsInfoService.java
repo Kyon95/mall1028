@@ -1,10 +1,8 @@
 package com.geekaca.mall.service;
 
-import com.geekaca.mall.controller.vo.GoodsDetailVO;
-import com.geekaca.mall.controller.vo.IndexHotGoodsInfoVO;
-import com.geekaca.mall.controller.vo.IndexNewGoodsInfoVO;
-import com.geekaca.mall.controller.vo.IndexRecommendGoodsInfoVO;
+import com.geekaca.mall.controller.vo.*;
 import com.geekaca.mall.domain.GoodsInfo;
+import com.geekaca.mall.domain.MallCarousel;
 import com.geekaca.mall.utils.PageResult;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,4 +45,9 @@ public interface GoodsInfoService {
     int updateGood(GoodsInfo goodsInfo);
 
     int setGoodStatus(Integer status, List ids);
+
+    /**
+     * 前台 获取滚动图
+     */
+    List<MallCarousel> getCarouselGoods();
 }

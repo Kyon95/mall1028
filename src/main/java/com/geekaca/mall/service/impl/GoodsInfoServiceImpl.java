@@ -1,12 +1,11 @@
 package com.geekaca.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.geekaca.mall.controller.vo.GoodsDetailVO;
-import com.geekaca.mall.controller.vo.IndexHotGoodsInfoVO;
-import com.geekaca.mall.controller.vo.IndexNewGoodsInfoVO;
-import com.geekaca.mall.controller.vo.IndexRecommendGoodsInfoVO;
+import com.geekaca.mall.controller.vo.*;
 import com.geekaca.mall.domain.GoodsInfo;
+import com.geekaca.mall.domain.MallCarousel;
 import com.geekaca.mall.mapper.GoodsInfoMapper;
+import com.geekaca.mall.mapper.MallCarouselMapper;
 import com.geekaca.mall.service.GoodsInfoService;
 import com.geekaca.mall.utils.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,9 @@ import static com.geekaca.mall.common.Constants.*;
 public class GoodsInfoServiceImpl implements GoodsInfoService {
     @Autowired
     private GoodsInfoMapper goodsInfoMapper;
+
+    @Autowired
+    private MallCarouselMapper carouselMapper;
 
     @Override
 
@@ -107,6 +109,12 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     public int setGoodStatus(Integer status, List ids) {
         return goodsInfoMapper.updateStatusByIds(status, ids);
 
+    }
+
+    @Override
+    public List<MallCarousel> getCarouselGoods() {
+        List<MallCarousel> mallCarousels = carouselMapper.selectAll();
+        return mallCarousels;
     }
 
 
