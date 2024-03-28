@@ -2,6 +2,7 @@ package com.geekaca.mall.controller.admin;
 
 import com.auth0.jwt.interfaces.Claim;
 import com.geekaca.mall.common.Constants;
+import com.geekaca.mall.common.MallConstants;
 import com.geekaca.mall.controller.admin.param.AdminLoginParam;
 import com.geekaca.mall.domain.AdminUser;
 import com.geekaca.mall.service.AdminUserService;
@@ -19,7 +20,12 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.lang.invoke.ConstantBootstraps;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * 后台用户管理接口
@@ -67,16 +73,34 @@ public class AdminUserController {
 
     @PostMapping("/upload/file")
     @ResponseBody
-    public Result uploadFile(@RequestParam("file") MultipartFile fileUpload) {
+    public Result uploadFile(@RequestParam("file") MultipartFile fileUpload,HttpServletRequest httpServletRequest) throws URISyntaxException {
         System.out.println("upload....");
         Result rs = new Result();
+//        String fileName = fileUpload.getOriginalFilename();
+
+
+        //目标：接收用户上传的图片，改名，而且不能冲突
         String fileName = fileUpload.getOriginalFilename();
+        /**
+         * 取文件的扩展名
+         * avatar.png   jpg
+         */
+        //首先找到.在文件名字中最后一次出现的索引
+        String suffixName = fileName.substring(fileName.lastIndexOf("."));
+        LocalDateTime localDateTime = LocalDateTime.now();
+        DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+        String curDtime = localDateTime.format(dft);
+        Random r = new Random();
+        StringBuilder tempName = new StringBuilder();
+        //为了生成随机的文件名字 + 扩展名
+        tempName.append(curDtime).append(r.nextInt(100)).append(suffixName);
+        String newFileName = tempName.toString();
+        File fileDirectory = new File(MallConstants.FILE_UPLOAD_DIC);
 
+        //创建文件
         String tmpFilePath = UPLOAD_PATH;
-        String dataPath = "http://localhost:28019/goods-img/" + fileName;
-
-//        String resourcesPath = tmpFilePath;
-        File upFile = new File(tmpFilePath, fileName);
+        String dataPath = "http://localhost:" + httpServletRequest.getServerPort() +"/goods-img/" + newFileName;
+        File upFile = new File(tmpFilePath, newFileName);
         try {
             fileUpload.transferTo(upFile);
             rs.setResultCode(200);

@@ -46,7 +46,7 @@ public class GoodsController {
     }
 
     @ApiOperation(value = "添加/修改商品", notes = "添加/修改商品")
-    @RequestMapping(value = "/goods",method = {RequestMethod.POST,RequestMethod.PUT})
+    @RequestMapping(value = "/goods", method = {RequestMethod.POST, RequestMethod.PUT})
     public Result insertGood(
 /*            @RequestParam(required = false) @ApiParam(value = "分类ID") Integer goodsCategoryId,
                              @RequestParam(required = false) @ApiParam(value = "商品主图") String goodsCoverImg,
@@ -60,9 +60,7 @@ public class GoodsController {
                              @RequestParam(required = false) @ApiParam(value = "商品标签") String tag*/
             @RequestBody GoodsInfo goodsInfo, HttpServletRequest request
     ) {
-
-//        goodsInfo.setGoodsCarousel("");
-        if(request.getMethod()== RequestMethod.POST.toString()){
+        if (request.getMethod().equals("POST")) {
             // 添加商品
             String token = request.getHeader("token");
             Map<String, Claim> stringClaimMap = JwtUtil.verifyToken(token);
@@ -91,8 +89,6 @@ public class GoodsController {
                 return ResultGenerator.genFailResult("修改失败");
             }
         }
-
-
 
 
     }
