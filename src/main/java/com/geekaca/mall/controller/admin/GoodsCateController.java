@@ -1,5 +1,6 @@
 package com.geekaca.mall.controller.admin;
 
+import com.geekaca.mall.domain.GoodsCategory;
 import com.geekaca.mall.service.GoodsCateService;
 import com.geekaca.mall.utils.PageResult;
 import com.geekaca.mall.utils.Result;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping({"/manage-api/v1"})
 public class GoodsCateController {
     @Autowired
-    GoodsCateService goodsCateService;
+    private GoodsCateService goodsCateService;
 
     @GetMapping("/categories")
     public Result allCategories(@RequestParam(required = false) @ApiParam Integer pageNumber,
@@ -25,7 +26,7 @@ public class GoodsCateController {
             pageNumber = 1;
         }
         if (pageSize == null) {
-            pageSize = 1000;
+            pageSize = 5;
         }
         if (categoryLevel == null) {
             categoryLevel = 1;
@@ -33,9 +34,17 @@ public class GoodsCateController {
         if (parentId == null) {
             parentId = 0;
         }
-        PageResult allGoodsCategory = goodsCateService.findAllGoodsCategory(pageNumber, pageSize, categoryLevel, parentId);
+        
+        PageResult pageRs = goodsCateService.findAllGoodsCategory(pageNumber, pageSize, categoryLevel, parentId);
         Result result = ResultGenerator.genSuccessResult();
-        result.setData(allGoodsCategory);
+        result.setData(pageRs);
         return result;
+    }
+
+    @GetMapping("/categories/{id}")
+    public Result getCategoryById(@PathVariable("id") Integer id){
+        GoodsCategory category = new GoodsCategory();
+        //todo: 根据id 查询类别信息
+        return ResultGenerator.genSuccessResult(category);
     }
 }
