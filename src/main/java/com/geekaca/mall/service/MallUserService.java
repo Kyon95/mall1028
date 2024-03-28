@@ -16,4 +16,6 @@ public interface MallUserService {
     MallUser getUserInfo(String loginName);
 
     MallUser editUserInfo(Long userId,String nickMame,String passwordMd5,String introduceSign);
+
+    boolean isLogin(Long userId);
 }

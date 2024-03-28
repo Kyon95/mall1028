@@ -66,4 +66,14 @@ public class MallUserServiceImpl implements MallUserService {
             return null;
         }
     }
+
+    @Override
+    public boolean isLogin(Long userId) {
+        MallUser mallUser = userMapper.selectByPrimaryKey(userId);
+        if (mallUser == null) {
+            return false;
+        }else {
+            return true;
+        }
+    }
 }

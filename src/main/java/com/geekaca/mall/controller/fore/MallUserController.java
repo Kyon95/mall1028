@@ -11,9 +11,11 @@ import com.geekaca.mall.utils.Result;
 import com.geekaca.mall.utils.ResultGenerator;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Map;
 
@@ -86,6 +88,24 @@ public class MallUserController {
             Result result = ResultGenerator.genSuccessResult();
             result.setData(editUserInfo);
             return result;
+        }
+    }
+
+    @PostMapping("/user/logout")
+    private Result logout(@RequestHeader("Token")String token,HttpServletRequest req){
+        Map<String, Claim> userToken = JwtUtil.verifyToken(token);
+        if (userToken == null) {
+            return ResultGenerator.genFailResult("用户未登入，登出失败");
+        }
+        Claim id = userToken.get("id");
+        long userId = Long.parseLong(id.asString());
+        boolean isLogin = userService.isLogin(userId);
+        if (isLogin == false) {
+            return ResultGenerator.genFailResult("登出失败");
+        }else {
+            HttpSession session = req.getSession();
+            session.removeAttribute("Token");
+            return ResultGenerator.genSuccessResult();
         }
     }
 
