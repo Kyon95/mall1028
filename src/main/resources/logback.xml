@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <springProperty scope="context" name="log.path" source="LOG_HOME" defaultValue="c:\\dev\\tmp\\log\\"/>
+
     <!--
         CONSOLE ：表示当前的日志信息是可以输出到控制台的。
     -->
@@ -15,14 +17,14 @@
             <charset>utf-8</charset>
         </encoder>
 
-        <file>f:\dev\testlog\testlog.log</file>
+        <file>${log.path}\testlog.log</file>
 
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>
-                f:\dev\testlog\news.-%d{yyyy-MM-dd}.log%i.gz
+                ${log.path}\news.-%d{yyyy-MM-dd}.log%i.gz
             </fileNamePattern>
-            <MaxFileSize>1Mb</MaxFileSize>
+            <MaxFileSize>10Mb</MaxFileSize>
         </rollingPolicy>
 
     </appender>
@@ -42,6 +44,6 @@
 
     <root level="info">
         <appender-ref ref="Console"/>
-<!--        <appender-ref ref="FILE" />-->
+        <appender-ref ref="FILE" />
     </root>
 </configuration>
