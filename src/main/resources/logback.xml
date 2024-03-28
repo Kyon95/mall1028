@@ -38,8 +38,8 @@
      ， 默认debug
       <root>可以包含零个或多个<appender-ref>元素，标识这个输出位置将会被本日志级别控制。
       -->
-    <logger name="com.geekaca.news" level="info"  >
-        <appender-ref ref="FILE" />
+    <logger name="com.geekaca.mall.mapper" level="debug"  >
+<!--        <appender-ref ref="FILE" />-->
     </logger>
 
     <root level="info">
