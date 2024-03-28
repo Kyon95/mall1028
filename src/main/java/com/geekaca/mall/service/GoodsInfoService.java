@@ -42,4 +42,7 @@ public interface GoodsInfoService {
 
     int insertGood(GoodsInfo goodsInfo);
 
+    GoodsInfo  findGoodById(Long id);
+
+    int updateGood(GoodsInfo goodsInfo);
 }

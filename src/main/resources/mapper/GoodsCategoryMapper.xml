@@ -140,5 +140,8 @@
           limit #{limit}
             , #{pageSize}
     </select>
+    <select id="findParentId" resultType="java.lang.Long">
+        select parent_id from tb_newbee_mall_goods_category where category_id = #{categoryId}
+    </select>
 
 </mapper>

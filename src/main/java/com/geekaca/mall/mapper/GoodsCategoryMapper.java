@@ -35,4 +35,5 @@ public interface GoodsCategoryMapper {
                           @Param("categoryLevel") Integer categoryLevel,
                           @Param("parentId") Integer parentId);
 
+    Long findParentId(@Param("categoryId") Long categoryId);
 }

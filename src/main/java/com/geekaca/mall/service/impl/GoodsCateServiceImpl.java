@@ -22,6 +22,15 @@ public class GoodsCateServiceImpl implements GoodsCateService {
                 parentId);
         PageResult pageResult = new PageResult(allCategories, cateCount, pageSize, pageNumber);
         return pageResult;
+    }
 
+    @Override
+    public Long findParentId(Long categoryId) {
+        return goodsCategoryMapper.findParentId(categoryId);
+    }
+
+    @Override
+    public GoodsCategory findCatgoryById(Long categoryId) {
+        return goodsCategoryMapper.selectByPrimaryKey(categoryId);
     }
 }

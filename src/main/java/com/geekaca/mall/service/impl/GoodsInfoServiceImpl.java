@@ -91,4 +91,17 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         int inserted = goodsInfoMapper.insertSelective(goodsInfo);
         return inserted;
     }
+
+    @Override
+    public GoodsInfo findGoodById(Long id) {
+        GoodsInfo goodsInfo = goodsInfoMapper.selectByPrimaryKey(id);
+        return  goodsInfo;
+    }
+
+    @Override
+    public int updateGood(GoodsInfo goodsInfo) {
+        return goodsInfoMapper.updateByPrimaryKeySelective(goodsInfo);
+    }
+
+
 }
