@@ -60,7 +60,7 @@ public class MallUserServiceImpl implements MallUserService {
         MallUser mallUser = new MallUser();
         mallUser.setUserId(userId);
         mallUser.setIntroduceSign(introduceSign);
-        mallUser.setPasswordMd5(SecureUtil.md5(passwordMd5));
+        mallUser.setPasswordMd5(passwordMd5);
         mallUser.setNickName(nickName);
         int isEdit = userMapper.updateByPrimaryKeySelective(mallUser);
         if(isEdit > 0){
