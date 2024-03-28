@@ -1,8 +1,10 @@
 package com.geekaca.mall.service.impl;
 
 import cn.hutool.crypto.SecureUtil;
+import com.geekaca.mall.common.MallConstants;
 import com.geekaca.mall.controller.fore.param.MallUserLoginParam;
 import com.geekaca.mall.domain.MallUser;
+import com.geekaca.mall.exceptions.LoginFailException;
 import com.geekaca.mall.mapper.MallUserMapper;
 import com.geekaca.mall.service.MallUserService;
 import com.geekaca.mall.utils.JwtUtil;
@@ -20,7 +22,8 @@ public class MallUserServiceImpl implements MallUserService {
         //String passMd5 = SecureUtil.md5(userLoginParam.getPasswordMd5());
         MallUser checkLogin = userMapper.checkLogin(userLoginParam.getLoginName(), userLoginParam.getPasswordMd5());
         if (checkLogin == null) {
-            return null;
+//            return null;
+            throw new LoginFailException("登陆失败", MallConstants.CODE_USER_LOGIN_FAIL);
         }
         String token = JwtUtil.createToken(checkLogin.getUserId().toString(), checkLogin.getLoginName());
         return token;

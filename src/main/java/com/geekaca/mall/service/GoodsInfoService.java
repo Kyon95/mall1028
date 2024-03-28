@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public interface GoodsInfoService {
     /**
      * 前台 获取热销商品

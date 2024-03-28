@@ -50,7 +50,8 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
                 .copyToList(hotGoodsVO, IndexRecommendGoodsInfoVO.class);
         return recommendGoodsVO;
     }
-    public PageResult findAllGoods(Integer pageNo, Integer pageSize,String goodsName) {
+    @Override
+    public PageResult findAllGoods(Integer pageNo, Integer pageSize, String goodsName) {
         Integer limit = (pageNo - 1) * pageSize;
         List<GoodsInfo> goodsList = goodsInfoMapper.findGoodsList(limit, pageSize,goodsName);
         int goodsCount = goodsInfoMapper.findGoodsCount(goodsName);
@@ -79,10 +80,10 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         List list = new ArrayList();
         list.add(goodsCarousel);
         //其余字段信息，利用工具赋值给VO
-        GoodsDetailVO VO = BeanUtil.copyProperties(goodsInfo,GoodsDetailVO.class);
+        GoodsDetailVO goodVo = BeanUtil.copyProperties(goodsInfo,GoodsDetailVO.class);
         //最后把list放进VO
-        VO.setGoodsCarouselList(list);
-        return VO;
+        goodVo.setGoodsCarouselList(list);
+        return goodVo;
     }
 
     @Override

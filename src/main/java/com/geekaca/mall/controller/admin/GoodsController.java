@@ -61,7 +61,7 @@ public class GoodsController {
                              @RequestParam(required = false) @ApiParam(value = "商品标签") String tag*/
             @RequestBody GoodsInfo goodsInfo, HttpServletRequest request
     ) {
-        if (request.getMethod().equals("POST")) {
+        if ("POST".equals(request.getMethod())) {
             // 添加商品
             String token = request.getHeader("token");
             Map<String, Claim> stringClaimMap = JwtUtil.verifyToken(token);

@@ -11,11 +11,13 @@ public class MallConstants {
      */
     public static final int CODE_LOGIN_NAME_EXSISTS = 299;
     public static final int CODE_USER_NOT_LOGIN = 300;
+
     public static final int CODE_SYSTEM_ERROR = 309;
     /**
     * test web
     *
     */
+    public static final int CODE_USER_LOGIN_FAIL = 302;
     /**
      * 不是用户购物车商品
      */

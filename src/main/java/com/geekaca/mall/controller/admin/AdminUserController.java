@@ -1,7 +1,6 @@
 package com.geekaca.mall.controller.admin;
 
 import com.auth0.jwt.interfaces.Claim;
-import com.geekaca.mall.common.Constants;
 import com.geekaca.mall.common.MallConstants;
 import com.geekaca.mall.controller.admin.param.AdminLoginParam;
 import com.geekaca.mall.domain.AdminUser;
@@ -19,8 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.lang.invoke.ConstantBootstraps;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -35,7 +32,7 @@ import java.util.Random;
 @RequestMapping("/manage-api/v1")
 public class AdminUserController {
     @Value("${upload.path}")
-    private String UPLOAD_PATH;
+    private String uploadPath;
 
     @Autowired
     private AdminUserService adminUserService;
@@ -98,7 +95,7 @@ public class AdminUserController {
         File fileDirectory = new File(MallConstants.FILE_UPLOAD_DIC);
 
         //创建文件
-        String tmpFilePath = UPLOAD_PATH;
+        String tmpFilePath = uploadPath;
         String dataPath = "http://localhost:" + httpServletRequest.getServerPort() +"/goods-img/" + newFileName;
         File upFile = new File(tmpFilePath, newFileName);
         try {

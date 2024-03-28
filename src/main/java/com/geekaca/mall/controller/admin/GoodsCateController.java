@@ -34,7 +34,7 @@ public class GoodsCateController {
         if (parentId == null) {
             parentId = 0;
         }
-        
+
         PageResult pageRs = goodsCateService.findAllGoodsCategory(pageNumber, pageSize, categoryLevel, parentId);
         Result result = ResultGenerator.genSuccessResult();
         result.setData(pageRs);
@@ -47,4 +47,9 @@ public class GoodsCateController {
         //todo: 根据id 查询类别信息
         return ResultGenerator.genSuccessResult(category);
     }
+
+//    @DeleteMapping("/categories/{id}")
+//    public Result deleteCategoryById(@PathVariable("id") Integer id){
+//
+//    }
 }

@@ -32,7 +32,7 @@ public class MallUserController {
     private MallUserService userService;
 
     @PostMapping("/user/login")
-    public Result login(@RequestBody MallUserLoginParam userLoginParam){
+    public Result login(@Valid @RequestBody MallUserLoginParam userLoginParam){
         String loginToken = userService.login(userLoginParam);
         if (loginToken == null) {
             return ResultGenerator.genFailResult("登入失败");
