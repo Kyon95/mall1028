@@ -45,4 +45,6 @@ public interface GoodsInfoService {
     GoodsInfo  findGoodById(Long id);
 
     int updateGood(GoodsInfo goodsInfo);
+
+    int setGoodStatus(Integer status, List ids);
 }

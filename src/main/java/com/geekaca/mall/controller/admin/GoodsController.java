@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -122,7 +123,17 @@ public class GoodsController {
         }
     }
 
-    public Result updateGood() {
-        return null;
+    @PutMapping("/goods/status/{status}")
+    public Result changeGoodStatus(@PathVariable("status") Integer status,
+                                   @RequestBody Map<String, List<Integer>> idMap) {
+        int i = goodsInfoService.setGoodStatus(status, idMap.get("ids"));
+        if (i > 0) {
+            Result result = ResultGenerator.genSuccessResult("更新状态成功");
+            return result;
+        } else {
+            Result result = ResultGenerator.genFailResult("更新状态失败");
+            return result;
+        }
+
     }
 }

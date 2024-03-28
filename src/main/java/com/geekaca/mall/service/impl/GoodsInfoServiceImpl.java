@@ -10,7 +10,6 @@ import com.geekaca.mall.mapper.GoodsInfoMapper;
 import com.geekaca.mall.service.GoodsInfoService;
 import com.geekaca.mall.utils.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -101,6 +100,12 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     @Override
     public int updateGood(GoodsInfo goodsInfo) {
         return goodsInfoMapper.updateByPrimaryKeySelective(goodsInfo);
+    }
+
+    @Override
+    public int setGoodStatus(Integer status, List ids) {
+        return goodsInfoMapper.updateStatusByIds(status, ids);
+
     }
 
 
