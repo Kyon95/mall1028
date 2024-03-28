@@ -112,8 +112,8 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     }
 
     @Override
-    public List<MallCarousel> getCarouselGoods() {
-        List<MallCarousel> mallCarousels = carouselMapper.selectAll();
+    public List<MallCarousel> getCarouselGoods(int num) {
+        List<MallCarousel> mallCarousels = carouselMapper.selectAll(num);
         return mallCarousels;
     }
 

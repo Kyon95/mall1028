@@ -30,7 +30,7 @@ public class IndexConfigController {
         List<IndexHotGoodsInfoVO> hotGoodses = goodsInfoService.getHotGoods();
         List<IndexNewGoodsInfoVO> newGoodses = goodsInfoService.getNewGoods();
         List<IndexRecommendGoodsInfoVO> recommendGoodses = goodsInfoService.getRecommendGoods();
-        List<MallCarousel>  carousels = goodsInfoService.getCarouselGoods();
+        List<MallCarousel>  carousels = goodsInfoService.getCarouselGoods(5);
 
 
         IndexCarouselAndGoodsVO data = new IndexCarouselAndGoodsVO();

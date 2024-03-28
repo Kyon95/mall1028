@@ -26,6 +26,6 @@ public interface MallCarouselMapper {
 
     int updateByPrimaryKey(MallCarousel record);
 
-    List<MallCarousel> selectAll();
+    List<MallCarousel> selectAll(int num);
 
 }

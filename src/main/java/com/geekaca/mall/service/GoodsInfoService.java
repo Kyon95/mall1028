@@ -49,5 +49,5 @@ public interface GoodsInfoService {
     /**
      * 前台 获取滚动图
      */
-    List<MallCarousel> getCarouselGoods();
+    List<MallCarousel> getCarouselGoods(int num);
 }
