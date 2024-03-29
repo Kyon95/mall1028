@@ -33,4 +33,24 @@ public class GoodsCateServiceImpl implements GoodsCateService {
     public GoodsCategory findCatgoryById(Long categoryId) {
         return goodsCategoryMapper.selectByPrimaryKey(categoryId);
     }
+
+    @Override
+    public int updateGoodsCategory(GoodsCategory goodsCategory) {
+        return goodsCategoryMapper.updateByPrimaryKeySelective(goodsCategory);
+    }
+
+    @Override
+    public int saveGoodsCategory(GoodsCategory goodsCategory) {
+        return goodsCategoryMapper.insertSelective(goodsCategory);
+    }
+
+    @Override
+    public int deleteGoodsCategory(Long categoryId) {
+        return 0;
+    }
+
+    @Override
+    public int deleteGoodsCategoryByIds(List<Integer> ids) {
+        return goodsCategoryMapper.deleteByIds(ids);
+    }
 }

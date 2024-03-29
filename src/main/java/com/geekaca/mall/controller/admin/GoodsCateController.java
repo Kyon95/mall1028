@@ -9,6 +9,9 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @CrossOrigin
 @RestController
 @RequestMapping({"/manage-api/v1"})
@@ -34,6 +37,7 @@ public class GoodsCateController {
         if (parentId == null) {
             parentId = 0;
         }
+        pageSize = 5;
 
         PageResult pageRs = goodsCateService.findAllGoodsCategory(pageNumber, pageSize, categoryLevel, parentId);
         Result result = ResultGenerator.genSuccessResult();
@@ -41,15 +45,40 @@ public class GoodsCateController {
         return result;
     }
 
-    @GetMapping("/categories/{id}")
-    public Result getCategoryById(@PathVariable("id") Integer id){
-        GoodsCategory category = new GoodsCategory();
-        //todo: 根据id 查询类别信息
-        return ResultGenerator.genSuccessResult(category);
+    @PostMapping("/categories")
+    public Result addCategory(@RequestBody GoodsCategory goodsCategory) {
+
+        int i = goodsCateService.saveGoodsCategory(goodsCategory);
+        if (i > 0) {
+            return ResultGenerator.genSuccessResult("添加成功");
+        } else {
+            return ResultGenerator.genFailResult("添加失败");
+        }
     }
 
-//    @DeleteMapping("/categories/{id}")
-//    public Result deleteCategoryById(@PathVariable("id") Integer id){
-//
-//    }
+    @DeleteMapping("/categories")
+    public Result deleteCategory(@RequestBody Map<String, List<Integer>> idMap) {
+        int i = goodsCateService.deleteGoodsCategoryByIds(idMap.get("ids"));
+        if (i > 0) {
+            return ResultGenerator.genSuccessResult("删除成功");
+        }
+        return ResultGenerator.genFailResult("删除失败");
+    }
+
+    @GetMapping("/categories/{id}")
+    public Result getCategoryById(@PathVariable("id") Long id) {
+        GoodsCategory goodsCategory = goodsCateService.findCatgoryById(id);
+        return ResultGenerator.genSuccessResult(goodsCategory);
+    }
+
+    @PutMapping("/categories")
+    public Result updateCategoryById(@RequestBody GoodsCategory goodsCategory) {
+        int i = goodsCateService.updateGoodsCategory(goodsCategory);
+        if (i > 0) {
+            return ResultGenerator.genSuccessResult("修改成功");
+        } else {
+            return ResultGenerator.genFailResult("修改失败");
+        }
+
+    }
 }

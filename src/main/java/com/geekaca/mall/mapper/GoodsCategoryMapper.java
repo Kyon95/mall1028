@@ -36,4 +36,6 @@ public interface GoodsCategoryMapper {
                           @Param("parentId") Integer parentId);
 
     Long findParentId(@Param("categoryId") Long categoryId);
+
+    int deleteByIds(@Param("ids") List<Integer> ids);
 }

@@ -36,3 +36,4 @@ mvnw.cmd
 .mvn/wrapper/maven-wrapper.jar
 .mvn/wrapper/maven-wrapper.properties
 *.log
+log.path_IS_UNDEFINED/news.-2024-03-28.log0.gz

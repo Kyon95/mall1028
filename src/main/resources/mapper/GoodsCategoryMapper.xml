@@ -129,18 +129,32 @@
         FROM tb_newbee_mall_goods_category
         WHERE category_level = #{categoryLevel}
           and parent_id = #{parentId}
-          order by category_rank desc
-           limit #{limit}
-            , #{pageSize}
+        and is_deleted = 0
+        order by category_rank desc
+            limit #{limit}
+               , #{pageSize}
     </select>
     <select id="findCategoryCount" resultType="java.lang.Integer">
         SELECT count(*)
         FROM tb_newbee_mall_goods_category
         WHERE category_level = #{categoryLevel}
           and parent_id = #{parentId}
+          and is_deleted = 0
     </select>
     <select id="findParentId" resultType="java.lang.Long">
-        select parent_id from tb_newbee_mall_goods_category where category_id = #{categoryId}
+        select parent_id
+        from tb_newbee_mall_goods_category
+        where category_id = #{categoryId}
     </select>
+
+    <update id="deleteByIds">
+        update tb_newbee_mall_goods_category
+        set is_deleted = 1, update_time = now()
+        where category_id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
 
 </mapper>
