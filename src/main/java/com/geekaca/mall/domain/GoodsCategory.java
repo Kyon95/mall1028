@@ -2,6 +2,7 @@ package com.geekaca.mall.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -64,6 +65,8 @@ public class GoodsCategory implements Serializable {
     private Integer updateUser;
 
     private static final long serialVersionUID = 1L;
+
+    private List<GoodsCategory> secondLevelCategoryVOS;
 
     @Override
     public boolean equals(Object that) {

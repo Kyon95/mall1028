@@ -37,5 +37,9 @@ public interface GoodsCategoryMapper {
 
     Long findParentId(@Param("categoryId") Long categoryId);
 
+    List<GoodsCategory> findCatByPID2(@Param("parent_id") Long firstLevelId);
+
+    List<GoodsCategory> findCatByPID3(@Param("parent_id") Long secondLevelId);
+
     int deleteByIds(@Param("ids") List<Integer> ids);
 }

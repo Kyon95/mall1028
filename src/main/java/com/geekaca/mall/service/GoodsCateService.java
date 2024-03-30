@@ -20,4 +20,6 @@ public interface GoodsCateService {
     int deleteGoodsCategory(Long categoryId);
 
     int deleteGoodsCategoryByIds(List<Integer> ids);
+
+    List<Object> findAllCatoriesAndSubCatories();
 }
