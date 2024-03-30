@@ -10,4 +10,6 @@ public interface AddressService {
     List<UserAddress> getAllAddressByUserId(Long userId);
 
     int addAddress(UserAddress address);
+
+    UserAddress getAddressByAddressId(Long addressId);
 }

@@ -21,7 +21,10 @@ public interface UserAddressMapper {
 
     int insertSelective(UserAddress record);
 
-    UserAddress selectByPrimaryKey(Long id);
+    /**
+     * 凭主键addressId获取某地址详情
+     */
+    UserAddress selectByPrimaryKey(Long addressId);
 
     /**
      * 更新地址

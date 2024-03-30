@@ -53,5 +53,10 @@ public class AddressServiceImpl implements AddressService {
         }
     }
 
+    @Override
+    public UserAddress getAddressByAddressId(Long addressId) {
+        return userAddressMapper.selectByPrimaryKey(addressId);
+    }
+
 
 }
