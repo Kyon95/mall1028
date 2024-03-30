@@ -8,4 +8,6 @@ import java.util.List;
 @Transactional
 public interface AddressService {
     List<UserAddress> getAllAddressByUserId(Long userId);
+
+    int addAddress(UserAddress address);
 }

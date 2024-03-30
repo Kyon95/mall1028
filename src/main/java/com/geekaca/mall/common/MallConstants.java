@@ -50,4 +50,8 @@ public class MallConstants {
         ORDER_STATUS_MAP.put(5, "出库成功");
 
     }
+
+    //默认地址设置状态 0-非默认 1-是默认
+    public static final int ADDRESS_NOT_DEFAULT = 0;
+    public static final int ADDRESS_IS_DEFAULT = 1;
 }

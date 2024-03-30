@@ -14,12 +14,18 @@ public interface UserAddressMapper {
 
     int deleteByPrimaryKey(Long id);
 
+    /**
+     * 添加地址
+     */
     int insert(UserAddress record);
 
     int insertSelective(UserAddress record);
 
     UserAddress selectByPrimaryKey(Long id);
 
+    /**
+     * 更新地址
+     */
     int updateByPrimaryKeySelective(UserAddress record);
 
     int updateByPrimaryKey(UserAddress record);
@@ -28,4 +34,9 @@ public interface UserAddressMapper {
      * 根据用户id获取所有收货地址
      */
     List<UserAddress> selectAllAddressByUid(Long userId);
+
+    /**
+     * 找到默认收货地址
+     */
+    UserAddress selectDefaultAddressByUid(Long userId);
 }

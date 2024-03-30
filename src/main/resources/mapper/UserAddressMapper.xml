@@ -39,18 +39,16 @@
         from tb_newbee_mall_user_address
         where address_id = #{addressId,jdbcType=BIGINT}
     </delete>
-
+    <!--删除了address_id、is_deleted、create_time、update_time-->
     <insert id="insert" keyColumn="address_id" keyProperty="addressId"
             parameterType="com.geekaca.mall.domain.UserAddress" useGeneratedKeys="true">
         insert into tb_newbee_mall_user_address
-        ( address_id, user_id, user_name
+        ( user_id, user_name
         , user_phone, default_flag, province_name
-        , city_name, region_name, detail_address
-        , is_deleted, create_time, update_time)
-        values ( #{addressId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}
+        , city_name, region_name, detail_address)
+        values ( #{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}
                , #{userPhone,jdbcType=VARCHAR}, #{defaultFlag,jdbcType=TINYINT}, #{provinceName,jdbcType=VARCHAR}
-               , #{cityName,jdbcType=VARCHAR}, #{regionName,jdbcType=VARCHAR}, #{detailAddress,jdbcType=VARCHAR}
-               , #{isDeleted,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+               , #{cityName,jdbcType=VARCHAR}, #{regionName,jdbcType=VARCHAR}, #{detailAddress,jdbcType=VARCHAR})
     </insert>
 
     <insert id="insertSelective" keyColumn="address_id" keyProperty="addressId"
@@ -85,13 +83,10 @@
             <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
-
+    <!--删除了user_id-->
     <update id="updateByPrimaryKeySelective" parameterType="com.geekaca.mall.domain.UserAddress">
         update tb_newbee_mall_user_address
         <set>
-            <if test="userId != null">
-                user_id = #{userId,jdbcType=BIGINT},
-            </if>
             <if test="userName != null">
                 user_name = #{userName,jdbcType=VARCHAR},
             </if>
@@ -148,5 +143,13 @@
         where user_id = #{userId,jdbcType=BIGINT}
           and is_deleted = 0
         order by default_flag = 1 desc
+    </select>
+
+    <select id="selectDefaultAddressByUid" resultMap="BaseResultMap">
+        select *
+        from tb_newbee_mall_user_address
+        where user_id = #{userId,jdbcType=BIGINT}
+          and default_flag = 1
+          and is_deleted = 0
     </select>
 </mapper>
