@@ -1,6 +1,7 @@
 package com.geekaca.mall.config;
 
 import com.geekaca.mall.exceptions.LoginFailException;
+import com.geekaca.mall.exceptions.MallException;
 import com.geekaca.mall.utils.Result;
 import com.geekaca.mall.utils.ResultGenerator;
 import lombok.extern.slf4j.Slf4j;
@@ -26,5 +27,13 @@ public class ExceptionResolver {
     @ExceptionHandler(value = LoginFailException.class)
     public Result loginFailExceptionHandler(LoginFailException e) {
         return ResultGenerator.genFailResult(e.getMessage());
+    }
+
+    @ExceptionHandler(MallException.class)
+    public Result mallExceptionHandler(MallException e) {
+        log.error("购物车中已存在所点选商品", e.getMessage());
+        Result result = new Result();
+        result.setMessage(e.getMessage());
+        return result;
     }
 }
