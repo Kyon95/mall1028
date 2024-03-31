@@ -2,6 +2,7 @@ package com.geekaca.mall.controller.fore;
 
 import com.auth0.jwt.interfaces.Claim;
 import com.geekaca.mall.controller.fore.param.CartItemParaam;
+import com.geekaca.mall.controller.vo.ShoppingCartItemVO;
 import com.geekaca.mall.service.ShoppingCartService;
 import com.geekaca.mall.utils.JwtUtil;
 import com.geekaca.mall.utils.Result;
@@ -9,6 +10,7 @@ import com.geekaca.mall.utils.ResultGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -30,5 +32,15 @@ public class ShoppingCartController {
         }
     }
 
-
+    @GetMapping("/shop-cart")
+    public Result getCartList(@RequestHeader("Token")String token) {
+        Map<String, Claim> userToken = JwtUtil.verifyToken(token);
+        Claim id = userToken.get("id");
+        long userId = Long.parseLong(id.asString());
+        List<ShoppingCartItemVO> myCartList = shoppingCartService.getMyCartItems(userId);
+        Result result = ResultGenerator.genSuccessResult();
+        result.setData(myCartList);
+        System.out.println(myCartList);
+        return result;
+    }
 }

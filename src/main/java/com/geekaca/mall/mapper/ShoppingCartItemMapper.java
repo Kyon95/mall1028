@@ -1,7 +1,10 @@
 package com.geekaca.mall.mapper;
 
+import com.geekaca.mall.controller.vo.ShoppingCartItemVO;
 import com.geekaca.mall.domain.ShoppingCartItem;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
 * @author Kyon_Yjx
@@ -27,5 +30,7 @@ public interface ShoppingCartItemMapper {
     ShoppingCartItem selectByUserIdAndGoodId(Long userId,Long goodsId);
 
     int selectCountByUserId(Long userId);
+
+    List<ShoppingCartItemVO> getGoodsListByUserId(Long userId);
 
 }

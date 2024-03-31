@@ -1,15 +1,19 @@
 package com.geekaca.mall.service.impl;
 
 import com.geekaca.mall.controller.fore.param.CartItemParaam;
+import com.geekaca.mall.controller.vo.ShoppingCartItemVO;
 import com.geekaca.mall.domain.GoodsInfo;
 import com.geekaca.mall.domain.ShoppingCartItem;
 import com.geekaca.mall.exceptions.MallException;
 import com.geekaca.mall.mapper.GoodsInfoMapper;
 import com.geekaca.mall.mapper.ShoppingCartItemMapper;
 import com.geekaca.mall.service.ShoppingCartService;
-import com.geekaca.mall.utils.ResultGenerator;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -45,5 +49,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             return null;
         }
 
+    }
+
+    @Override
+    public List<ShoppingCartItemVO> getMyCartItems(Long userId) {
+        List<ShoppingCartItemVO> goodsCartList = shoppingCartItemMapper.getGoodsListByUserId(userId);
+        return  goodsCartList;
     }
 }
