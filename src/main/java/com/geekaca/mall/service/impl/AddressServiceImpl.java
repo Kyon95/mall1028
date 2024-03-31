@@ -58,5 +58,30 @@ public class AddressServiceImpl implements AddressService {
         return userAddressMapper.selectByPrimaryKey(addressId);
     }
 
+    //若要改某地址为默认地址，且已存在默认地址，则执行两个update语句，需捆绑
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int setAddress(UserAddress address) {
+        //若被修改地址没设默认，直接执行update语句
+        if (address.getDefaultFlag() == ADDRESS_NOT_DEFAULT) {
+            return userAddressMapper.updateByPrimaryKeySelective(address);
+        }
+        //走到该处，证明被修改地址设了默认  则查看已存地址中是否有默认地址 //该处的user_id需controller内补上↓↓
+        UserAddress userAdd = userAddressMapper.selectDefaultAddressByUid(address.getUserId());
+        if (userAdd == null) {
+            return userAddressMapper.updateByPrimaryKeySelective(address);//没有，则执行update语句
+        }
+        //走到该处，证明已存在默认地址，则将该默认地址改为非默认，再执行update语句
+        userAdd.setDefaultFlag(ADDRESS_NOT_DEFAULT);
+        userAdd.setUpdateTime(new Date());//改一下update_time
+        int updated = userAddressMapper.updateByPrimaryKeySelective(userAdd);
+        if (updated <= 0) {
+            return 0;//若更改失败，则返回0让对应controller方法也失败
+        } else {// >0 即更改成功，执行update语句
+            address.setUpdateTime(new Date());//这边也改一下update_time
+            return userAddressMapper.updateByPrimaryKeySelective(address);
+        }
+    }
+
 
 }

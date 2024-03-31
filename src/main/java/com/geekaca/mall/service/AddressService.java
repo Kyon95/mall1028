@@ -12,4 +12,6 @@ public interface AddressService {
     int addAddress(UserAddress address);
 
     UserAddress getAddressByAddressId(Long addressId);
+
+    int setAddress(UserAddress address);
 }

@@ -7,6 +7,7 @@ import com.geekaca.mall.service.AddressService;
 import com.geekaca.mall.utils.JwtUtil;
 import com.geekaca.mall.utils.Result;
 import com.geekaca.mall.utils.ResultGenerator;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import static com.geekaca.mall.common.Constants.NO_LOGIN;
 
 @RestController
 @RequestMapping("/api/v1")
+@Api(value = "v1", tags = "6.新蜂商城个人地址相关接口")
 public class AddressController {
     @Autowired
     private AddressService addressService;
@@ -100,5 +102,34 @@ public class AddressController {
         }
     }
 
+    /**
+     * 修改某地址
+     */
+    @PutMapping("/address")
+    @ApiOperation(value = "修改地址", notes = "")
+    public Result updateMallUserAddress(@RequestBody UserAddress address,
+                                        HttpServletRequest req) {
+        String token = req.getHeader("token");
+        if (token == null) {
+            throw new NotLoginException(NO_LOGIN, "用户未登录");
+        }
+
+        Map<String, Claim> stringClaimMap = JwtUtil.verifyToken(token);
+        Claim claim = stringClaimMap.get("id");
+        String userIdStr = claim.asString();
+        if (userIdStr == null) {
+            throw new NotLoginException(NO_LOGIN, "用户未登录");
+        }
+        Long userId = Long.valueOf(userIdStr);
+
+        //该address内含addressId
+        address.setUserId(userId);//前端传来的数据没带uerId，这里补上
+        int setCnt = addressService.setAddress(address);
+        if (setCnt > 0) {
+            return ResultGenerator.genSuccessResult("修改地址成功");
+        } else {
+            return ResultGenerator.genFailResult("修改地址失败");
+        }
+    }
 
 }
