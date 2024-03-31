@@ -1,7 +1,7 @@
 package com.geekaca.mall.controller.fore;
 
 import com.auth0.jwt.interfaces.Claim;
-import com.geekaca.mall.controller.fore.param.CartItemParaam;
+import com.geekaca.mall.controller.fore.param.CartItemParam;
 import com.geekaca.mall.controller.vo.ShoppingCartItemVO;
 import com.geekaca.mall.service.ShoppingCartService;
 import com.geekaca.mall.utils.JwtUtil;
@@ -20,11 +20,11 @@ public class ShoppingCartController {
     private ShoppingCartService shoppingCartService;
 
     @PostMapping("/shop-cart")
-    public Result saveGoodsToCart(@RequestBody CartItemParaam cartItemParaam,@RequestHeader("Token")String token) {
+    public Result saveGoodsToCart(@RequestBody CartItemParam cartItemParam, @RequestHeader("Token")String token) {
         Map<String, Claim> userToken = JwtUtil.verifyToken(token);
         Claim id = userToken.get("id");
         long userId = Long.parseLong(id.asString());
-        String isSaved = shoppingCartService.saveGoodToCart(cartItemParaam, userId);
+        String isSaved = shoppingCartService.saveGoodToCart(cartItemParam, userId);
         if (isSaved == null) {
             return ResultGenerator.genFailResult("保存失败");
         }else {

@@ -6,7 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class CartItemParaam implements Serializable {
+public class CartItemParam implements Serializable {
     @ApiModelProperty("商品数量")
     private Integer goodsCount;
     @ApiModelProperty("商品id")

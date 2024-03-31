@@ -1,6 +1,6 @@
 package com.geekaca.mall.service.impl;
 
-import com.geekaca.mall.controller.fore.param.CartItemParaam;
+import com.geekaca.mall.controller.fore.param.CartItemParam;
 import com.geekaca.mall.controller.vo.ShoppingCartItemVO;
 import com.geekaca.mall.domain.GoodsInfo;
 import com.geekaca.mall.domain.ShoppingCartItem;
@@ -8,11 +8,9 @@ import com.geekaca.mall.exceptions.MallException;
 import com.geekaca.mall.mapper.GoodsInfoMapper;
 import com.geekaca.mall.mapper.ShoppingCartItemMapper;
 import com.geekaca.mall.service.ShoppingCartService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,12 +22,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
 
     @Override
-    public String saveGoodToCart(CartItemParaam cartItemParaam, Long userId) {
-        ShoppingCartItem shoppingCartItem = shoppingCartItemMapper.selectByUserIdAndGoodId(userId, cartItemParaam.getGoodsId());
+    public String saveGoodToCart(CartItemParam cartItemParam, Long userId) {
+        ShoppingCartItem shoppingCartItem = shoppingCartItemMapper.selectByUserIdAndGoodId(userId, cartItemParam.getGoodsId());
         if (shoppingCartItem != null) {
             throw new MallException("商品已存在！无需重复添加！");
         }
-        GoodsInfo goodsInfo = goodsInfoMapper.selectByPrimaryKey(cartItemParaam.getGoodsId());
+        GoodsInfo goodsInfo = goodsInfoMapper.selectByPrimaryKey(cartItemParam.getGoodsId());
         if(goodsInfo == null){
             return null;
         }
@@ -38,9 +36,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 //            return null;
 //        }
         ShoppingCartItem newCart = new ShoppingCartItem();
-        newCart.setGoodsId(cartItemParaam.getGoodsId());
+        newCart.setGoodsId(cartItemParam.getGoodsId());
         newCart.setUserId(userId);
-        newCart.setGoodsCount(cartItemParaam.getGoodsCount());
+        newCart.setGoodsCount(cartItemParam.getGoodsCount());
         int i = shoppingCartItemMapper.insertSelective(newCart);
 
         if (i > 0) {
