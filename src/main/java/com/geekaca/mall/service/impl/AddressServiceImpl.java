@@ -83,5 +83,10 @@ public class AddressServiceImpl implements AddressService {
         }
     }
 
+    @Override
+    public int deleteAddress(Long addressId, Long userId) {
+        return userAddressMapper.deleteByPrimaryKey(addressId, userId);
+    }
+
 
 }

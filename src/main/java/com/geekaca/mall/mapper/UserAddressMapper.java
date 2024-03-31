@@ -1,6 +1,7 @@
 package com.geekaca.mall.mapper;
 
 import com.geekaca.mall.domain.UserAddress;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,8 +12,10 @@ import java.util.List;
  * @Entity com.geekaca.mall.domain.UserAddress
  */
 public interface UserAddressMapper {
-
-    int deleteByPrimaryKey(Long id);
+    /**
+     * 删除地址，加个user_id参数保护一下
+     */
+    int deleteByPrimaryKey(@Param("addressId") Long addressId, @Param("userId") Long userId);
 
     /**
      * 添加地址

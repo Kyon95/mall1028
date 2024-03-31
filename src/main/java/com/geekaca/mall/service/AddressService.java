@@ -14,4 +14,6 @@ public interface AddressService {
     UserAddress getAddressByAddressId(Long addressId);
 
     int setAddress(UserAddress address);
+
+    int deleteAddress(Long addressId, Long userId);
 }

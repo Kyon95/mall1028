@@ -132,4 +132,29 @@ public class AddressController {
         }
     }
 
+    @DeleteMapping("/address/{addressId}")
+    @ApiOperation(value = "删除收货地址", notes = "传参为地址id")
+    public Result deleteAddress(@PathVariable("addressId") Long addressId,
+                                HttpServletRequest req) {
+        String token = req.getHeader("token");
+        if (token == null) {
+            throw new NotLoginException(NO_LOGIN, "用户未登录");
+        }
+
+        Map<String, Claim> stringClaimMap = JwtUtil.verifyToken(token);
+        Claim claim = stringClaimMap.get("id");
+        String userIdStr = claim.asString();
+        if (userIdStr == null) {
+            throw new NotLoginException(NO_LOGIN, "用户未登录");
+        }
+        Long userId = Long.valueOf(userIdStr);
+
+        int delCnt = addressService.deleteAddress(addressId, userId);
+        if (delCnt > 0) {
+            return ResultGenerator.genSuccessResult("删除地址成功");
+        } else {
+            return ResultGenerator.genFailResult("删除地址失败");
+        }
+    }
+
 }
