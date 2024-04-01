@@ -2,6 +2,7 @@ package com.geekaca.mall.controller.fore;
 
 import com.auth0.jwt.interfaces.Claim;
 import com.geekaca.mall.controller.fore.param.CartItemParam;
+import com.geekaca.mall.controller.fore.param.UpdateCartItemParam;
 import com.geekaca.mall.controller.vo.ShoppingCartItemVO;
 import com.geekaca.mall.service.ShoppingCartService;
 import com.geekaca.mall.utils.JwtUtil;
@@ -42,5 +43,18 @@ public class ShoppingCartController {
         result.setData(myCartList);
         System.out.println(myCartList);
         return result;
+    }
+
+    @PutMapping("/shop-cart")
+    public Result updateCartItem(@RequestBody UpdateCartItemParam cartItemParam, @RequestHeader("Token")String token) {
+        Map<String, Claim> userToken = JwtUtil.verifyToken(token);
+        Claim id = userToken.get("id");
+        long userId = Long.parseLong(id.asString());
+        int isUpdated = shoppingCartService.updateCartItem(cartItemParam, userId);
+        if (isUpdated < 1) {
+            return ResultGenerator.genFailResult("更新失败");
+        }else {
+            return ResultGenerator.genSuccessResult();
+        }
     }
 }

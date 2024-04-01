@@ -1,6 +1,7 @@
 package com.geekaca.mall.service.impl;
 
 import com.geekaca.mall.controller.fore.param.CartItemParam;
+import com.geekaca.mall.controller.fore.param.UpdateCartItemParam;
 import com.geekaca.mall.controller.vo.ShoppingCartItemVO;
 import com.geekaca.mall.domain.GoodsInfo;
 import com.geekaca.mall.domain.ShoppingCartItem;
@@ -53,5 +54,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public List<ShoppingCartItemVO> getMyCartItems(Long userId) {
         List<ShoppingCartItemVO> goodsCartList = shoppingCartItemMapper.getGoodsListByUserId(userId);
         return  goodsCartList;
+    }
+
+    @Override
+    public int updateCartItem(UpdateCartItemParam updateCartItemParam, Long userId) {
+        ShoppingCartItem shoppingCartItem = shoppingCartItemMapper.selectByPrimaryKey(updateCartItemParam.getCartItemId());
+        if (shoppingCartItem == null) {
+            throw new MallException("购物车并没有此商品！");
+        }
+        if (!shoppingCartItem.getUserId().equals(userId)) {
+            throw new MallException("非法操作！");
+        }
+        shoppingCartItem.setGoodsCount(updateCartItemParam.getGoodsCount());
+        return shoppingCartItemMapper.updateByPrimaryKeySelective(shoppingCartItem);
     }
 }
