@@ -1,7 +1,6 @@
 package com.geekaca.mall.controller.admin;
 
 import com.auth0.jwt.interfaces.Claim;
-import com.geekaca.mall.common.MallConstants;
 import com.geekaca.mall.controller.admin.param.AdminLoginParam;
 import com.geekaca.mall.domain.AdminUser;
 import com.geekaca.mall.service.AdminUserService;
@@ -18,7 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
@@ -33,6 +34,8 @@ import java.util.Random;
 public class AdminUserController {
     @Value("${upload.path}")
     private String uploadPath;
+    @Value("${upload.server}")
+    private String uploadServer;
 
     @Autowired
     private AdminUserService adminUserService;
@@ -49,11 +52,9 @@ public class AdminUserController {
         }
     }
 
-
-
     @GetMapping("/adminUser/profile")
-    @ApiOperation(value = "获取管理员信息",notes = "获取管理员信息显示在前端界面")
-    public Result profile(HttpServletRequest request){
+    @ApiOperation(value = "获取管理员信息", notes = "获取管理员信息显示在前端界面")
+    public Result profile(HttpServletRequest request) {
         String token = request.getHeader("token");
         Map<String, Claim> stringClaimMap = JwtUtil.verifyToken(token);
         Claim idClaim = stringClaimMap.get("id");
@@ -65,17 +66,13 @@ public class AdminUserController {
         AdminUser adminUser = adminUserService.selectAdminById(longId);
 
         Result result = ResultGenerator.genSuccessResult(adminUser);
-        return  result;
+        return result;
     }
 
     @PostMapping("/upload/file")
     @ResponseBody
-    public Result uploadFile(@RequestParam("file") MultipartFile fileUpload,HttpServletRequest httpServletRequest) throws URISyntaxException {
-        System.out.println("upload....");
+    public Result uploadFile(@RequestParam("file") MultipartFile fileUpload, HttpServletRequest httpServletRequest) throws URISyntaxException, UnknownHostException {
         Result rs = new Result();
-//        String fileName = fileUpload.getOriginalFilename();
-
-
         //目标：接收用户上传的图片，改名，而且不能冲突
         String fileName = fileUpload.getOriginalFilename();
         /**
@@ -92,13 +89,10 @@ public class AdminUserController {
         //为了生成随机的文件名字 + 扩展名
         tempName.append(curDtime).append(r.nextInt(100)).append(suffixName);
         String newFileName = tempName.toString();
-        //todo:这个file没用的，指向的路径也不对，清理掉
-        File fileDirectory = new File(MallConstants.FILE_UPLOAD_DIC);
-
         //创建文件
         String tmpFilePath = uploadPath;
-        //todo:localhost不能写死
-        String dataPath = "http://localhost:" + httpServletRequest.getServerPort() +"/goods-img/" + newFileName;
+        //上传到服务器的路径
+        String dataPath = uploadServer + "/goods-img/" + newFileName;
         File upFile = new File(tmpFilePath, newFileName);
         try {
             fileUpload.transferTo(upFile);

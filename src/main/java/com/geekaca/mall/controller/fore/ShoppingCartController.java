@@ -65,14 +65,14 @@ public class ShoppingCartController {
 
     // @RequestHeader 这个用的很好
     @PutMapping("/shop-cart")
-    public Result updateCartItem(@RequestBody UpdateCartItemParam cartItemParam, @RequestHeader("Token")String token) {
+    public Result updateCartItem(@RequestBody UpdateCartItemParam cartItemParam, @RequestHeader("Token") String token) {
         Map<String, Claim> userToken = JwtUtil.verifyToken(token);
         Claim id = userToken.get("id");
         long userId = Long.parseLong(id.asString());
         int isUpdated = shoppingCartService.updateCartItem(cartItemParam, userId);
         if (isUpdated < 1) {
             return ResultGenerator.genFailResult("更新失败");
-        }else {
+        } else {
             return ResultGenerator.genSuccessResult();
         }
     }
@@ -86,7 +86,6 @@ public class ShoppingCartController {
         System.out.println("split:" + split);
         for (int i = 0; i < split.length; i++) {
             ShoppingCartItemVO cartItem = shoppingCartService.getCartItemsByID(Long.parseLong(split[i]));
-            System.out.println(cartItem);
             itemList.add(cartItem);
         }
         if (itemList.size() != 0) {
@@ -96,14 +95,12 @@ public class ShoppingCartController {
             return result;
         } else {
             Result result = ResultGenerator.genFailResult("查询失败");
-            // 这个500 属于魔术数字，要定义常量然后使用
-            result.setResultCode(500);
             return result;
         }
     }
 
     @PostMapping("/saveOrder")
-    public Result saveOrder(@RequestBody Map params, HttpServletRequest request){
+    public Result saveOrder(@RequestBody Map params, HttpServletRequest request) {
         String token = request.getHeader("token");
         // 获取userId
         Map<String, Claim> userToken = JwtUtil.verifyToken(token);
@@ -117,7 +114,7 @@ public class ShoppingCartController {
         long l = System.currentTimeMillis();
         String timestamp = String.valueOf(l);
         Random random = new Random();
-        int random4 = 1000+random.nextInt(9000);
+        int random4 = 1000 + random.nextInt(9000);
         String time_suffix = String.valueOf(random4);
 
         timestamp += time_suffix;
@@ -126,14 +123,14 @@ public class ShoppingCartController {
          *
          * 要放在service中，然后用事务保护起来
          */
-        Integer totalPrice =0;
+        Integer totalPrice = 0;
         //  写入订单表，并返回order_id
         for (int i = 0; i < cartItemIds.size(); i++) {
             ShoppingCartItemVO cartItem =
                     shoppingCartService.getCartItemsByID(Long.parseLong(cartItemIds.get(i).toString()));
             Integer sellingPrice = cartItem.getSellingPrice();
             Integer itemTotlePrice = sellingPrice * cartItem.getGoodsCount();
-            totalPrice =totalPrice+ itemTotlePrice;
+            totalPrice = totalPrice + itemTotlePrice;
             // 把cartItem 状态设为 is_deleted
             shoppingCartService.deleteCartItem(cartItem.getCartItemId());
 
@@ -171,18 +168,15 @@ public class ShoppingCartController {
 
     @GetMapping("/paySuccess")
     public Result paySuccess(@RequestParam("orderNo") String orderNo,
-                             @RequestParam("payType") Integer payType  ) {
-
-
-
+                             @RequestParam("payType") Integer payType) {
         int i = orderService.updateOrderStatus(orderNo, payType);
-        if(i>0){
+        Result result;
+        if(i > 0) {
             //todo:代码格式化注意
-            Result result = ResultGenerator.genSuccessResult("支付成功");
-                return result;
-        }else {
-            Result result = ResultGenerator.genFailResult("支付失败");
-            return result;
+            result = ResultGenerator.genSuccessResult("支付成功");
+        } else {
+            result = ResultGenerator.genFailResult("支付失败");
         }
+        return result;
     }
 }

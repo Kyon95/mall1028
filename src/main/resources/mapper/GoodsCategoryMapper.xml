@@ -164,17 +164,8 @@
         </foreach>
     </update>
 
-    <select id="findCatByPID2" resultMap="BaseResultMap">
-        SELECT * FROM tb_newbee_mall_goods_category  where category_level=2 and parent_id =#{parent_id}
+    <select id="findCatByPID" resultMap="BaseResultMap">
+        SELECT * FROM tb_newbee_mall_goods_category  where category_level=#{category_level} and parent_id =#{parent_id}
                                                        and is_deleted = 0;
     </select>
-    <select id="findCatByPID3" resultMap="BaseResultMap">
-        SELECT * FROM tb_newbee_mall_goods_category  where category_level=3 and parent_id =#{parent_id}
-                                                       and is_deleted = 0;
-
-    </select>
-
-
-
-
 </mapper>

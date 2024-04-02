@@ -62,3 +62,5 @@ mybatis:
 upload.path: c:\\dev\\codes\\newbee-mall-api\\static-files\\goods-img\\
 
 LOG_HOME: c:\\dev\\tmp\\log\\
+
+upload.server: http://localhost:${server.port}

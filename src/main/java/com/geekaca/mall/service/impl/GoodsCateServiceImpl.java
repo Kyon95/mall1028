@@ -67,7 +67,7 @@ public class GoodsCateServiceImpl implements GoodsCateService {
         for (GoodsCategory firstLevelCategory : firstLevelCategories) {
             Long firstLevelId = firstLevelCategory.getCategoryId();
             // 把二级分类放在 二级表
-            List<GoodsCategory> catL2 = goodsCategoryMapper.findCatByPID2(firstLevelId);
+            List<GoodsCategory> catL2 = goodsCategoryMapper.findCatByPID(firstLevelId,2);
             List<GoodsCategory> newCatL2 = new ArrayList<>();
             for (GoodsCategory cat : catL2) {
                 System.out.println(cat);
@@ -79,7 +79,7 @@ public class GoodsCateServiceImpl implements GoodsCateService {
                 secondLevelCategory.setCategoryRank(cat.getCategoryRank());
                 secondLevelCategory.setParentId(cat.getParentId());
                 // 查找三级对象列表
-                List<GoodsCategory> L3List = goodsCategoryMapper.findCatByPID3(cat.getCategoryId());
+                List<GoodsCategory> L3List = goodsCategoryMapper.findCatByPID(cat.getCategoryId(),3);
                 // 把三级列表存入二级对象
                 secondLevelCategory.setThirdLevelCategoryVOS (L3List);
                 // 二级列表加添加二级对象

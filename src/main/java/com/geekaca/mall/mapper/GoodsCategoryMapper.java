@@ -7,11 +7,11 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
-* @author Peter
-* @description 针对表【tb_newbee_mall_goods_category】的数据库操作Mapper
-* @createDate 2024-03-27 21:41:54
-* @Entity com.geekaca.mall.domain.GoodsCategory
-*/
+ * @author Peter
+ * @description 针对表【tb_newbee_mall_goods_category】的数据库操作Mapper
+ * @createDate 2024-03-27 21:41:54
+ * @Entity com.geekaca.mall.domain.GoodsCategory
+ */
 @Mapper
 public interface GoodsCategoryMapper {
 
@@ -36,10 +36,9 @@ public interface GoodsCategoryMapper {
                           @Param("parentId") Integer parentId);
 
     Long findParentId(@Param("categoryId") Long categoryId);
-    //todo:这两个方法可以合并成一个方法，两个太罗嗦了
-    List<GoodsCategory> findCatByPID2(@Param("parent_id") Long firstLevelId);
 
-    List<GoodsCategory> findCatByPID3(@Param("parent_id") Long secondLevelId);
+    List<GoodsCategory> findCatByPID(@Param("parent_id") Long firstLevelId, @Param("category_level") Integer categoryLevel);
+
 
     int deleteByIds(@Param("ids") List<Integer> ids);
 }
