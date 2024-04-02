@@ -25,24 +25,6 @@ public class PageResult implements Serializable {
     //列表数据  当前页的数据
     private List<?> list;
 
-    public String getPageUrl() {
-        return pageUrl;
-    }
-
-    public void setPageUrl(String pageUrl) {
-        this.pageUrl = pageUrl;
-    }
-
-    private String pageUrl;
-//    private String keyword;
-//
-//    public String getKeyword() {
-//        return keyword;
-//    }
-//
-//    public void setKeyword(String keyword) {
-//        this.keyword = keyword;
-//    }
 
     /**
      * 分页

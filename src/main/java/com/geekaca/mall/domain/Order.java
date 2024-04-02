@@ -2,6 +2,7 @@ package com.geekaca.mall.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -61,6 +62,8 @@ public class Order implements Serializable {
      * 删除标识字段(0-未删除 1-已删除)
      */
     private Integer isDeleted;
+
+    private List<OrderItem> newBeeMallOrderItemVOS;
 
     /**
      * 创建时间
