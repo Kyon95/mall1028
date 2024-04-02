@@ -194,4 +194,21 @@
             </if>
         </where>
     </select>
+    <select id="selectOrderList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_newbee_mall_order
+        <where>
+            <if test="orderNo!=null and orderNo!=''">
+                and order_no = #{orderNo}
+            </if>
+            <if test="orderStatus!=null">
+                and order_status = #{orderStatus}
+            </if>
+        </where>
+        order by create_time desc
+        <if test="limit!=null and pageSize!=null">
+            limit #{limit},#{pageSize}
+        </if>
+    </select>
 </mapper>

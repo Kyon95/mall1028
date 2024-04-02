@@ -9,4 +9,6 @@ public interface OrderService {
     int updateOrderStatus(String orderNo, Integer payType);
 
     PageResult getOrders(Integer pageNumber, Integer pageSize, Integer status);
+
+    PageResult getAdminOrderList(Integer pageNumber, Integer pageSize, Integer status,String orderNo);
 }

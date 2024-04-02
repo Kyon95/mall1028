@@ -33,4 +33,7 @@ public interface OrderMapper {
                                 @Param("status") Integer status);
 
     int countOrders(@Param("status") Integer status);
+
+    List<Order> selectOrderList(@Param("limit") Integer limit, @Param("pageSize") Integer pageSize,
+                                @Param("orderStatus") Integer orderStatus,@Param("orderNo") String orderNo);
 }
