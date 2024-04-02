@@ -153,4 +153,5 @@
           and default_flag = 1
           and is_deleted = 0
     </select>
+
 </mapper>

@@ -4,6 +4,7 @@ import com.auth0.jwt.interfaces.Claim;
 import com.geekaca.mall.domain.UserAddress;
 import com.geekaca.mall.exceptions.NotLoginException;
 import com.geekaca.mall.service.AddressService;
+import com.geekaca.mall.service.OrderService;
 import com.geekaca.mall.utils.JwtUtil;
 import com.geekaca.mall.utils.Result;
 import com.geekaca.mall.utils.ResultGenerator;
@@ -24,6 +25,8 @@ import static com.geekaca.mall.common.Constants.NO_LOGIN;
 public class AddressController {
     @Autowired
     private AddressService addressService;
+    @Autowired
+    private OrderService orderService;
 
     /**
      * 获取所有地址的接口
@@ -155,6 +158,32 @@ public class AddressController {
         } else {
             return ResultGenerator.genFailResult("删除地址失败");
         }
+    }
+
+    @GetMapping("/address/default")
+    public Result getDefaultAddress(HttpServletRequest req) {
+        String token = req.getHeader("token");
+        if (token == null) {
+            throw new NotLoginException(NO_LOGIN, "用户未登录");
+        }
+
+        Map<String, Claim> stringClaimMap = JwtUtil.verifyToken(token);
+        Claim claim = stringClaimMap.get("id");
+        String userIdStr = claim.asString();
+        if (userIdStr == null) {
+            throw new NotLoginException(NO_LOGIN, "用户未登录");
+        }
+        Long userId = Long.valueOf(userIdStr);
+
+        UserAddress userAddress = addressService.getdefaultAddress(userId);
+        if (userAddress != null) {
+            Result result = ResultGenerator.genSuccessResult("获取默认地址成功");
+            result.setData(userAddress);
+            return result;
+        } else {
+            return ResultGenerator.genFailResult("获取默认地址失败");
+        }
+
     }
 
 }

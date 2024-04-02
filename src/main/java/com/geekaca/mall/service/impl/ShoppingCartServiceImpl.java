@@ -67,5 +67,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
         shoppingCartItem.setGoodsCount(updateCartItemParam.getGoodsCount());
         return shoppingCartItemMapper.updateByPrimaryKeySelective(shoppingCartItem);
+
+    }
+
+    @Override
+    public ShoppingCartItemVO getCartItemsByID(long parseLong) {
+        ShoppingCartItemVO shoppingCartItemVO = shoppingCartItemMapper.getCartItemsByID(parseLong);
+        return shoppingCartItemVO;
+    }
+
+    @Override
+    public int deleteCartItem(Long cartItemId) {
+        return shoppingCartItemMapper.deleteByPrimaryKey(cartItemId);
+
     }
 }

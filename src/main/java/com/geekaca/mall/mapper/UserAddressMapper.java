@@ -45,4 +45,6 @@ public interface UserAddressMapper {
      * 找到默认收货地址
      */
     UserAddress selectDefaultAddressByUid(Long userId);
+
+
 }

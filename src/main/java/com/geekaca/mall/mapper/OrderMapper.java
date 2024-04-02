@@ -24,4 +24,5 @@ public interface OrderMapper {
 
     int updateByPrimaryKey(Order record);
 
+    Long getOrderIdByOrderNo(String orderNo);
 }

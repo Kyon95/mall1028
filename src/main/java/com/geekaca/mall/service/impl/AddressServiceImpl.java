@@ -88,5 +88,10 @@ public class AddressServiceImpl implements AddressService {
         return userAddressMapper.deleteByPrimaryKey(addressId, userId);
     }
 
+    @Override
+    public UserAddress getdefaultAddress(Long userId) {
+        return userAddressMapper.selectDefaultAddressByUid(userId);
+    }
+
 
 }
