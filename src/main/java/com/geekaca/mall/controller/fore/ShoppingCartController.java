@@ -63,7 +63,7 @@ public class ShoppingCartController {
         return result;
     }
 
-
+    // @RequestHeader 这个用的很好
     @PutMapping("/shop-cart")
     public Result updateCartItem(@RequestBody UpdateCartItemParam cartItemParam, @RequestHeader("Token")String token) {
         Map<String, Claim> userToken = JwtUtil.verifyToken(token);
@@ -80,6 +80,7 @@ public class ShoppingCartController {
     @GetMapping("/shop-cart/settle")
     public Result cartPayoff(@RequestParam("cartItemIds") String cartItemIds) {
         List<ShoppingCartItemVO> itemList = new ArrayList<>();
+        //todo: 代码中有很多 这种System.out的打印，开发完成后想要关闭就不方便，类似的调试信息要使用logback打印
         System.out.println("cartItemIds:" + cartItemIds);
         String[] split = cartItemIds.split(",");
         System.out.println("split:" + split);
@@ -95,6 +96,7 @@ public class ShoppingCartController {
             return result;
         } else {
             Result result = ResultGenerator.genFailResult("查询失败");
+            // 这个500 属于魔术数字，要定义常量然后使用
             result.setResultCode(500);
             return result;
         }
@@ -119,7 +121,11 @@ public class ShoppingCartController {
         String time_suffix = String.valueOf(random4);
 
         timestamp += time_suffix;
-
+        /**
+         * todo:这其中涉及多步骤的修改类操作
+         *
+         * 要放在service中，然后用事务保护起来
+         */
         Integer totalPrice =0;
         //  写入订单表，并返回order_id
         for (int i = 0; i < cartItemIds.size(); i++) {
@@ -171,6 +177,7 @@ public class ShoppingCartController {
 
         int i = orderService.updateOrderStatus(orderNo, payType);
         if(i>0){
+            //todo:代码格式化注意
             Result result = ResultGenerator.genSuccessResult("支付成功");
                 return result;
         }else {

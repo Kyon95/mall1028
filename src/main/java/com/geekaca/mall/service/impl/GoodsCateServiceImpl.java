@@ -53,6 +53,8 @@ public class GoodsCateServiceImpl implements GoodsCateService {
 
     @Override
     public int deleteGoodsCategoryByIds(List<Integer> ids) {
+        //todo:这个要补充一个  对于 有 子类别，以及 有商品属于这个类别的 不允许删除，
+        //必须先删除下级，才能删除类别
         return goodsCategoryMapper.deleteByIds(ids);
     }
 

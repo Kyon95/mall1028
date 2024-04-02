@@ -92,10 +92,12 @@ public class AdminUserController {
         //为了生成随机的文件名字 + 扩展名
         tempName.append(curDtime).append(r.nextInt(100)).append(suffixName);
         String newFileName = tempName.toString();
+        //todo:这个file没用的，指向的路径也不对，清理掉
         File fileDirectory = new File(MallConstants.FILE_UPLOAD_DIC);
 
         //创建文件
         String tmpFilePath = uploadPath;
+        //todo:localhost不能写死
         String dataPath = "http://localhost:" + httpServletRequest.getServerPort() +"/goods-img/" + newFileName;
         File upFile = new File(tmpFilePath, newFileName);
         try {

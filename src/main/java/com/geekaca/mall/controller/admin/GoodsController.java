@@ -45,7 +45,9 @@ public class GoodsController {
         result.setData(pageResult);
         return result;
     }
-
+    //todo:  不要一个方法既能做新增，又能做修改，看似节省了方法定义，但是逻辑不够清晰，不利于测试
+    // 开发规范追求的原则之一： 一个方法只做一件事 ，参考《代码简洁之道》 《Clean Code》
+    // 而且这种写法在swagger文档里比较混乱
     @ApiOperation(value = "添加/修改商品", notes = "添加/修改商品")
     @RequestMapping(value = "/goods", method = {RequestMethod.POST, RequestMethod.PUT})
     public Result insertGood(

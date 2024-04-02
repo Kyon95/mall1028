@@ -36,7 +36,7 @@ public interface GoodsCategoryMapper {
                           @Param("parentId") Integer parentId);
 
     Long findParentId(@Param("categoryId") Long categoryId);
-
+    //todo:这两个方法可以合并成一个方法，两个太罗嗦了
     List<GoodsCategory> findCatByPID2(@Param("parent_id") Long firstLevelId);
 
     List<GoodsCategory> findCatByPID3(@Param("parent_id") Long secondLevelId);
