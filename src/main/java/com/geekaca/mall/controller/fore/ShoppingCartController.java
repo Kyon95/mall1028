@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -86,7 +87,6 @@ public class ShoppingCartController {
             ShoppingCartItemVO cartItem = shoppingCartService.getCartItemsByID(Long.parseLong(split[i]));
             System.out.println(cartItem);
             itemList.add(cartItem);
-
         }
         if (itemList.size() != 0) {
             Result result = ResultGenerator.genSuccessResult();
@@ -109,17 +109,16 @@ public class ShoppingCartController {
 //        String username = userToken.get("userName").asString();
         long userId = Long.parseLong(id.asString());
 
-//        Claim idClaim = stringClaimMap.get("id");
-//        String uid = idClaim.asString();
-//        Long longId = Long.valueOf(uid);
-//        Claim userNameClaim = stringClaimMap.get("userName");
-//        String userName = userNameClaim.asString();
-
         List<Integer> cartItemIds = (ArrayList<Integer>) params.get("cartItemIds");
         Long addressId = Long.valueOf(params.get("addressId").toString());
         System.out.println(cartItemIds);
         long l = System.currentTimeMillis();
         String timestamp = String.valueOf(l);
+        Random random = new Random();
+        int random4 = 1000+random.nextInt(9000);
+        String time_suffix = String.valueOf(random4);
+
+        timestamp += time_suffix;
 
         Integer totalPrice =0;
         //  写入订单表，并返回order_id
