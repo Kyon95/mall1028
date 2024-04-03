@@ -41,4 +41,6 @@ public interface GoodsCategoryMapper {
 
 
     int deleteByIds(@Param("ids") List<Integer> ids);
+
+    int selectSubIdByParentId(@Param("parentId") Integer id);
 }

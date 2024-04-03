@@ -1,6 +1,7 @@
 package com.geekaca.mall.service.impl;
 
 import com.geekaca.mall.domain.GoodsCategory;
+import com.geekaca.mall.exceptions.MallException;
 import com.geekaca.mall.mapper.GoodsCategoryMapper;
 import com.geekaca.mall.service.GoodsCateService;
 import com.geekaca.mall.utils.PageResult;
@@ -53,8 +54,13 @@ public class GoodsCateServiceImpl implements GoodsCateService {
 
     @Override
     public int deleteGoodsCategoryByIds(List<Integer> ids) {
-        //todo:这个要补充一个  对于 有 子类别，以及 有商品属于这个类别的 不允许删除，
         //必须先删除下级，才能删除类别
+        for (Integer id : ids) {
+            int i = goodsCategoryMapper.selectSubIdByParentId(id);
+            if (i > 0) {
+                throw new MallException("该类别有子类别，请先删除子类别");
+            }
+        }
         return goodsCategoryMapper.deleteByIds(ids);
     }
 
@@ -67,7 +73,7 @@ public class GoodsCateServiceImpl implements GoodsCateService {
         for (GoodsCategory firstLevelCategory : firstLevelCategories) {
             Long firstLevelId = firstLevelCategory.getCategoryId();
             // 把二级分类放在 二级表
-            List<GoodsCategory> catL2 = goodsCategoryMapper.findCatByPID(firstLevelId,2);
+            List<GoodsCategory> catL2 = goodsCategoryMapper.findCatByPID(firstLevelId, 2);
             List<GoodsCategory> newCatL2 = new ArrayList<>();
             for (GoodsCategory cat : catL2) {
                 System.out.println(cat);
@@ -79,9 +85,9 @@ public class GoodsCateServiceImpl implements GoodsCateService {
                 secondLevelCategory.setCategoryRank(cat.getCategoryRank());
                 secondLevelCategory.setParentId(cat.getParentId());
                 // 查找三级对象列表
-                List<GoodsCategory> L3List = goodsCategoryMapper.findCatByPID(cat.getCategoryId(),3);
+                List<GoodsCategory> L3List = goodsCategoryMapper.findCatByPID(cat.getCategoryId(), 3);
                 // 把三级列表存入二级对象
-                secondLevelCategory.setThirdLevelCategoryVOS (L3List);
+                secondLevelCategory.setThirdLevelCategoryVOS(L3List);
                 // 二级列表加添加二级对象
                 newCatL2.add(secondLevelCategory);
             }

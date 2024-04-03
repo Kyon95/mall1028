@@ -168,4 +168,7 @@
         SELECT * FROM tb_newbee_mall_goods_category  where category_level=#{category_level} and parent_id =#{parent_id}
                                                        and is_deleted = 0;
     </select>
+    <select id="selectSubIdByParentId" resultType="java.lang.Integer">
+        SELECT count(category_id) FROM tb_newbee_mall_goods_category WHERE parent_id = #{parentId}
+    </select>
 </mapper>
