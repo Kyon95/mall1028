@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class MallConstants {
 
-    public final static String FILE_UPLOAD_DIC = "C:\\dev\\codes\\imgs\\goods-img\\";
+    public final static String FILE_UPLOAD_DIC = "c:\\dev\\codes\\newbee-mall-api\\static-files\\goods-img\\";
     /**
      * 注册时，用户名已经存在
      */

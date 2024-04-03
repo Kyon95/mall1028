@@ -33,11 +33,6 @@ import java.util.Random;
 @RestController
 @RequestMapping("/manage-api/v1")
 public class AdminUserController {
-    @Value("${upload.path}")
-    private String uploadPath;
-    @Value("${upload.server}")
-    private String uploadServer;
-
     @Autowired
     private AdminUserService adminUserService;
 
@@ -101,9 +96,6 @@ public class AdminUserController {
         tempName.append(curDtime).append(r.nextInt(100)).append(suffixName);
         String newFileName = tempName.toString();
         File fileDirectory = new File(MallConstants.FILE_UPLOAD_DIC);
-        //创建文件
-        String tmpFilePath = uploadPath;
-        //上传到服务器的路径
         //创建文件
         File destFile = new File(MallConstants.FILE_UPLOAD_DIC + newFileName);
         try {

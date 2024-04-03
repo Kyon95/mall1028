@@ -45,11 +45,9 @@ public class GoodsController {
         result.setData(pageResult);
         return result;
     }
-    //todo:  不要一个方法既能做新增，又能做修改，看似节省了方法定义，但是逻辑不够清晰，不利于测试
-    // 开发规范追求的原则之一： 一个方法只做一件事 ，参考《代码简洁之道》 《Clean Code》
-    // 而且这种写法在swagger文档里比较混乱
+
     @ApiOperation(value = "添加/修改商品", notes = "添加/修改商品")
-    @RequestMapping(value = "/goods", method = {RequestMethod.POST, RequestMethod.PUT})
+    @PostMapping("/goods")
     public Result insertGood(
 /*            @RequestParam(required = false) @ApiParam(value = "分类ID") Integer goodsCategoryId,
                              @RequestParam(required = false) @ApiParam(value = "商品主图") String goodsCoverImg,
@@ -61,39 +59,50 @@ public class GoodsController {
                              @RequestParam(required = false) @ApiParam(value = "商品售卖价") Integer sellingPrice,
                              @RequestParam(required = false) @ApiParam(value = "商品库存") Integer stockNum,
                              @RequestParam(required = false) @ApiParam(value = "商品标签") String tag*/
-            @RequestBody GoodsInfo goodsInfo, HttpServletRequest request
-    ) {
-        if ("POST".equals(request.getMethod())) {
-            // 添加商品
-            String token = request.getHeader("token");
-            Map<String, Claim> stringClaimMap = JwtUtil.verifyToken(token);
-            Claim idClaim = stringClaimMap.get("id");
-            String uidStr = idClaim.asString();
-            Integer uid = Integer.valueOf(uidStr);
-//            Claim userNameClaim = stringClaimMap.get("userName");
-//            String userName = userNameClaim.asString();
-            int i = goodsInfoService.insertGood(goodsInfo);
+            @RequestBody GoodsInfo goodsInfo, HttpServletRequest request) {
 
-            goodsInfo.setCreateUser(uid);
+        // 添加商品
+        String token = request.getHeader("token");
+        Map<String, Claim> stringClaimMap = JwtUtil.verifyToken(token);
+        Claim idClaim = stringClaimMap.get("id");
+        String uidStr = idClaim.asString();
+        Integer uid = Integer.valueOf(uidStr);
 
-            if (i > 0) {
-                return ResultGenerator.genSuccessResult("添加商品成功");
-            } else {
-                return ResultGenerator.genFailResult("添加失败");
-            }
+        int i = goodsInfoService.insertGood(goodsInfo);
 
+        goodsInfo.setCreateUser(uid);
+
+        if (i > 0) {
+            return ResultGenerator.genSuccessResult("添加商品成功");
         } else {
-            // 修改商品
-            int i = goodsInfoService.updateGood(goodsInfo);
-
-            if (i > 0) {
-                return ResultGenerator.genSuccessResult("修改商品成功");
-            } else {
-                return ResultGenerator.genFailResult("修改失败");
-            }
+            return ResultGenerator.genFailResult("添加失败");
         }
+    }
 
 
+    @ApiOperation(value = "添加/修改商品", notes = "添加/修改商品")
+    @PutMapping(value = "/goods")
+    public Result updateGood(
+/*            @RequestParam(required = false) @ApiParam(value = "分类ID") Integer goodsCategoryId,
+                             @RequestParam(required = false) @ApiParam(value = "商品主图") String goodsCoverImg,
+                             @RequestParam(required = false) @ApiParam(value = "详情内容") String goodsDetailContent,
+                             @RequestParam(required = false) @ApiParam(value = "商品简介") String goodsIntro,
+                             @RequestParam(required = false) @ApiParam(value = "商品名称") String goodsName,
+                             @RequestParam(required = false) @ApiParam(value = "上架状态 0-上架 1-下架") Integer goodsSellStatus,
+                             @RequestParam(required = false) @ApiParam(value = "进货价") Integer originalPrice,
+                             @RequestParam(required = false) @ApiParam(value = "商品售卖价") Integer sellingPrice,
+                             @RequestParam(required = false) @ApiParam(value = "商品库存") Integer stockNum,
+                             @RequestParam(required = false) @ApiParam(value = "商品标签") String tag*/
+            @RequestBody GoodsInfo goodsInfo) {
+
+        // 修改商品
+        int i = goodsInfoService.updateGood(goodsInfo);
+
+        if (i > 0) {
+            return ResultGenerator.genSuccessResult("修改商品成功");
+        } else {
+            return ResultGenerator.genFailResult("修改失败");
+        }
     }
 
     // 根据id查询端口
