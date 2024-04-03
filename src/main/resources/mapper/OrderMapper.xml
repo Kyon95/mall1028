@@ -182,6 +182,7 @@
             </if>
             and tb_order.order_id = orderItem.order_id
         </where>
+        order by tb_order.order_id desc
         limit #{limit},#{pageSize}
     </select>
     <select id="countOrders" resultType="java.lang.Integer">

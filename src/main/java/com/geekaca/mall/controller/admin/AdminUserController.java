@@ -1,6 +1,7 @@
 package com.geekaca.mall.controller.admin;
 
 import com.auth0.jwt.interfaces.Claim;
+import com.geekaca.mall.common.MallConstants;
 import com.geekaca.mall.controller.admin.param.AdminLoginParam;
 import com.geekaca.mall.domain.AdminUser;
 import com.geekaca.mall.service.AdminUserService;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
@@ -39,6 +40,16 @@ public class AdminUserController {
 
     @Autowired
     private AdminUserService adminUserService;
+
+    public static URI getHost(URI uri) {
+        URI effectiveURI = null;
+        try {
+            effectiveURI = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null);
+        } catch (Throwable var4) {
+            effectiveURI = null;
+        }
+        return effectiveURI;
+    }
 
     @PostMapping("/adminUser/login")
     public Result login(@Valid @RequestBody AdminLoginParam adminLoginParam) {
@@ -71,10 +82,10 @@ public class AdminUserController {
 
     @PostMapping("/upload/file")
     @ResponseBody
-    public Result uploadFile(@RequestParam("file") MultipartFile fileUpload, HttpServletRequest httpServletRequest) throws URISyntaxException, UnknownHostException {
+    public Result uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest httpServletRequest) throws URISyntaxException, UnknownHostException {
         Result rs = new Result();
         //目标：接收用户上传的图片，改名，而且不能冲突
-        String fileName = fileUpload.getOriginalFilename();
+        String fileName = file.getOriginalFilename();
         /**
          * 取文件的扩展名
          * avatar.png   jpg
@@ -89,22 +100,30 @@ public class AdminUserController {
         //为了生成随机的文件名字 + 扩展名
         tempName.append(curDtime).append(r.nextInt(100)).append(suffixName);
         String newFileName = tempName.toString();
+        File fileDirectory = new File(MallConstants.FILE_UPLOAD_DIC);
         //创建文件
         String tmpFilePath = uploadPath;
         //上传到服务器的路径
-        String dataPath = uploadServer + "/goods-img/" + newFileName;
-        File upFile = new File(tmpFilePath, newFileName);
+        //创建文件
+        File destFile = new File(MallConstants.FILE_UPLOAD_DIC + newFileName);
         try {
-            fileUpload.transferTo(upFile);
-            rs.setResultCode(200);
-            rs.setData(dataPath);
-            rs.setMessage("图片上传成功");
-
+            if (!fileDirectory.exists()) {
+                if (!fileDirectory.mkdir()) {
+                    throw new IOException("文件夹创建失败,路径为：" + fileDirectory);
+                }
+            }
+            //把文件保存到指定位置
+            file.transferTo(destFile);
+            Result resultSuccess = ResultGenerator.genSuccessResult();
+            //给前端返回  图片的访问路径，前端会拿着这个路径url ，执行新增商品
+            resultSuccess.setData(getHost(new URI(httpServletRequest.getRequestURL() + "")) + "/goods-img/" + newFileName);
+            return resultSuccess;
         } catch (IOException e) {
-            rs.setResultCode(500);
-            rs.setMessage("图片上传失败");
             e.printStackTrace();
+            return ResultGenerator.genFailResult("文件上传失败");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return ResultGenerator.genFailResult("文件上传失败");
         }
-        return rs;
     }
 }

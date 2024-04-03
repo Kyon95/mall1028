@@ -4,13 +4,8 @@ import com.auth0.jwt.interfaces.Claim;
 import com.geekaca.mall.controller.fore.param.CartItemParam;
 import com.geekaca.mall.controller.fore.param.UpdateCartItemParam;
 import com.geekaca.mall.controller.vo.ShoppingCartItemVO;
-import com.geekaca.mall.domain.Order;
-import com.geekaca.mall.domain.OrderAddress;
-import com.geekaca.mall.domain.UserAddress;
-import com.geekaca.mall.service.AddressService;
-import com.geekaca.mall.service.OrderAddressService;
-import com.geekaca.mall.service.OrderService;
-import com.geekaca.mall.service.ShoppingCartService;
+import com.geekaca.mall.domain.*;
+import com.geekaca.mall.service.*;
 import com.geekaca.mall.utils.JwtUtil;
 import com.geekaca.mall.utils.Result;
 import com.geekaca.mall.utils.ResultGenerator;
@@ -18,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -29,14 +21,16 @@ public class ShoppingCartController {
 
     @Autowired
     private ShoppingCartService shoppingCartService;
-
     @Autowired
     private OrderService orderService;
-
     @Autowired
     private AddressService addressService;
     @Autowired
     private OrderAddressService orderAddressService;
+    @Autowired
+    private GoodsInfoService goodsInfoService;
+    @Autowired
+    private OrderItemService orderItemService;
 
     @PostMapping("/shop-cart")
     public Result saveGoodsToCart(@RequestBody CartItemParam cartItemParam, @RequestHeader("Token") String token) {
@@ -124,24 +118,44 @@ public class ShoppingCartController {
          * 要放在service中，然后用事务保护起来
          */
         Integer totalPrice = 0;
-        //  写入订单表，并返回order_id
+        //  写入order表，并返回order_id
+        List<Map<Long,Integer>> goodMaps = new ArrayList<>();
         for (int i = 0; i < cartItemIds.size(); i++) {
-            ShoppingCartItemVO cartItem =
-                    shoppingCartService.getCartItemsByID(Long.parseLong(cartItemIds.get(i).toString()));
+            long cartItemId = Long.parseLong(cartItemIds.get(i).toString());
+            ShoppingCartItemVO cartItem = shoppingCartService.getCartItemsByID(cartItemId);
+            Map<Long, Integer> goodMap = new HashMap<>();
+            goodMap.put(cartItem.getGoodsId(), cartItem.getGoodsCount());
+            goodMaps.add(goodMap);
             Integer sellingPrice = cartItem.getSellingPrice();
             Integer itemTotlePrice = sellingPrice * cartItem.getGoodsCount();
             totalPrice = totalPrice + itemTotlePrice;
             // 把cartItem 状态设为 is_deleted
             shoppingCartService.deleteCartItem(cartItem.getCartItemId());
-
         }
         Order order = new Order();
         order.setOrderNo(timestamp);
         order.setUserId(userId);
         order.setTotalPrice(totalPrice);
-
         int i = orderService.insertOrder(order);
 
+        // 写入 order_item 表
+        Long orderId = order.getOrderId();
+
+        for (Map<Long, Integer> goodMap : goodMaps) {
+            Long goodsId = goodMap.keySet().iterator().next();
+            GoodsInfo good = goodsInfoService.findGoodById(goodsId);
+            Integer goodsCount = goodMap.get(goodsId);
+
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrderId(orderId);
+            orderItem.setGoodsId(goodsId);
+            orderItem.setGoodsName(good.getGoodsName());
+            orderItem.setGoodsCoverImg(good.getGoodsCoverImg() );
+            orderItem.setSellingPrice(good.getSellingPrice());
+            orderItem.setGoodsCount(goodsCount);
+
+            orderItemService.insertOrderItem(orderItem);
+        }
 
         // 写入订单地址表，主键为 order_id
         UserAddress address = addressService.getAddressByAddressId(addressId);
@@ -162,7 +176,6 @@ public class ShoppingCartController {
         res.setData(timestamp);
         res.setMessage("SUCCESS");
         res.setResultCode(200);
-
         return res;
     }
 
@@ -171,7 +184,7 @@ public class ShoppingCartController {
                              @RequestParam("payType") Integer payType) {
         int i = orderService.updateOrderStatus(orderNo, payType);
         Result result;
-        if(i > 0) {
+        if (i > 0) {
             //todo:代码格式化注意
             result = ResultGenerator.genSuccessResult("支付成功");
         } else {
