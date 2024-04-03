@@ -78,7 +78,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public int deleteCartItem(Long cartItemId) {
-        return shoppingCartItemMapper.deleteByPrimaryKey(cartItemId);
+        return shoppingCartItemMapper.logicDeleteByPrimaryKey(cartItemId);
 
     }
 }
