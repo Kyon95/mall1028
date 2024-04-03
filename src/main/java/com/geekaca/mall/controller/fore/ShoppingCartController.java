@@ -4,16 +4,18 @@ import com.auth0.jwt.interfaces.Claim;
 import com.geekaca.mall.controller.fore.param.CartItemParam;
 import com.geekaca.mall.controller.fore.param.UpdateCartItemParam;
 import com.geekaca.mall.controller.vo.ShoppingCartItemVO;
-import com.geekaca.mall.domain.*;
 import com.geekaca.mall.service.*;
 import com.geekaca.mall.utils.JwtUtil;
+import com.geekaca.mall.utils.OrderPayLoad;
 import com.geekaca.mall.utils.Result;
 import com.geekaca.mall.utils.ResultGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -92,9 +94,9 @@ public class ShoppingCartController {
             return result;
         }
     }
-
+    // 用自定义类型接收前端参数
     @PostMapping("/saveOrder")
-    public Result saveOrder(@RequestBody Map params, HttpServletRequest request) {
+    public Result saveOrder(@RequestBody OrderPayLoad orderPayLoad, HttpServletRequest request) {
         String token = request.getHeader("token");
         // 获取userId
         Map<String, Claim> userToken = JwtUtil.verifyToken(token);
@@ -102,81 +104,18 @@ public class ShoppingCartController {
 //        String username = userToken.get("userName").asString();
         long userId = Long.parseLong(id.asString());
 
-        List<Integer> cartItemIds = (ArrayList<Integer>) params.get("cartItemIds");
-        Long addressId = Long.valueOf(params.get("addressId").toString());
-        System.out.println(cartItemIds);
-        long l = System.currentTimeMillis();
-        String timestamp = String.valueOf(l);
-        Random random = new Random();
-        int random4 = 1000 + random.nextInt(9000);
-        String time_suffix = String.valueOf(random4);
+        List<Integer> cartItemIds = orderPayLoad.getCartItemIds();
+        Long addressId = orderPayLoad.getAddressId();
 
-        timestamp += time_suffix;
-        /**
-         * todo:这其中涉及多步骤的修改类操作
-         *
-         * 要放在service中，然后用事务保护起来
-         */
-        Integer totalPrice = 0;
-        //  写入order表，并返回order_id
-        List<Map<Long,Integer>> goodMaps = new ArrayList<>();
-        for (int i = 0; i < cartItemIds.size(); i++) {
-            long cartItemId = Long.parseLong(cartItemIds.get(i).toString());
-            ShoppingCartItemVO cartItem = shoppingCartService.getCartItemsByID(cartItemId);
-            Map<Long, Integer> goodMap = new HashMap<>();
-            goodMap.put(cartItem.getGoodsId(), cartItem.getGoodsCount());
-            goodMaps.add(goodMap);
-            Integer sellingPrice = cartItem.getSellingPrice();
-            Integer itemTotlePrice = sellingPrice * cartItem.getGoodsCount();
-            totalPrice = totalPrice + itemTotlePrice;
-            // 把cartItem 状态设为 is_deleted
-            shoppingCartService.deleteCartItem(cartItem.getCartItemId());
+        String orderNo = shoppingCartService.saveOrder(userId, cartItemIds, addressId);
+        Result result;
+        if (orderNo != null) {
+            result = ResultGenerator.genSuccessResult();
+            result.setData(orderNo);
+        } else {
+            result = ResultGenerator.genFailResult("生成订单失败");
         }
-        Order order = new Order();
-        order.setOrderNo(timestamp);
-        order.setUserId(userId);
-        order.setTotalPrice(totalPrice);
-        int i = orderService.insertOrder(order);
-
-        // 写入 order_item 表
-        Long orderId = order.getOrderId();
-
-        for (Map<Long, Integer> goodMap : goodMaps) {
-            Long goodsId = goodMap.keySet().iterator().next();
-            GoodsInfo good = goodsInfoService.findGoodById(goodsId);
-            Integer goodsCount = goodMap.get(goodsId);
-
-            OrderItem orderItem = new OrderItem();
-            orderItem.setOrderId(orderId);
-            orderItem.setGoodsId(goodsId);
-            orderItem.setGoodsName(good.getGoodsName());
-            orderItem.setGoodsCoverImg(good.getGoodsCoverImg() );
-            orderItem.setSellingPrice(good.getSellingPrice());
-            orderItem.setGoodsCount(goodsCount);
-
-            orderItemService.insertOrderItem(orderItem);
-        }
-
-        // 写入订单地址表，主键为 order_id
-        UserAddress address = addressService.getAddressByAddressId(addressId);
-
-        OrderAddress orderAddress = new OrderAddress();
-        orderAddress.setOrderId(order.getOrderId());
-        orderAddress.setUserName(address.getUserName());
-        orderAddress.setUserPhone(address.getUserPhone());
-        orderAddress.setProvinceName(address.getProvinceName());
-        orderAddress.setCityName(address.getCityName());
-        orderAddress.setRegionName(address.getRegionName());
-        orderAddress.setDetailAddress(address.getDetailAddress());
-
-        int j = orderAddressService.insertOrderAddress(orderAddress);
-
-
-        Result res = new Result();
-        res.setData(timestamp);
-        res.setMessage("SUCCESS");
-        res.setResultCode(200);
-        return res;
+        return result;
     }
 
     @GetMapping("/paySuccess")
@@ -185,7 +124,6 @@ public class ShoppingCartController {
         int i = orderService.updateOrderStatus(orderNo, payType);
         Result result;
         if (i > 0) {
-            //todo:代码格式化注意
             result = ResultGenerator.genSuccessResult("支付成功");
         } else {
             result = ResultGenerator.genFailResult("支付失败");

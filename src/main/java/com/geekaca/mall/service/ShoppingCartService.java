@@ -23,4 +23,5 @@ public interface ShoppingCartService {
 
     int deleteCartItem(Long cartItemId);
 
+    String saveOrder(long userId, List<Integer> cartItemIds, Long addressId);
 }
