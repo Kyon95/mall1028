@@ -35,7 +35,6 @@ public class OrderDetailVO {
             timezone = "GMT+8"
     )
     private Date createTime;
-
     @ApiModelProperty("订单项列表")
     private List<OrderItemVO> NewBeeMallOrderItemVOS;
 

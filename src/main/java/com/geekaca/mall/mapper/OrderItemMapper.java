@@ -3,6 +3,8 @@ package com.geekaca.mall.mapper;
 import com.geekaca.mall.domain.OrderItem;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
 * @author Kyon_Yjx
 * @description 针对表【tb_newbee_mall_order_item】的数据库操作Mapper
@@ -23,5 +25,7 @@ public interface OrderItemMapper {
     int updateByPrimaryKeySelective(OrderItem record);
 
     int updateByPrimaryKey(OrderItem record);
+
+    List<OrderItem>selectByOrderId(Long orderId);
 
 }

@@ -14,4 +14,6 @@ public interface OrderService {
     PageResult getAdminOrderList(Integer pageNumber, Integer pageSize, Integer status,String orderNo);
 
     Order getOrderDetail(String orderNo);
+
+    public OrderDetailVO getOrderDetailByOrderId(Long orderId);
 }

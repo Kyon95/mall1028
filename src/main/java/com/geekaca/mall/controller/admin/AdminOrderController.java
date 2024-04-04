@@ -1,5 +1,6 @@
 package com.geekaca.mall.controller.admin;
 
+import com.geekaca.mall.controller.vo.OrderDetailVO;
 import com.geekaca.mall.service.OrderService;
 import com.geekaca.mall.utils.PageResult;
 import com.geekaca.mall.utils.Result;
@@ -7,9 +8,7 @@ import com.geekaca.mall.utils.ResultGenerator;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -28,4 +27,14 @@ public class AdminOrderController {
         result.setData(ordersList);
         return result;
     }
+
+    @GetMapping("/orders/{orderId}")
+    public Result orderDetailPage (@ApiParam("订单号") @PathVariable("orderId") Long orderId){
+        OrderDetailVO orderDetailByOrderId = orderService.getOrderDetailByOrderId(orderId);
+        Result result = ResultGenerator.genSuccessResult();
+        result.setData(orderDetailByOrderId);
+        return result;
+    }
+
+
 }
