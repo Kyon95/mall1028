@@ -38,4 +38,6 @@ public interface OrderMapper {
                                 @Param("orderStatus") Integer orderStatus,@Param("orderNo") String orderNo);
 
     Order selectOrderByNo(@Param("orderNo") String orderNo);
+
+    int updateOrderStaByNo(String orderNo);
 }

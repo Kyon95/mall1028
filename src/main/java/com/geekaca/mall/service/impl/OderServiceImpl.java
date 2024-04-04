@@ -141,4 +141,9 @@ public class OderServiceImpl implements OrderService {
         orderDetailVO.setNewBeeMallOrderItemVOS(orderItemVOS);
         return  orderDetailVO;
     }
+
+    @Override
+    public int cancelOrder(String orderNo) {
+        return orderMapper.updateOrderStaByNo(orderNo);
+    }
 }

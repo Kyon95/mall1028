@@ -215,4 +215,7 @@
     <select id="selectOrderByNo" resultMap="BaseResultMap">
         select * from tb_newbee_mall_order where order_no = #{orderNo} and is_deleted = 0;
     </select>
+    <update id="updateOrderStaByNo">
+        update tb_newbee_mall_order set order_status = -1 where order_no = #{orderNo} and is_deleted = 0;
+    </update>
 </mapper>

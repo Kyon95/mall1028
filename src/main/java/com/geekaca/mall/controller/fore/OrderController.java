@@ -37,4 +37,14 @@ public class OrderController {
         }
         return ResultGenerator.genFailResult("订单不存在");
     }
+
+    @PutMapping("/order/{orderNo}/cancel")
+    public Result orderCancel(@PathVariable("orderNo") String  orderNo){
+
+        int i = orderService.cancelOrder(orderNo);
+        if(i>0){
+            return ResultGenerator.genSuccessResult();
+        }
+        return ResultGenerator.genFailResult("取消失败");
+    }
 }
