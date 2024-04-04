@@ -1,5 +1,6 @@
 package com.geekaca.mall.controller.admin;
 
+import com.geekaca.mall.controller.admin.param.BatchIdParam;
 import com.geekaca.mall.controller.vo.OrderDetailVO;
 import com.geekaca.mall.service.OrderService;
 import com.geekaca.mall.utils.PageResult;
@@ -34,6 +35,39 @@ public class AdminOrderController {
         Result result = ResultGenerator.genSuccessResult();
         result.setData(orderDetailByOrderId);
         return result;
+    }
+
+    @RequestMapping("/orders/checkDone")
+    public Result checkDone(@RequestBody BatchIdParam batchIdParam){
+        Long[] ids = batchIdParam.getIds();
+        Boolean isCheckDone = orderService.checkDone(ids);
+        if (isCheckDone == true) {
+            return  ResultGenerator.genSuccessResult("成功");
+        }else {
+            return ResultGenerator.genFailResult("失败");
+        }
+    }
+
+    @RequestMapping("/orders/checkOut")
+    public Result checkOut(@RequestBody BatchIdParam batchIdParam){
+        Long[] ids = batchIdParam.getIds();
+        Boolean isCheckOut = orderService.checkOut(ids);
+        if (isCheckOut == true){
+            return  ResultGenerator.genSuccessResult("成功");
+        }else {
+            return ResultGenerator.genFailResult("失败");
+        }
+    }
+
+    @RequestMapping("/orders/close")
+    public Result closeOrder(@RequestBody BatchIdParam batchIdParam){
+        Long[] ids = batchIdParam.getIds();
+        Boolean isCloseOrder = orderService.closeOrder(ids);
+        if (isCloseOrder == true){
+            return  ResultGenerator.genSuccessResult("成功");
+        }else {
+            return ResultGenerator.genFailResult("失败");
+        }
     }
 
 

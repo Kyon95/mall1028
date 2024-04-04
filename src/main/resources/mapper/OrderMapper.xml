@@ -220,10 +220,43 @@
         where order_no = #{orderNo}
           and is_deleted = 0;
     </select>
+
     <update id="updateOrderStaByNo">
         update tb_newbee_mall_order
         set order_status = -1
         where order_no = #{orderNo}
           and is_deleted = 0;
+    </update>
+
+    <select id="selectByPrimaryKeyList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_newbee_mall_order
+        where order_id = #{orderId,jdbcType=BIGINT}
+    </select>
+
+    <update id="checkOut">
+        update tb_newbee_mall_order
+        set order_status = 3,update_time = now()
+        where order_id in
+        <foreach collection="orderIds" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
+    </update>
+    <update id="checkDone">
+        update tb_newbee_mall_order
+        set order_status = 2,update_time = now()
+        where order_id in
+        <foreach collection="orderIds" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
+    </update>
+    <update id="closeOrder">
+        update tb_newbee_mall_order
+        set order_status = #{orderStatus},update_time = now()
+        where order_id in
+        <foreach collection="orderIds" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
     </update>
 </mapper>

@@ -20,4 +20,9 @@ public interface OrderService {
 
     int cancelOrder(String orderNo);
 
+    Boolean checkDone(Long[] ids);
+
+    Boolean closeOrder(Long[] ids);
+
+    Boolean checkOut(Long[] ids);
 }

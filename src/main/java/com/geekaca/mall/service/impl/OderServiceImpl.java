@@ -13,8 +13,10 @@ import com.geekaca.mall.utils.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -165,5 +167,32 @@ public class OderServiceImpl implements OrderService {
     @Override
     public int cancelOrder(String orderNo) {
         return orderMapper.updateOrderStaByNo(orderNo);
+    }
+
+    @Override
+    public Boolean checkDone(Long[] ids) {
+        int i = orderMapper.checkDone(Arrays.asList(ids));
+        if (i > 0) {
+            return  true;
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean closeOrder(Long[] ids) {
+        int i = orderMapper.closeOrder(Arrays.asList(ids), -1);//模拟手动关闭订单
+        if (i > 0) {
+            return  true;
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean checkOut(Long[] ids) {
+        int i = orderMapper.checkOut(Arrays.asList(ids));
+        if (i > 0) {
+            return  true;
+        }
+        return false;
     }
 }

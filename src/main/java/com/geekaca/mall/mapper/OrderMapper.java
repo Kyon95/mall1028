@@ -40,4 +40,12 @@ public interface OrderMapper {
     Order selectOrderByNo(@Param("orderNo") String orderNo);
 
     int updateOrderStaByNo(String orderNo);
+
+    List<Order> selectByPrimaryKeyList(@Param("orderIds") List<Long> orderIds);
+
+    int checkOut(@Param("orderIds") List<Long> orderIds);
+
+    int checkDone(@Param("orderIds") List<Long> asList);
+
+    int closeOrder(@Param("orderIds") List<Long> orderIds, @Param("orderStatus") int orderStatus);
 }
