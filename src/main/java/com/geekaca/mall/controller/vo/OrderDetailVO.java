@@ -38,4 +38,5 @@ public class OrderDetailVO {
     @ApiModelProperty("订单项列表")
     private List<OrderItemVO> NewBeeMallOrderItemVOS;
 
+
 }

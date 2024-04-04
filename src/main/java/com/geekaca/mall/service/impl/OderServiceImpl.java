@@ -1,5 +1,7 @@
 package com.geekaca.mall.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.geekaca.mall.controller.vo.OrderDetailForeVO;
 import com.geekaca.mall.controller.vo.OrderDetailVO;
 import com.geekaca.mall.controller.vo.OrderItemVO;
 import com.geekaca.mall.domain.Order;
@@ -48,10 +50,28 @@ public class OderServiceImpl implements OrderService {
     public PageResult getOrders(Integer pageNumber, Integer pageSize, Integer status) {
         int limit = (pageNumber - 1) * pageSize;
         List<Order> orders = orderMapper.selectAllOrders(limit, pageSize, status);
+        List<OrderDetailForeVO> orderDetailVOList = new ArrayList<>();
+
+        for (Order order : orders) {
+            // order 类型属性复制到orderDetailForeVO
+            OrderDetailForeVO orderDetailVO = new OrderDetailForeVO();
+            BeanUtil.copyProperties(order, orderDetailVO);
+
+            List<OrderItem> newBeeMallOrderItemList = order.getNewBeeMallOrderItemVOS();
+            List<OrderItemVO> newBeeMallOrderItemVOSList = new ArrayList<>();
+            for (OrderItem orderItem : newBeeMallOrderItemList) {
+                // OrderItem 类型属性复制到OrderItemVO
+                OrderItemVO orderItemVO = new OrderItemVO();
+                BeanUtil.copyProperties(orderItem, orderItemVO);
+                newBeeMallOrderItemVOSList.add(orderItemVO);
+            }
+            orderDetailVO.setNewBeeMallOrderItemVOS(newBeeMallOrderItemVOSList);
+            orderDetailVOList.add(orderDetailVO);
+        }
         // 查询总记录数
         int orderCount = orderMapper.countOrders(status);
         // 返回PageResult 对象
-        return new PageResult(orders, orderCount, pageSize, pageNumber);
+        return new PageResult(orderDetailVOList, orderCount, pageSize, pageNumber);
     }
 
     @Override
@@ -65,7 +85,7 @@ public class OderServiceImpl implements OrderService {
     @Override
     public Order getOrderDetail(String orderNo) {
         return orderMapper.selectOrderByNo(orderNo);
-        }
+    }
 
     @Override
     public OrderDetailVO getOrderDetailByOrderId(Long orderId) {
@@ -91,7 +111,7 @@ public class OderServiceImpl implements OrderService {
         orderDetailVO.setPayStatus(order.getPayStatus().byteValue());
         orderDetailVO.setPayType(order.getPayType().byteValue());
         Integer payType = order.getPayType();
-        switch (payType){
+        switch (payType) {
             case 0:
                 orderDetailVO.setPayTypeString("未支付");
                 break;
@@ -139,7 +159,7 @@ public class OderServiceImpl implements OrderService {
         orderDetailVO.setOrderStatusString(orderStatusString);
         orderDetailVO.setCreateTime(order.getCreateTime());
         orderDetailVO.setNewBeeMallOrderItemVOS(orderItemVOS);
-        return  orderDetailVO;
+        return orderDetailVO;
     }
 
     @Override

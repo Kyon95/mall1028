@@ -25,6 +25,7 @@
         <result property="orderNo" column="order_no" jdbcType="VARCHAR"/>
         <result property="orderStatus" column="order_status" jdbcType="TINYINT"/>
         <result property="payType" column="pay_type" jdbcType="TINYINT"/>
+        <result property="payStatus" column="pay_status" jdbcType="TINYINT"/>
         <result property="totalPrice" column="total_price" jdbcType="INTEGER"/>
         <collection property="newBeeMallOrderItemVOS" ofType="com.geekaca.mall.domain.OrderItem"
                     notNullColumn="order_item_id">
@@ -166,6 +167,7 @@
         tb_order.order_status,
         tb_order.total_price,
         tb_order.pay_type,
+        tb_order.pay_status,
         orderItem.order_item_id,
         orderItem.goods_count,
         orderItem.goods_cover_img,
@@ -213,9 +215,15 @@
         </if>
     </select>
     <select id="selectOrderByNo" resultMap="BaseResultMap">
-        select * from tb_newbee_mall_order where order_no = #{orderNo} and is_deleted = 0;
+        select *
+        from tb_newbee_mall_order
+        where order_no = #{orderNo}
+          and is_deleted = 0;
     </select>
     <update id="updateOrderStaByNo">
-        update tb_newbee_mall_order set order_status = -1 where order_no = #{orderNo} and is_deleted = 0;
+        update tb_newbee_mall_order
+        set order_status = -1
+        where order_no = #{orderNo}
+          and is_deleted = 0;
     </update>
 </mapper>
