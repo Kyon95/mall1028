@@ -1,14 +1,12 @@
 package com.geekaca.mall.controller.fore;
 
+import com.geekaca.mall.domain.Order;
 import com.geekaca.mall.service.OrderService;
 import com.geekaca.mall.utils.PageResult;
 import com.geekaca.mall.utils.Result;
 import com.geekaca.mall.utils.ResultGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -17,7 +15,6 @@ public class OrderController {
     OrderService orderService;
 
     @GetMapping("/order")
-
     public Result getOrder(@RequestParam(required = false) Integer pageNumber,
                            @RequestParam(required = false) Integer pageSize,
                            @RequestParam(required = false) Integer status) {
@@ -29,5 +26,15 @@ public class OrderController {
         }
         PageResult pageResult = orderService.getOrders(pageNumber, pageSize, status);
         return ResultGenerator.genSuccessResult(pageResult);
+    }
+
+
+    @GetMapping("/order/{orderNo}")
+    public Result orderDtail(@PathVariable("orderNo") String  orderNo){
+        Order order = orderService.getOrderDetail(orderNo);
+        if(order!=null){
+            return ResultGenerator.genSuccessResult(order);
+        }
+        return ResultGenerator.genFailResult("订单不存在");
     }
 }

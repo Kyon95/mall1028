@@ -212,4 +212,7 @@
             limit #{limit},#{pageSize}
         </if>
     </select>
+    <select id="selectOrderByNo" resultMap="BaseResultMap">
+        select * from tb_newbee_mall_order where order_no = #{orderNo} and is_deleted = 0;
+    </select>
 </mapper>

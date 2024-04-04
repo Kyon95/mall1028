@@ -43,14 +43,19 @@ public class OderServiceImpl implements OrderService {
         // 查询总记录数
         int orderCount = orderMapper.countOrders(status);
         // 返回PageResult 对象
-        return new PageResult(orders, orderCount,pageSize,pageNumber);
+        return new PageResult(orders, orderCount, pageSize, pageNumber);
     }
 
     @Override
-    public PageResult getAdminOrderList(Integer pageNumber, Integer pageSize, Integer status,String orderNo) {
+    public PageResult getAdminOrderList(Integer pageNumber, Integer pageSize, Integer status, String orderNo) {
         int limit = (pageNumber - 1) * pageSize;
-        List<Order> orders = orderMapper.selectOrderList(limit, pageSize, status,orderNo);
+        List<Order> orders = orderMapper.selectOrderList(limit, pageSize, status, orderNo);
         int orderCount = orderMapper.countOrders(status);
-        return new PageResult(orders, orderCount,pageSize,pageNumber);
+        return new PageResult(orders, orderCount, pageSize, pageNumber);
+    }
+
+    @Override
+    public Order getOrderDetail(String orderNo) {
+        return orderMapper.selectOrderByNo(orderNo);
     }
 }

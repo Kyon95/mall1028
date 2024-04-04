@@ -11,4 +11,6 @@ public interface OrderService {
     PageResult getOrders(Integer pageNumber, Integer pageSize, Integer status);
 
     PageResult getAdminOrderList(Integer pageNumber, Integer pageSize, Integer status,String orderNo);
+
+    Order getOrderDetail(String orderNo);
 }

@@ -36,4 +36,6 @@ public interface OrderMapper {
 
     List<Order> selectOrderList(@Param("limit") Integer limit, @Param("pageSize") Integer pageSize,
                                 @Param("orderStatus") Integer orderStatus,@Param("orderNo") String orderNo);
+
+    Order selectOrderByNo(@Param("orderNo") String orderNo);
 }
