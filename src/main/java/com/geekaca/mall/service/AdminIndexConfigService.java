@@ -13,4 +13,6 @@ public interface AdminIndexConfigService {
     int saveIndexConfig(IndexConfig indexConfig);
 
     IndexConfig getIndexConfigById(Long configId);
+
+    int editIndexConfig(IndexConfig indexConfig);
 }

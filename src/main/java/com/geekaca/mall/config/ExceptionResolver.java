@@ -31,7 +31,7 @@ public class ExceptionResolver {
 
     @ExceptionHandler(MallException.class)
     public Result mallExceptionHandler(MallException e) {
-        log.error("购物车中已存在所点选商品", e.getMessage());
+        log.error(e.getMessage());
         Result result = new Result();
         result.setMessage(e.getMessage());
         return result;

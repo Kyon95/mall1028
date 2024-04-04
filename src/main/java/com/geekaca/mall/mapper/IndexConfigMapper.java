@@ -27,6 +27,9 @@ public interface IndexConfigMapper {
      */
     IndexConfig selectByPrimaryKey(Long id);
 
+    /**
+     * 修改某配置信息
+     */
     int updateByPrimaryKeySelective(IndexConfig record);
 
     int updateByPrimaryKey(IndexConfig record);

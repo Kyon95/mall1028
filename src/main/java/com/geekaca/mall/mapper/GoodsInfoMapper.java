@@ -55,4 +55,9 @@ public interface GoodsInfoMapper {
     GoodsInfo selectDetailById(Long goodsId);
 
     int updateStatusByIds(@Param("status") Integer status, @Param("ids") List ids);
+
+    /**
+     * 后台  【热销商品、新品上线、推荐商品】配置  在新增商品时 凭goodsId查看是否存在该商品
+     */
+    int selectGoodIsExist(Long goodsId);
 }

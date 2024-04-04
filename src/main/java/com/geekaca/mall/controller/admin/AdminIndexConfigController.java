@@ -4,6 +4,7 @@ package com.geekaca.mall.controller.admin;
 import cn.hutool.core.bean.BeanUtil;
 import com.auth0.jwt.interfaces.Claim;
 import com.geekaca.mall.controller.admin.param.AdminIndexConfigAddParam;
+import com.geekaca.mall.controller.admin.param.AdminIndexConfigEditParam;
 import com.geekaca.mall.controller.admin.param.AdminIndexConfigPageParam;
 import com.geekaca.mall.domain.IndexConfig;
 import com.geekaca.mall.exceptions.NotLoginException;
@@ -113,5 +114,38 @@ public class AdminIndexConfigController {
             return ResultGenerator.genFailResult("未查询到数据");
         }
         return ResultGenerator.genSuccessResult(config);
+    }
+
+    /**
+     * 修改
+     */
+    @PutMapping("/indexConfigs")
+    @ApiOperation(value = "修改首页配置项", notes = "修改首页配置项")
+    public Result update(@RequestBody @Valid AdminIndexConfigEditParam indexConfigEditParam,
+                         HttpServletRequest req) {
+        String token = req.getHeader("token");
+        if (token == null) {
+            throw new NotLoginException(NO_LOGIN, "管理员未登录");
+        }
+
+        Map<String, Claim> stringClaimMap = JwtUtil.verifyToken(token);
+        Claim claim = stringClaimMap.get("id");
+        String adminUserIdStr = claim.asString();
+        if (adminUserIdStr == null) {
+            throw new NotLoginException(NO_LOGIN, "管理员未登录");
+        }
+        Integer adminUserId = Integer.valueOf(adminUserIdStr);
+
+        IndexConfig indexConfig = new IndexConfig();
+        BeanUtil.copyProperties(indexConfigEditParam, indexConfig);
+        //前端传来的参数没有管理员id，这里补上，用以修改update_user
+        indexConfig.setUpdateUser(adminUserId);
+
+        int edited = indexConfigService.editIndexConfig(indexConfig);
+        if (edited > 0) {
+            return ResultGenerator.genSuccessResult("修改成功");
+        } else {
+            return ResultGenerator.genFailResult("修改失败");
+        }
     }
 }
