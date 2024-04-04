@@ -145,4 +145,12 @@
         order by config_rank desc
             limit #{start}, #{pageSize}
     </select>
+
+    <delete id="deleteBatchByPrimaryKey">
+        delete from tb_newbee_mall_index_config
+        where config_id in
+        <foreach collection="ids" item="configId" open="(" separator="," close=")">
+            #{configId}
+        </foreach>
+    </delete>
 </mapper>

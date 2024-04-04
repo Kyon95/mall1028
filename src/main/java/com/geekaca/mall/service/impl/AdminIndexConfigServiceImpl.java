@@ -53,4 +53,9 @@ public class AdminIndexConfigServiceImpl implements AdminIndexConfigService {
         indexConfig.setUpdateTime(new Date());
         return indexConfigMapper.updateByPrimaryKeySelective(indexConfig);
     }
+
+    @Override
+    public int deleteBatchIndexConfig(Long[] ids) {
+        return indexConfigMapper.deleteBatchByPrimaryKey(ids);
+    }
 }

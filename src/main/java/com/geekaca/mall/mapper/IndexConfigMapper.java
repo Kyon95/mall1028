@@ -43,4 +43,9 @@ public interface IndexConfigMapper {
      * 凭configType  获取该configType下的所有数据
      */
     List<IndexConfig> selectConfigPageByConfigType(AdminIndexConfigPageParam configPageParam);
+
+    /**
+     * 批量删除配置
+     */
+    int deleteBatchByPrimaryKey(Long[] ids);
 }

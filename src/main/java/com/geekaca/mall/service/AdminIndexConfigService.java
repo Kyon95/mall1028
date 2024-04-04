@@ -15,4 +15,6 @@ public interface AdminIndexConfigService {
     IndexConfig getIndexConfigById(Long configId);
 
     int editIndexConfig(IndexConfig indexConfig);
+
+    int deleteBatchIndexConfig(Long[] ids);
 }
