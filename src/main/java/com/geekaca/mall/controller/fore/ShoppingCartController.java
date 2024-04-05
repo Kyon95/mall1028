@@ -25,14 +25,6 @@ public class ShoppingCartController {
     private ShoppingCartService shoppingCartService;
     @Autowired
     private OrderService orderService;
-    @Autowired
-    private AddressService addressService;
-    @Autowired
-    private OrderAddressService orderAddressService;
-    @Autowired
-    private GoodsInfoService goodsInfoService;
-    @Autowired
-    private OrderItemService orderItemService;
 
     @PostMapping("/shop-cart")
     public Result saveGoodsToCart(@RequestBody CartItemParam cartItemParam, @RequestHeader("Token") String token) {
