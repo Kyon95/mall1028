@@ -50,4 +50,9 @@ public interface GoodsInfoService {
      * 前台 获取滚动图
      */
     List<MallCarousel> getCarouselGoods(int num);
+
+    /**
+     * 前台搜索功能
+     */
+    PageResult searchFrontGoods(FrontSearchPageVO frontPageVO);
 }

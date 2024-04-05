@@ -1,5 +1,6 @@
 package com.geekaca.mall.mapper;
 
+import com.geekaca.mall.controller.vo.FrontSearchPageVO;
 import com.geekaca.mall.controller.vo.IndexHotGoodsInfoVO;
 import com.geekaca.mall.domain.GoodsInfo;
 import org.apache.ibatis.annotations.Mapper;
@@ -60,4 +61,15 @@ public interface GoodsInfoMapper {
      * 后台  【热销商品、新品上线、推荐商品】配置  在新增商品时 凭goodsId查看是否存在该商品
      */
     int selectGoodIsExist(Long goodsId);
+
+    /**
+     * 前台 搜索商品时  获取上架商品总数
+     */
+    int selectSellStatusOnGoodsCnt(FrontSearchPageVO vo);
+
+    /**
+     * 前台 搜索商品时  分页获取商品列表
+     */
+    List<GoodsInfo> selectSearchGoodsOrderByCondition(FrontSearchPageVO vo);
+
 }

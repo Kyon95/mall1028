@@ -257,4 +257,41 @@
         where goods_id = #{goodsId,jdbcType=BIGINT}
     </select>
 
+    <select id="selectSellStatusOnGoodsCnt" resultType="java.lang.Integer">
+        select count(goods_id)
+        from tb_newbee_mall_goods_info
+        <where>
+            goods_sell_status = 0
+            <if test="keyword != null and keyword != ''">
+                and goods_name LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="goodsCategoryId != null">
+                and goods_category_id = #{goodsCategoryId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectSearchGoodsOrderByCondition" resultMap="BaseResultMap">
+        SELECT *
+        FROM tb_newbee_mall_goods_info
+        <where>
+            goods_sell_status = 0
+            <if test="keyword != null and keyword != ''">
+                and goods_name LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+            <if test="goodsCategoryId != null">
+                and goods_category_id = #{goodsCategoryId}
+            </if>
+        </where>
+        <choose>
+            <when test="orderBy == 'new'">
+                ORDER BY goods_id DESC
+            </when>
+            <when test="orderBy == 'price'">
+                ORDER BY selling_price
+            </when>
+        </choose>
+        LIMIT #{start}, #{pageSize}
+    </select>
+
 </mapper>

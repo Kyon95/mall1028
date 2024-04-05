@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.geekaca.mall.common.Constants.*;
@@ -115,6 +116,18 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
     public List<MallCarousel> getCarouselGoods(int num) {
         List<MallCarousel> mallCarousels = carouselMapper.selectAll(num);
         return mallCarousels;
+    }
+
+    @Override
+    public PageResult searchFrontGoods(FrontSearchPageVO VO) {
+        //前台  获取商品总数量  有上架状态的限制  在sql语句中自行加上
+        int totalCnt = goodsInfoMapper.selectSellStatusOnGoodsCnt(VO);
+        if (totalCnt == 0) {
+            return new PageResult(Collections.emptyList(), totalCnt, VO.getPageSize(), VO.getPageNumber());
+        }
+        List<GoodsInfo> list = goodsInfoMapper.selectSearchGoodsOrderByCondition(VO);
+        List<IndexHotGoodsInfoVO> itemDetailsVOList = BeanUtil.copyToList(list, IndexHotGoodsInfoVO.class);
+        return new PageResult(itemDetailsVOList, totalCnt, VO.getPageSize(), VO.getPageNumber());
     }
 
 
