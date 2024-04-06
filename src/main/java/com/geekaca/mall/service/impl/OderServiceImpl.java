@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.geekaca.mall.controller.vo.OrderDetailForeVO;
 import com.geekaca.mall.controller.vo.OrderDetailVO;
 import com.geekaca.mall.controller.vo.OrderItemVO;
+import com.geekaca.mall.controller.vo.OrderVO;
 import com.geekaca.mall.domain.Order;
 import com.geekaca.mall.domain.OrderItem;
 import com.geekaca.mall.mapper.OrderItemMapper;
@@ -85,8 +86,11 @@ public class OderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrderDetail(String orderNo) {
-        return orderMapper.selectOrderByNo(orderNo);
+    public OrderVO getOrderDetail(String orderNo) {
+        Order order = orderMapper.selectOrderByNo(orderNo);
+        OrderVO orderVO = new OrderVO();
+        BeanUtil.copyProperties(order, orderVO);
+        return orderVO;
     }
 
     @Override

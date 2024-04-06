@@ -1,11 +1,13 @@
 package com.geekaca.mall.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.geekaca.mall.controller.vo.ThirdLevelCategoryVO;
 import com.geekaca.mall.domain.GoodsCategory;
 import com.geekaca.mall.exceptions.MallException;
 import com.geekaca.mall.mapper.GoodsCategoryMapper;
 import com.geekaca.mall.service.GoodsCateService;
 import com.geekaca.mall.utils.PageResult;
-import com.geekaca.mall.utils.SecondLevelCategoryVOS;
+import com.geekaca.mall.controller.vo.SecondLevelCategoryVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,10 +76,10 @@ public class GoodsCateServiceImpl implements GoodsCateService {
             Long firstLevelId = firstLevelCategory.getCategoryId();
             // 把二级分类放在 二级表
             List<GoodsCategory> catL2 = goodsCategoryMapper.findCatByPID(firstLevelId, 2);
-            List<GoodsCategory> newCatL2 = new ArrayList<>();
+            List<SecondLevelCategoryVO> newCatL2 = new ArrayList<>();
             for (GoodsCategory cat : catL2) {
                 System.out.println(cat);
-                SecondLevelCategoryVOS secondLevelCategory = new SecondLevelCategoryVOS();
+                SecondLevelCategoryVO secondLevelCategory = new SecondLevelCategoryVO();
 
                 secondLevelCategory.setCategoryId(cat.getCategoryId());
                 secondLevelCategory.setCategoryLevel(cat.getCategoryLevel());
@@ -86,8 +88,15 @@ public class GoodsCateServiceImpl implements GoodsCateService {
                 secondLevelCategory.setParentId(cat.getParentId());
                 // 查找三级对象列表
                 List<GoodsCategory> L3List = goodsCategoryMapper.findCatByPID(cat.getCategoryId(), 3);
+                List<ThirdLevelCategoryVO> thirdLevelCategoryVOS = new ArrayList<>();
+                for (GoodsCategory goodsCategory : L3List) {
+                    ThirdLevelCategoryVO thirdLevelCategoryVO = new ThirdLevelCategoryVO();
+                    BeanUtil.copyProperties(goodsCategory, thirdLevelCategoryVO);
+                    thirdLevelCategoryVOS.add(thirdLevelCategoryVO);
+                }
                 // 把三级列表存入二级对象
-                secondLevelCategory.setThirdLevelCategoryVOS(L3List);
+                secondLevelCategory.setThirdLevelCategoryVOS(thirdLevelCategoryVOS);
+//                secondLevelCategory.setThirdLevelCategoryVOS(L3List);
                 // 二级列表加添加二级对象
                 newCatL2.add(secondLevelCategory);
             }

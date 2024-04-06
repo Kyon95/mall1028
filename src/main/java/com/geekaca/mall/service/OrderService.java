@@ -1,6 +1,7 @@
 package com.geekaca.mall.service;
 
 import com.geekaca.mall.controller.vo.OrderDetailVO;
+import com.geekaca.mall.controller.vo.OrderVO;
 import com.geekaca.mall.domain.Order;
 import com.geekaca.mall.utils.PageResult;
 
@@ -13,7 +14,7 @@ public interface OrderService {
 
     PageResult getAdminOrderList(Integer pageNumber, Integer pageSize, Integer status,String orderNo);
 
-    Order getOrderDetail(String orderNo);
+    OrderVO getOrderDetail(String orderNo);
 
 
     public OrderDetailVO getOrderDetailByOrderId(Long orderId);

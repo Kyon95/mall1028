@@ -1,5 +1,6 @@
 package com.geekaca.mall.controller.fore;
 
+import com.geekaca.mall.controller.vo.OrderVO;
 import com.geekaca.mall.domain.Order;
 import com.geekaca.mall.service.OrderService;
 import com.geekaca.mall.utils.PageResult;
@@ -31,7 +32,7 @@ public class OrderController {
 
     @GetMapping("/order/{orderNo}")
     public Result orderDtail(@PathVariable("orderNo") String  orderNo){
-        Order order = orderService.getOrderDetail(orderNo);
+        OrderVO order = orderService.getOrderDetail(orderNo);
         if(order!=null){
             return ResultGenerator.genSuccessResult(order);
         }

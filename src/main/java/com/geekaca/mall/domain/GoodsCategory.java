@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.geekaca.mall.controller.vo.SecondLevelCategoryVO;
 import lombok.Data;
 
 /**
@@ -66,7 +67,7 @@ public class GoodsCategory implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private List<GoodsCategory> secondLevelCategoryVOS;
+    private List<SecondLevelCategoryVO> secondLevelCategoryVOS;
 
     @Override
     public boolean equals(Object that) {
