@@ -21,5 +21,5 @@ public interface GoodsCateService {
 
     int deleteGoodsCategoryByIds(List<Integer> ids);
 
-    List<Object> findAllCatoriesAndSubCatories();
+    List<List> findAllCatoriesAndSubCatories();
 }

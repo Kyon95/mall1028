@@ -1,10 +1,7 @@
 package com.geekaca.mall.controller.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.geekaca.mall.domain.GoodsCategory;
 import lombok.Data;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -33,13 +30,5 @@ public class SecondLevelCategoryVO {
      */
     private Integer categoryRank;
 
-
-
-
-
-
-
-
-//    private List<GoodsCategory> secondLevelCategoryVOS;
     private List<ThirdLevelCategoryVO> thirdLevelCategoryVOS;
 }

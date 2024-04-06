@@ -1,9 +1,6 @@
 package com.geekaca.mall.controller.vo;
 
-import com.geekaca.mall.domain.GoodsCategory;
 import lombok.Data;
-
-import java.util.List;
 
 
 @Data

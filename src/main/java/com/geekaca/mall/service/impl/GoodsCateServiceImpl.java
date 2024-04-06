@@ -1,13 +1,14 @@
 package com.geekaca.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.geekaca.mall.controller.vo.GoodsCategoryVO;
+import com.geekaca.mall.controller.vo.SecondLevelCategoryVO;
 import com.geekaca.mall.controller.vo.ThirdLevelCategoryVO;
 import com.geekaca.mall.domain.GoodsCategory;
 import com.geekaca.mall.exceptions.MallException;
 import com.geekaca.mall.mapper.GoodsCategoryMapper;
 import com.geekaca.mall.service.GoodsCateService;
 import com.geekaca.mall.utils.PageResult;
-import com.geekaca.mall.controller.vo.SecondLevelCategoryVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,19 @@ public class GoodsCateServiceImpl implements GoodsCateService {
     @Override
     public PageResult findAllGoodsCategory(Integer pageNumber, Integer pageSize, Integer categoryLevel, Integer parentId) {
 
-        List<GoodsCategory> allCategories = goodsCategoryMapper.findAllCategories((pageNumber - 1) * pageSize, pageSize, categoryLevel, parentId);
+        List<GoodsCategory> allCategoriesRaw = goodsCategoryMapper.findAllCategories((pageNumber - 1) * pageSize,
+                pageSize,
+                categoryLevel, parentId);
+
+        List<GoodsCategoryVO> allCategories = new ArrayList<>();
+
+        for (GoodsCategory goodsCategory : allCategoriesRaw) {
+            GoodsCategoryVO goodsCategoryVO = new GoodsCategoryVO();
+            BeanUtil.copyProperties(goodsCategory, goodsCategoryVO);
+            allCategories.add(goodsCategoryVO);
+        }
+
+
         Integer cateCount = goodsCategoryMapper.findCategoryCount((pageNumber - 1) * pageSize, pageSize, categoryLevel,
                 parentId);
         PageResult pageResult = new PageResult(allCategories, cateCount, pageSize, pageNumber);
@@ -67,41 +80,29 @@ public class GoodsCateServiceImpl implements GoodsCateService {
     }
 
     @Override
-    public List<Object> findAllCatoriesAndSubCatories() {
+    public List<List> findAllCatoriesAndSubCatories() {
         // 总列表
-        List<Object> bigList = new ArrayList<>();
+        List bigList = new ArrayList<>();
         List<GoodsCategory> firstLevelCategories = goodsCategoryMapper.findAllCategories(null, null, 1, null);
         // 遍历一级分类
         for (GoodsCategory firstLevelCategory : firstLevelCategories) {
             Long firstLevelId = firstLevelCategory.getCategoryId();
             // 把二级分类放在 二级表
             List<GoodsCategory> catL2 = goodsCategoryMapper.findCatByPID(firstLevelId, 2);
-            List<SecondLevelCategoryVO> newCatL2 = new ArrayList<>();
-            for (GoodsCategory cat : catL2) {
-                System.out.println(cat);
-                SecondLevelCategoryVO secondLevelCategory = new SecondLevelCategoryVO();
-
-                secondLevelCategory.setCategoryId(cat.getCategoryId());
-                secondLevelCategory.setCategoryLevel(cat.getCategoryLevel());
-                secondLevelCategory.setCategoryName(cat.getCategoryName());
-                secondLevelCategory.setCategoryRank(cat.getCategoryRank());
-                secondLevelCategory.setParentId(cat.getParentId());
-                // 查找三级对象列表
-                List<GoodsCategory> L3List = goodsCategoryMapper.findCatByPID(cat.getCategoryId(), 3);
+            List<SecondLevelCategoryVO> secondLevelCategoryVOS = BeanUtil.copyToList(catL2, SecondLevelCategoryVO.class);
+            for (SecondLevelCategoryVO secondLevelCategory : secondLevelCategoryVOS) {
+                List<GoodsCategory> thirdLevelCategories = goodsCategoryMapper.findCatByPID(secondLevelCategory.getCategoryId(), 3);
                 List<ThirdLevelCategoryVO> thirdLevelCategoryVOS = new ArrayList<>();
-                for (GoodsCategory goodsCategory : L3List) {
+                for (GoodsCategory goodsCategory : thirdLevelCategories) {
                     ThirdLevelCategoryVO thirdLevelCategoryVO = new ThirdLevelCategoryVO();
                     BeanUtil.copyProperties(goodsCategory, thirdLevelCategoryVO);
                     thirdLevelCategoryVOS.add(thirdLevelCategoryVO);
                 }
                 // 把三级列表存入二级对象
                 secondLevelCategory.setThirdLevelCategoryVOS(thirdLevelCategoryVOS);
-//                secondLevelCategory.setThirdLevelCategoryVOS(L3List);
-                // 二级列表加添加二级对象
-                newCatL2.add(secondLevelCategory);
             }
             // 把二级列表存入一级对象
-            firstLevelCategory.setSecondLevelCategoryVOS(newCatL2);
+            firstLevelCategory.setSecondLevelCategoryVOS(secondLevelCategoryVOS);
             // 一级对象存入总表
             bigList.add(firstLevelCategory);
         }

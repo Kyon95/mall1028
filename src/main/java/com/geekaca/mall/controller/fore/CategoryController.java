@@ -18,7 +18,7 @@ public class CategoryController {
 
     @GetMapping("/categories")
     public Result getCategories() {
-        List<Object> allCatoriesAndSubCatories = goodsCateService.findAllCatoriesAndSubCatories();
+        List<List> allCatoriesAndSubCatories = goodsCateService.findAllCatoriesAndSubCatories();
         System.out.println("hello");
         Result result = new Result();
         result.setData(allCatoriesAndSubCatories);

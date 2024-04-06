@@ -1,5 +1,6 @@
 package com.geekaca.mall.mapper;
 
+import com.geekaca.mall.controller.vo.GoodsCategoryVO;
 import com.geekaca.mall.domain.GoodsCategory;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -28,8 +29,8 @@ public interface GoodsCategoryMapper {
     int updateByPrimaryKey(GoodsCategory record);
 
     List<GoodsCategory> findAllCategories(@Param("limit") Integer limit, @Param("pageSize") Integer pageSize,
-                                          @Param("categoryLevel") Integer categoryLevel,
-                                          @Param("parentId") Integer parentId);
+                                            @Param("categoryLevel") Integer categoryLevel,
+                                            @Param("parentId") Integer parentId);
 
     int findCategoryCount(@Param("limit") Integer limit, @Param("pageSize") Integer pageSize,
                           @Param("categoryLevel") Integer categoryLevel,
