@@ -92,12 +92,7 @@ public class GoodsCateServiceImpl implements GoodsCateService {
             List<SecondLevelCategoryVO> secondLevelCategoryVOS = BeanUtil.copyToList(catL2, SecondLevelCategoryVO.class);
             for (SecondLevelCategoryVO secondLevelCategory : secondLevelCategoryVOS) {
                 List<GoodsCategory> thirdLevelCategories = goodsCategoryMapper.findCatByPID(secondLevelCategory.getCategoryId(), 3);
-                List<ThirdLevelCategoryVO> thirdLevelCategoryVOS = new ArrayList<>();
-                for (GoodsCategory goodsCategory : thirdLevelCategories) {
-                    ThirdLevelCategoryVO thirdLevelCategoryVO = new ThirdLevelCategoryVO();
-                    BeanUtil.copyProperties(goodsCategory, thirdLevelCategoryVO);
-                    thirdLevelCategoryVOS.add(thirdLevelCategoryVO);
-                }
+                List<ThirdLevelCategoryVO> thirdLevelCategoryVOS = BeanUtil.copyToList(thirdLevelCategories, ThirdLevelCategoryVO.class);//
                 // 把三级列表存入二级对象
                 secondLevelCategory.setThirdLevelCategoryVOS(thirdLevelCategoryVOS);
             }

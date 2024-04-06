@@ -9,6 +9,8 @@ import com.geekaca.mall.utils.JwtUtil;
 import com.geekaca.mall.utils.Result;
 import com.geekaca.mall.utils.ResultGenerator;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,7 @@ import java.util.Random;
 /**
  * 后台用户管理接口
  */
+@Slf4j
 @CrossOrigin
 @RestController
 @RequestMapping("/manage-api/v1")
@@ -56,6 +59,12 @@ public class AdminUserController {
             result.setData(loginToken);
             return result;
         }
+    }
+
+    @DeleteMapping("/logout")
+    public Result logout() {
+        log.info("logout");
+        return ResultGenerator.genSuccessResult();
     }
 
     @GetMapping("/adminUser/profile")
