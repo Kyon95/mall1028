@@ -8,9 +8,12 @@ import com.geekaca.mall.utils.ResultGenerator;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @CrossOrigin
 @RestController
@@ -18,6 +21,8 @@ import java.util.Map;
 public class GoodsCateController {
     @Autowired
     private GoodsCateService goodsCateService;
+    @Autowired
+    private JedisPool jedisPool;
 
     @GetMapping("/categories")
     public Result allCategories(@RequestParam(required = false) @ApiParam Integer pageNumber,
@@ -50,6 +55,14 @@ public class GoodsCateController {
 
         int i = goodsCateService.saveGoodsCategory(goodsCategory);
         if (i > 0) {
+            // 添加成功后，删除缓存中的分类信息
+            Jedis jedis = jedisPool.getResource();
+            Set<String> keys = jedis.keys("allCategoriesBack:*");
+            for (String key : keys) {
+                jedis.del(key);
+            }
+            jedis.del("allcategories");
+            jedis.close();
             return ResultGenerator.genSuccessResult("添加成功");
         } else {
             return ResultGenerator.genFailResult("添加失败");
@@ -60,6 +73,14 @@ public class GoodsCateController {
     public Result deleteCategory(@RequestBody Map<String, List<Integer>> idMap) {
         int i = goodsCateService.deleteGoodsCategoryByIds(idMap.get("ids"));
         if (i > 0) {
+            // 更新成功后，删除缓存中的分类信息
+            Jedis jedis = jedisPool.getResource();
+            Set<String> keys = jedis.keys("allCategoriesBack:*");
+            for (String key : keys) {
+                jedis.del(key);
+            }
+            jedis.del("allcategories");
+            jedis.close();
             return ResultGenerator.genSuccessResult("删除成功");
         }
         return ResultGenerator.genFailResult("删除失败");
@@ -75,6 +96,14 @@ public class GoodsCateController {
     public Result updateCategoryById(@RequestBody GoodsCategory goodsCategory) {
         int i = goodsCateService.updateGoodsCategory(goodsCategory);
         if (i > 0) {
+            // 更新成功后，删除缓存中的分类信息
+            Jedis jedis = jedisPool.getResource();
+            Set<String> keys = jedis.keys("allCategoriesBack:*");
+            for (String key : keys) {
+                jedis.del(key);
+            }
+            jedis.del("allcategories");
+            jedis.close();
             return ResultGenerator.genSuccessResult("修改成功");
         } else {
             return ResultGenerator.genFailResult("修改失败");

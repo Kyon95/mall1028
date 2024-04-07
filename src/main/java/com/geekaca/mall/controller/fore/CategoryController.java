@@ -43,7 +43,6 @@ public class CategoryController {
             log.info("从数据库中获取数据");
             String s = JSON.toJSONString(allCatoriesAndSubCatories);
             jedis.set("allcategories", s);
-            jedis.expire("allcategories", 60*20);
             jedis.close();
             return ResultGenerator.genSuccessResult(allCatoriesAndSubCatories);
         }
