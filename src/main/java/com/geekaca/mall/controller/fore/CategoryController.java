@@ -13,6 +13,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/v1")
@@ -25,13 +26,16 @@ public class CategoryController {
 
     @GetMapping("/categories")
     public Result getCategories() {
-        // 从redis 读取 categories，提高访问速度
+        log.info("获取分类数据");
+
+//         从redis 读取 categories，提高访问速度
         Jedis jedis = jedisPool.getResource();
         String allcategoriesStr = jedis.get("allcategories");
         // 判断缓存中是否存在
         if(allcategoriesStr != null){
             List<List> allcategories = JSON.parseObject(allcategoriesStr, List.class);
             log.info("从缓存中获取数据");
+            jedis.close();
             return ResultGenerator.genSuccessResult(allcategories);
         }
         else {
@@ -40,6 +44,7 @@ public class CategoryController {
             String s = JSON.toJSONString(allCatoriesAndSubCatories);
             jedis.set("allcategories", s);
             jedis.expire("allcategories", 60*20);
+            jedis.close();
             return ResultGenerator.genSuccessResult(allCatoriesAndSubCatories);
         }
     }
