@@ -28,7 +28,7 @@ public class SecondLevelCategoryVO {
     /**
      * 排序值(字段越大越靠前)
      */
-    private Integer categoryRank;
+
 
     private List<ThirdLevelCategoryVO> thirdLevelCategoryVOS;
 }

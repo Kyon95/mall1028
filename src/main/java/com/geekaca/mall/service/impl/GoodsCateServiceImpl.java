@@ -84,9 +84,11 @@ public class GoodsCateServiceImpl implements GoodsCateService {
         // 总列表
         List bigList = new ArrayList<>();
         List<GoodsCategory> firstLevelCategories = goodsCategoryMapper.findAllCategories(null, null, 1, null);
+        List<GoodsCategoryVO> firstLevelCategoryVOS = BeanUtil.copyToList(firstLevelCategories,
+                GoodsCategoryVO.class);
         // 遍历一级分类
-        for (GoodsCategory firstLevelCategory : firstLevelCategories) {
-            Long firstLevelId = firstLevelCategory.getCategoryId();
+        for (GoodsCategoryVO firstLevelCategoryVO : firstLevelCategoryVOS) {
+            Long firstLevelId = firstLevelCategoryVO.getCategoryId();
             // 把二级分类放在 二级表
             List<GoodsCategory> catL2 = goodsCategoryMapper.findCatByPID(firstLevelId, 2);
             List<SecondLevelCategoryVO> secondLevelCategoryVOS = BeanUtil.copyToList(catL2, SecondLevelCategoryVO.class);
@@ -97,9 +99,9 @@ public class GoodsCateServiceImpl implements GoodsCateService {
                 secondLevelCategory.setThirdLevelCategoryVOS(thirdLevelCategoryVOS);
             }
             // 把二级列表存入一级对象
-            firstLevelCategory.setSecondLevelCategoryVOS(secondLevelCategoryVOS);
+            firstLevelCategoryVO.setSecondLevelCategoryVOS(secondLevelCategoryVOS);
             // 一级对象存入总表
-            bigList.add(firstLevelCategory);
+            bigList.add(firstLevelCategoryVO);
         }
         return bigList;
     }

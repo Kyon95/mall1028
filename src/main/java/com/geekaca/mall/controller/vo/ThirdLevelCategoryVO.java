@@ -23,8 +23,5 @@ public class ThirdLevelCategoryVO {
      */
     private String categoryName;
 
-    /**
-     * 排序值(字段越大越靠前)
-     */
-    private Integer categoryRank;
+
 }
