@@ -6,6 +6,7 @@ import com.geekaca.mall.utils.PageResult;
 import com.geekaca.mall.utils.Result;
 import com.geekaca.mall.utils.ResultGenerator;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.Jedis;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@Slf4j
 @CrossOrigin
 @RestController
 @RequestMapping({"/manage-api/v1"})
@@ -59,6 +61,7 @@ public class GoodsCateController {
             Jedis jedis = jedisPool.getResource();
             Set<String> keys = jedis.keys("allCategoriesBack:*");
             for (String key : keys) {
+                log.info("key: "+key);
                 jedis.del(key);
             }
             jedis.del("allcategories");
