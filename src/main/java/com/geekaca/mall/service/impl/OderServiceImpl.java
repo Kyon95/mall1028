@@ -210,7 +210,18 @@ public class OderServiceImpl implements OrderService {
 
     @Override
     public Boolean closeOrder(Long[] ids) {
-        int i = orderMapper.closeOrder(Arrays.asList(ids), -1);//模拟手动关闭订单
+        int i = orderMapper.closeOrder(Arrays.asList(ids), -3);
+        for (int j = 0; j < ids.length; j++) {
+            List<OrderItem> orderItems = orderItemMapper.selectByOrderId(ids[j]);
+            for (OrderItem orderItem : orderItems){
+                Integer goodsCount = orderItem.getGoodsCount();
+                Long goodsId = orderItem.getGoodsId();
+                int i1 = goodsInfoMapper.updateStock(goodsId, goodsCount);
+                if (i1 < 0) {
+                    throw new MallException("更新库存失败");
+                }
+            }
+        }
         if (i > 0) {
             return  true;
         }
