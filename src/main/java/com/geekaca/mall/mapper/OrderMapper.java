@@ -35,11 +35,11 @@ public interface OrderMapper {
     int countOrders(@Param("status") Integer status);
 
     List<Order> selectOrderList(@Param("limit") Integer limit, @Param("pageSize") Integer pageSize,
-                                @Param("orderStatus") Integer orderStatus,@Param("orderNo") String orderNo);
+                                @Param("orderStatus") Integer orderStatus, @Param("orderNo") String orderNo);
 
     Order selectOrderByNo(@Param("orderNo") String orderNo);
 
-    int updateOrderStaByNo(String orderNo);
+    int updateOrderStaByNo(@Param("orderNo") String orderNo, @Param("orderStatus") Integer orderStatus);
 
     List<Order> selectByPrimaryKeyList(@Param("orderIds") List<Long> orderIds);
 

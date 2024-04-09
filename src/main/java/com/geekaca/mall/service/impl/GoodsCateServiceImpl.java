@@ -96,6 +96,7 @@ public class GoodsCateServiceImpl implements GoodsCateService {
     @Override
     public int deleteGoodsCategoryByIds(List<Integer> ids) {
         //必须先删除下级，才能删除类别
+        // todo: 如果有商品使用类别，则该类别也不应该能被删除
         for (Integer id : ids) {
             int i = goodsCategoryMapper.selectSubIdByParentId(id);
             if (i > 0) {

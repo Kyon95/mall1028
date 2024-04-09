@@ -111,6 +111,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             ShoppingCartItemVO cartItem = getCartItemsByID(cartItemId);
             Map<Long, Integer> goodMap = new HashMap<>();
             goodMap.put(cartItem.getGoodsId(), cartItem.getGoodsCount());
+            // 生成订单同步减库存
+            int affected = goodsInfoMapper.updateStockById(cartItem.getGoodsId(), cartItem.getGoodsCount());
+            if (affected < 0) {
+                throw new MallException("库存不足！");
+            }
             goodMaps.add(goodMap);
             Integer sellingPrice = cartItem.getSellingPrice();
             Integer itemTotlePrice = sellingPrice * cartItem.getGoodsCount();

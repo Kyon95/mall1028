@@ -9,6 +9,7 @@ import com.geekaca.mall.utils.JwtUtil;
 import com.geekaca.mall.utils.OrderPayLoad;
 import com.geekaca.mall.utils.Result;
 import com.geekaca.mall.utils.ResultGenerator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1")
 public class ShoppingCartController {
@@ -47,7 +49,7 @@ public class ShoppingCartController {
         List<ShoppingCartItemVO> myCartList = shoppingCartService.getMyCartItems(userId);
         Result result = ResultGenerator.genSuccessResult();
         result.setData(myCartList);
-        System.out.println(myCartList);
+        log.info(String.valueOf(myCartList));
         return result;
     }
 
@@ -68,10 +70,9 @@ public class ShoppingCartController {
     @GetMapping("/shop-cart/settle")
     public Result cartPayoff(@RequestParam("cartItemIds") String cartItemIds) {
         List<ShoppingCartItemVO> itemList = new ArrayList<>();
-        //todo: 代码中有很多 这种System.out的打印，开发完成后想要关闭就不方便，类似的调试信息要使用logback打印
-        System.out.println("cartItemIds:" + cartItemIds);
+        log.info("cartItemIds:" + cartItemIds);
         String[] split = cartItemIds.split(",");
-        System.out.println("split:" + split);
+        log.info("split:" + split);
         for (int i = 0; i < split.length; i++) {
             ShoppingCartItemVO cartItem = shoppingCartService.getCartItemsByID(Long.parseLong(split[i]));
             itemList.add(cartItem);

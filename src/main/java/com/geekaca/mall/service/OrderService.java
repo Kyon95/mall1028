@@ -19,7 +19,7 @@ public interface OrderService {
 
     public OrderDetailVO getOrderDetailByOrderId(Long orderId);
 
-    int cancelOrder(String orderNo);
+    int cancelOrder(String orderNo,Integer orderStatus);
 
     Boolean checkDone(Long[] ids);
 

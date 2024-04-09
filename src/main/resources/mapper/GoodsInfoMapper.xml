@@ -294,4 +294,11 @@
         LIMIT #{start}, #{pageSize}
     </select>
 
+    <update id="updateStockById">
+        update tb_newbee_mall_goods_info set stock_num = stock_num - #{goodsCount} where goods_id = #{goodsId}
+    </update>
+    <update id="updateStock">
+        update tb_newbee_mall_goods_info set stock_num = stock_num + #{goodsCount} where goods_id = #{goodsId}
+    </update>
+
 </mapper>

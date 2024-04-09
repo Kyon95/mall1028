@@ -7,10 +7,13 @@ import com.geekaca.mall.controller.vo.OrderItemVO;
 import com.geekaca.mall.controller.vo.OrderVO;
 import com.geekaca.mall.domain.Order;
 import com.geekaca.mall.domain.OrderItem;
+import com.geekaca.mall.exceptions.MallException;
+import com.geekaca.mall.mapper.GoodsInfoMapper;
 import com.geekaca.mall.mapper.OrderItemMapper;
 import com.geekaca.mall.mapper.OrderMapper;
 import com.geekaca.mall.service.OrderService;
 import com.geekaca.mall.utils.PageResult;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +30,9 @@ public class OderServiceImpl implements OrderService {
 
     @Autowired
     private OrderItemMapper orderItemMapper;
+
+    @Autowired
+    private GoodsInfoMapper goodsInfoMapper;
 
     @Override
     public int insertOrder(Order order) {
@@ -168,8 +174,29 @@ public class OderServiceImpl implements OrderService {
     }
 
     @Override
-    public int cancelOrder(String orderNo) {
-        return orderMapper.updateOrderStaByNo(orderNo);
+    public int cancelOrder(String orderNo,Integer orderStatus ) {
+        // todo: 除了把订单状态改为取消，还要把库存恢复
+        /**
+         * 1. 通过orderno 找到orderId,
+         * 2. 通过orderId, 找到orderItem
+         * 3. 通过orderItemId 找到商品id和数量，
+         * 4. 通过商品id和数量， 恢复库存
+         */
+        //1. 通过orderno 找到orderId,
+        Long orderId = orderMapper.getOrderIdByOrderNo(orderNo);
+        //2. 通过orderId, 找到orderItem
+        List<OrderItem> orderItems = orderItemMapper.selectByOrderId(orderId);
+        // 3. 通过orderItemId 找到商品id和数量，
+        for (OrderItem orderItem : orderItems) {
+            // 4. 通过商品id和数量， 恢复库存
+            Integer goodsCount = orderItem.getGoodsCount();
+            Long goodsId = orderItem.getGoodsId();
+            int i = goodsInfoMapper.updateStock(goodsId, goodsCount);
+            if (i < 0) {
+                throw new MallException("更新库存失败");
+            }
+        }
+        return orderMapper.updateOrderStaByNo(orderNo,orderStatus);
     }
 
     @Override

@@ -72,4 +72,7 @@ public interface GoodsInfoMapper {
      */
     List<GoodsInfo> selectSearchGoodsOrderByCondition(FrontSearchPageVO vo);
 
+    int updateStockById(@Param("goodsId") Long goodsId, @Param("goodsCount") Integer goodsCount);
+
+    int updateStock(Long goodsId, Integer goodsCount);
 }
