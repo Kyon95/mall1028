@@ -65,7 +65,7 @@ public class GoodsCateController {
                 log.info("key: "+key);
                 jedis.del(key);
             }
-            RedisReader.cateReader(jedisPool,goodsCateService);
+//            RedisReader.cateReader();
             jedis.close();
             return ResultGenerator.genSuccessResult("添加成功");
         } else {
@@ -83,7 +83,7 @@ public class GoodsCateController {
             for (String key : keys) {
                 jedis.del(key);
             }
-            RedisReader.cateReader(jedisPool,goodsCateService);
+//            RedisReader.cateReader(jedisPool,goodsCateService);
             jedis.close();
             return ResultGenerator.genSuccessResult("删除成功");
         }
@@ -106,7 +106,7 @@ public class GoodsCateController {
             for (String key : keys) {
                 jedis.del(key);
             }
-            RedisReader.cateReader(jedisPool,goodsCateService);
+//            RedisReader.cateReader(jedisPool,goodsCateService);
             jedis.close();
             return ResultGenerator.genSuccessResult("修改成功");
         } else {
