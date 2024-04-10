@@ -3,6 +3,7 @@ package com.geekaca.mall.controller.admin;
 import com.geekaca.mall.domain.GoodsCategory;
 import com.geekaca.mall.service.GoodsCateService;
 import com.geekaca.mall.utils.PageResult;
+import com.geekaca.mall.utils.RedisReader;
 import com.geekaca.mall.utils.Result;
 import com.geekaca.mall.utils.ResultGenerator;
 import io.swagger.annotations.ApiParam;
@@ -64,7 +65,7 @@ public class GoodsCateController {
                 log.info("key: "+key);
                 jedis.del(key);
             }
-            jedis.del("allcategories");
+            RedisReader.cateReader(jedisPool,goodsCateService);
             jedis.close();
             return ResultGenerator.genSuccessResult("添加成功");
         } else {
@@ -82,7 +83,7 @@ public class GoodsCateController {
             for (String key : keys) {
                 jedis.del(key);
             }
-            jedis.del("allcategories");
+            RedisReader.cateReader(jedisPool,goodsCateService);
             jedis.close();
             return ResultGenerator.genSuccessResult("删除成功");
         }
@@ -105,7 +106,7 @@ public class GoodsCateController {
             for (String key : keys) {
                 jedis.del(key);
             }
-            jedis.del("allcategories");
+            RedisReader.cateReader(jedisPool,goodsCateService);
             jedis.close();
             return ResultGenerator.genSuccessResult("修改成功");
         } else {
