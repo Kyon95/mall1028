@@ -38,8 +38,6 @@ import java.util.Random;
 public class AdminUserController {
     @Autowired
     private AdminUserService adminUserService;
-    @Autowired
-    private JedisPool jedisPool;
 
     public static URI getHost(URI uri) {
         URI effectiveURI = null;
@@ -57,13 +55,6 @@ public class AdminUserController {
         if (loginToken == null) {
             return ResultGenerator.genFailResult("登录失败");
         } else {
-            // 把token 存入redis
-            Map<String, Claim> stringClaimMap = JwtUtil.verifyToken(loginToken);
-            Claim idClaim = stringClaimMap.get("id");
-            String uid = idClaim.asString();
-            Jedis jedis = jedisPool.getResource();
-            jedis.set("userToken:uid:"+uid, loginToken);
-            jedis.expire("userToken:uid:"+uid,3600*24);
             Result result = ResultGenerator.genSuccessResult();
             result.setData(loginToken);
             return result;

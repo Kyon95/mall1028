@@ -13,6 +13,8 @@ import com.geekaca.mall.utils.JwtUtil;
 import com.geekaca.mall.utils.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +23,8 @@ import java.util.List;
 public class MallUserServiceImpl implements MallUserService {
     @Autowired
     private MallUserMapper userMapper;
+   @Autowired
+    JedisPool jedisPool;
 
 
     @Override
@@ -32,6 +36,12 @@ public class MallUserServiceImpl implements MallUserService {
             throw new LoginFailException("登陆失败", MallConstants.CODE_USER_LOGIN_FAIL);
         }
         String token = JwtUtil.createToken(checkLogin.getUserId().toString(), checkLogin.getLoginName());
+        // 把用户信息缓存到token
+        try(Jedis jedis = jedisPool.getResource();){
+            String key = "uid:user:" + checkLogin.getUserId();
+            jedis.set(key,token);
+            jedis.expire(key,60*60*3);
+        }
         return token;
     }
 

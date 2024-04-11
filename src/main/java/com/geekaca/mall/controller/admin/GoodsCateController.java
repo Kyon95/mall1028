@@ -26,6 +26,8 @@ public class GoodsCateController {
     private GoodsCateService goodsCateService;
     @Autowired
     private JedisPool jedisPool;
+    @Autowired
+    private RedisReader redisReader;
 
     @GetMapping("/categories")
     public Result allCategories(@RequestParam(required = false) @ApiParam Integer pageNumber,
@@ -59,14 +61,15 @@ public class GoodsCateController {
         int i = goodsCateService.saveGoodsCategory(goodsCategory);
         if (i > 0) {
             // 添加成功后，删除缓存中的分类信息
-            Jedis jedis = jedisPool.getResource();
-            Set<String> keys = jedis.keys("allCategoriesBack:*");
-            for (String key : keys) {
-                log.info("key: "+key);
-                jedis.del(key);
+            try (Jedis jedis = jedisPool.getResource();) {
+                Set<String> keys = jedis.keys("allCategoriesBack:*");
+                for (String key : keys) {
+                    log.info("key: " + key);
+                    jedis.del(key);
+                }
             }
-//            RedisReader.cateReader();
-            jedis.close();
+            // 更新redis中的类别信息
+            redisReader.cateReader();
             return ResultGenerator.genSuccessResult("添加成功");
         } else {
             return ResultGenerator.genFailResult("添加失败");
@@ -78,13 +81,15 @@ public class GoodsCateController {
         int i = goodsCateService.deleteGoodsCategoryByIds(idMap.get("ids"));
         if (i > 0) {
             // 更新成功后，删除缓存中的分类信息
-            Jedis jedis = jedisPool.getResource();
-            Set<String> keys = jedis.keys("allCategoriesBack:*");
-            for (String key : keys) {
-                jedis.del(key);
+            try (Jedis jedis = jedisPool.getResource();) {
+                Set<String> keys = jedis.keys("allCategoriesBack:*");
+                for (String key : keys) {
+                    log.info("key: " + key);
+                    jedis.del(key);
+                }
             }
-//            RedisReader.cateReader(jedisPool,goodsCateService);
-            jedis.close();
+            // 更新redis中的类别信息
+            redisReader.cateReader();
             return ResultGenerator.genSuccessResult("删除成功");
         }
         return ResultGenerator.genFailResult("删除失败");
@@ -101,13 +106,15 @@ public class GoodsCateController {
         int i = goodsCateService.updateGoodsCategory(goodsCategory);
         if (i > 0) {
             // 更新成功后，删除缓存中的分类信息
-            Jedis jedis = jedisPool.getResource();
-            Set<String> keys = jedis.keys("allCategoriesBack:*");
-            for (String key : keys) {
-                jedis.del(key);
+            try (Jedis jedis = jedisPool.getResource();) {
+                Set<String> keys = jedis.keys("allCategoriesBack:*");
+                for (String key : keys) {
+                    log.info("key: " + key);
+                    jedis.del(key);
+                }
             }
-//            RedisReader.cateReader(jedisPool,goodsCateService);
-            jedis.close();
+            // 更新redis中的类别信息
+            redisReader.cateReader();
             return ResultGenerator.genSuccessResult("修改成功");
         } else {
             return ResultGenerator.genFailResult("修改失败");
