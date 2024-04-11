@@ -1,8 +1,12 @@
 package com.geekaca.mall.mapper;
 
+import com.geekaca.mall.controller.admin.param.BatchIdParam;
 import com.geekaca.mall.domain.MallUser;
+import com.geekaca.mall.domain.Order;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author Kyon_Yjx
@@ -30,4 +34,10 @@ public interface MallUserMapper {
     MallUser isRegistered(String loginName);
 
     MallUser getUserInfo(String loginName);
+
+    List<Order> selectUserList(@Param("limit") Integer limit, @Param("pageSize") Integer pageSize);
+
+    int getUserCount();
+
+    int updateByPrimaryKeylocked(List<Long> ids, Integer lockedFlag);
 }

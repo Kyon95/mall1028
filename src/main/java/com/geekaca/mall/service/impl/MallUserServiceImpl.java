@@ -2,14 +2,20 @@ package com.geekaca.mall.service.impl;
 
 import cn.hutool.crypto.SecureUtil;
 import com.geekaca.mall.common.MallConstants;
+import com.geekaca.mall.controller.admin.param.BatchIdParam;
 import com.geekaca.mall.controller.fore.param.MallUserLoginParam;
 import com.geekaca.mall.domain.MallUser;
+import com.geekaca.mall.domain.Order;
 import com.geekaca.mall.exceptions.LoginFailException;
 import com.geekaca.mall.mapper.MallUserMapper;
 import com.geekaca.mall.service.MallUserService;
 import com.geekaca.mall.utils.JwtUtil;
+import com.geekaca.mall.utils.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class MallUserServiceImpl implements MallUserService {
@@ -77,6 +83,25 @@ public class MallUserServiceImpl implements MallUserService {
             return false;
         }else {
             return true;
+        }
+    }
+
+    @Override
+    public PageResult getUserList(Integer pageNumber, Integer pageSize) {
+        List<Order> orderList = userMapper.selectUserList((pageNumber - 1) * pageSize, pageSize);
+        int userCount = userMapper.getUserCount();
+        return new PageResult(orderList,userCount,pageNumber,pageSize);
+    }
+
+    @Override
+    public boolean banUser(BatchIdParam ids, Integer lockedFlag) {
+        Long[] idsIds = ids.getIds();
+        List<Long> list = Arrays.asList(idsIds);
+        int i = userMapper.updateByPrimaryKeylocked(list,lockedFlag);
+        if (i > 0) {
+            return true;
+        }else {
+            return false;
         }
     }
 }

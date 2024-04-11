@@ -103,6 +103,16 @@
             create_time =  #{createTime,jdbcType=TIMESTAMP}
         where   user_id = #{userId,jdbcType=BIGINT} 
     </update>
+    <update id="updateByPrimaryKeylocked">
+        update tb_newbee_mall_user
+        set
+        locked_flag = #{lockedFlag}
+        where
+        user_id IN
+        <foreach collection="ids" item="userId" separator="," open="(" close=")">
+            #{userId}
+        </foreach>
+    </update>
 
     <select id="checkLogin" resultMap="BaseResultMap">
         select *
@@ -117,6 +127,16 @@
         select user_id,nick_name,login_name,introduce_sign
         from tb_newbee_mall_user
         where login_name = #{loginName}
+    </select>
+    <select id="selectUserList" resultMap="BaseResultMap">
+        select * from tb_newbee_mall_user
+        order by create_time desc
+        <if test="limit!=null and pageSize!=null">
+            limit #{limit},#{pageSize}
+        </if>
+    </select>
+    <select id="getUserCount" resultType="java.lang.Integer">
+        select count(*) from tb_newbee_mall_user
     </select>
 
 </mapper>
