@@ -9,7 +9,7 @@ import com.geekaca.mall.utils.PageResult;
 import java.util.List;
 
 /**
- * todo：
+ *
  * 1.前台登入
  */
 public interface MallUserService {

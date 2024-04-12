@@ -41,7 +41,7 @@ public class OrderController {
 
     @PutMapping("/order/{orderNo}/cancel")
     public Result orderCancel(@PathVariable("orderNo") String  orderNo){
-        //todo: 取消订单时需要把商品库存加回去
+        // 取消订单时需要把商品库存加回去
         int i = orderService.cancelOrder(orderNo,-1);
         if(i>0){
             return ResultGenerator.genSuccessResult();

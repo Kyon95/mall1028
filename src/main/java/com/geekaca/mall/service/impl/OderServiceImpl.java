@@ -175,7 +175,7 @@ public class OderServiceImpl implements OrderService {
 
     @Override
     public int cancelOrder(String orderNo,Integer orderStatus ) {
-        // todo: 除了把订单状态改为取消，还要把库存恢复
+        // 除了把订单状态改为取消，还要把库存恢复
         /**
          * 1. 通过orderno 找到orderId,
          * 2. 通过orderId, 找到orderItem

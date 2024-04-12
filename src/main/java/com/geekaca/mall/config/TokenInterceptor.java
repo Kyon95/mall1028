@@ -43,7 +43,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 
             if (redisAdminToken == null && redisUserToken == null){
                 // 说明token过期，或者被删除了token
-                throw new NotLoginException(Constants.NO_LOGIN, "token超时");
+                throw new NotLoginException(Constants.NO_LOGIN, "token无效或超时");
             }
         }
         return true;

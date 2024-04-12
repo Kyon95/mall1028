@@ -51,6 +51,7 @@ public class MallWebMvcConfig extends WebMvcConfigurationSupport {
                 //放行前台的注册和登陆
                 .excludePathPatterns("/api/v1/user/register")
                 .excludePathPatterns("/api/v1/user/login")
+                .excludePathPatterns("/api/v1/user/logout")
                 .excludePathPatterns("/manage-api/v1/upload/**");
     }
 }

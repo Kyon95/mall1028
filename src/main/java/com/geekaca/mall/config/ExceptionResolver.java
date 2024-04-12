@@ -2,6 +2,7 @@ package com.geekaca.mall.config;
 
 import com.geekaca.mall.exceptions.LoginFailException;
 import com.geekaca.mall.exceptions.MallException;
+import com.geekaca.mall.exceptions.NotLoginException;
 import com.geekaca.mall.utils.Result;
 import com.geekaca.mall.utils.ResultGenerator;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,14 @@ public class ExceptionResolver {
 
     @ExceptionHandler(MallException.class)
     public Result mallExceptionHandler(MallException e) {
+        log.error(e.getMessage());
+        Result result = new Result();
+        result.setMessage(e.getMessage());
+        return result;
+    }
+
+    @ExceptionHandler(NotLoginException.class)
+    public Result NotLoginExceptionHandler(NotLoginException e) {
         log.error(e.getMessage());
         Result result = new Result();
         result.setMessage(e.getMessage());
