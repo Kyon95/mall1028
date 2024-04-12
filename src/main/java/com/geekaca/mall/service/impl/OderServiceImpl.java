@@ -13,9 +13,9 @@ import com.geekaca.mall.mapper.OrderItemMapper;
 import com.geekaca.mall.mapper.OrderMapper;
 import com.geekaca.mall.service.OrderService;
 import com.geekaca.mall.utils.PageResult;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -209,6 +209,7 @@ public class OderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public Boolean closeOrder(Long[] ids) {
         int i = orderMapper.closeOrder(Arrays.asList(ids), -3);
         for (int j = 0; j < ids.length; j++) {
