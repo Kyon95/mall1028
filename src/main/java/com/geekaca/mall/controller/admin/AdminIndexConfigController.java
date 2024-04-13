@@ -3,10 +3,10 @@ package com.geekaca.mall.controller.admin;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.auth0.jwt.interfaces.Claim;
-import com.geekaca.mall.controller.BatchIdParam;
 import com.geekaca.mall.controller.admin.param.AdminIndexConfigAddParam;
 import com.geekaca.mall.controller.admin.param.AdminIndexConfigEditParam;
 import com.geekaca.mall.controller.admin.param.AdminIndexConfigPageParam;
+import com.geekaca.mall.controller.admin.param.BatchIdParam;
 import com.geekaca.mall.domain.IndexConfig;
 import com.geekaca.mall.exceptions.NotLoginException;
 import com.geekaca.mall.service.AdminIndexConfigService;

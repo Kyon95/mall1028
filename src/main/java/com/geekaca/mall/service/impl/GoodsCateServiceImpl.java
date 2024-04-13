@@ -102,17 +102,18 @@ public class GoodsCateServiceImpl implements GoodsCateService {
 
     @Override
     public int deleteGoodsCategoryByIds(Long[] ids) {
-        //必须先删除下级，才能删除类别
-        // todo: 如果有商品使用类别，则该类别也不应该能被删除
+        /*必须先删除下级，才能删除类别
+        如果有商品使用类别，则该类别也不应该能被删除*/
 
         for (Long id : ids) {
-            List<GoodsInfo> goodsList = goodsInfoService.getGoodsListByCategoryId(id);
-            if (goodsList.size() > 0) {
-                throw new MallException("该类别有商品，请先删除商品");
-            }
             int i = goodsCategoryMapper.selectSubIdByParentId(id);
             if (i > 0) {
                 throw new MallException("该类别有子类别，请先删除子类别");
+            }
+
+            List<GoodsInfo> goodsList = goodsInfoService.getGoodsListByCategoryId(id);
+            if (goodsList.size() > 0) {
+                throw new MallException("该类别有商品，请先删除商品");
             }
         }
         return goodsCategoryMapper.deleteByIds(ids);

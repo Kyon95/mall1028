@@ -111,6 +111,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             ShoppingCartItemVO cartItem = getCartItemsByID(cartItemId);
             Map<Long, Integer> goodMap = new HashMap<>();
             goodMap.put(cartItem.getGoodsId(), cartItem.getGoodsCount());
+            // 通过goodId 查询商品状态是否已下架，已下架则抛出异常到前端
+            GoodsInfo goodsInfo = goodsInfoService.findGoodById(cartItem.getGoodsId());
+            if (goodsInfo.getGoodsSellStatus() == 1) {
+                throw new MallException("商品已下架！请重新选择商品！");
+            }
             // 生成订单同步减库存
             int affected = goodsInfoMapper.updateStockById(cartItem.getGoodsId(), cartItem.getGoodsCount());
             if (affected < 0) {
