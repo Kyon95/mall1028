@@ -75,4 +75,6 @@ public interface GoodsInfoMapper {
     int updateStockById(@Param("goodsId") Long goodsId, @Param("goodsCount") Integer goodsCount);
 
     int updateStock(Long goodsId, Integer goodsCount);
+
+    List<GoodsInfo> selectGoodsByCateId(@Param("cateId") Long categoryId);
 }

@@ -6,9 +6,12 @@ import com.geekaca.mall.controller.vo.GoodsCategoryVO;
 import com.geekaca.mall.controller.vo.SecondLevelCategoryVO;
 import com.geekaca.mall.controller.vo.ThirdLevelCategoryVO;
 import com.geekaca.mall.domain.GoodsCategory;
+import com.geekaca.mall.domain.GoodsInfo;
 import com.geekaca.mall.exceptions.MallException;
 import com.geekaca.mall.mapper.GoodsCategoryMapper;
+import com.geekaca.mall.mapper.GoodsInfoMapper;
 import com.geekaca.mall.service.GoodsCateService;
+import com.geekaca.mall.service.GoodsInfoService;
 import com.geekaca.mall.utils.PageResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,10 @@ import java.util.List;
 public class GoodsCateServiceImpl implements GoodsCateService {
     @Autowired
     GoodsCategoryMapper goodsCategoryMapper;
+
+    @Autowired
+    GoodsInfoService goodsInfoService;
+
     @Autowired
     private JedisPool jedisPool;
 
@@ -94,10 +101,15 @@ public class GoodsCateServiceImpl implements GoodsCateService {
     }
 
     @Override
-    public int deleteGoodsCategoryByIds(List<Integer> ids) {
+    public int deleteGoodsCategoryByIds(Long[] ids) {
         //必须先删除下级，才能删除类别
         // todo: 如果有商品使用类别，则该类别也不应该能被删除
-        for (Integer id : ids) {
+
+        for (Long id : ids) {
+            List<GoodsInfo> goodsList = goodsInfoService.getGoodsListByCategoryId(id);
+            if (goodsList.size() > 0) {
+                throw new MallException("该类别有商品，请先删除商品");
+            }
             int i = goodsCategoryMapper.selectSubIdByParentId(id);
             if (i > 0) {
                 throw new MallException("该类别有子类别，请先删除子类别");

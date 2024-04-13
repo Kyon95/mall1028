@@ -55,4 +55,6 @@ public interface GoodsInfoService {
      * 前台搜索功能
      */
     PageResult searchFrontGoods(FrontSearchPageVO frontPageVO);
+
+    List<GoodsInfo> getGoodsListByCategoryId(Long categoryId);
 }

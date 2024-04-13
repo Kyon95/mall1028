@@ -130,5 +130,10 @@ public class GoodsInfoServiceImpl implements GoodsInfoService {
         return new PageResult(itemDetailsVOList, totalCnt, VO.getPageSize(), VO.getPageNumber());
     }
 
+    @Override
+    public List<GoodsInfo> getGoodsListByCategoryId(Long categoryId) {
+        return goodsInfoMapper.selectGoodsByCateId(categoryId);
+    }
+
 
 }

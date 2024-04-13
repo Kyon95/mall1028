@@ -301,4 +301,8 @@
         update tb_newbee_mall_goods_info set stock_num = stock_num + #{goodsCount} where goods_id = #{goodsId}
     </update>
 
+    <select id="selectGoodsByCateId" resultType="com.geekaca.mall.domain.GoodsInfo">
+        select * from tb_newbee_mall_goods_info where goods_category_id = #{cateId}
+    </select>
+
 </mapper>

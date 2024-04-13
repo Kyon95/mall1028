@@ -1,5 +1,6 @@
 package com.geekaca.mall.controller.admin;
 
+import com.geekaca.mall.controller.BatchIdParam;
 import com.geekaca.mall.domain.GoodsCategory;
 import com.geekaca.mall.service.GoodsCateService;
 import com.geekaca.mall.utils.PageResult;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -77,8 +79,8 @@ public class GoodsCateController {
     }
 
     @DeleteMapping("/categories")
-    public Result deleteCategory(@RequestBody Map<String, List<Integer>> idMap) {
-        int i = goodsCateService.deleteGoodsCategoryByIds(idMap.get("ids"));
+    public Result deleteCategory(@RequestBody BatchIdParam batchIdParam) {
+        int i = goodsCateService.deleteGoodsCategoryByIds(batchIdParam.getIds());
         if (i > 0) {
             // 更新成功后，删除缓存中的分类信息
             try (Jedis jedis = jedisPool.getResource();) {
