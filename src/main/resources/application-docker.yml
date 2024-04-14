@@ -1,6 +1,6 @@
 # 配置文件，可以配置多个，根据需要配置不同的环境
 server:
-  port: 28019
+  port: 28020
 
 spring:
   mvc:
@@ -13,9 +13,9 @@ spring:
     # mysql-connector-java 8.0+ 使用这个新的接口
     driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/mall_db_v2?useSSL=false&useServerPrepStmts=true&characterEncoding=utf8
-    url: jdbc:mysql://host.docker.internal:3306/mall_db_v2?useSSL=false&useServerPrepStmts=true&characterEncoding=utf8
+    url: jdbc:mysql://host.docker.internal:13306/mall_db_v2?useSSL=false&useServerPrepStmts=true&characterEncoding=utf8
     username: root
-    password: 123456
+    password: i3HqiJfPgXrg8U
     # 初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时
     initial-size: 10
     # 最大连接池连接数量，最大活跃连接数
@@ -108,9 +108,9 @@ mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
 
 
-upload.path: c:\\dev\\codes\\newbee-mall-api\\static-files\\goods-img\\
+upload.path: /home/mall/images/
 
-LOG_HOME: c:\\dev\\tmp\\log\\
+LOG_HOME: /home/yangxuanyou/mall/logs
 
 upload.server: http://localhost:${server.port}
 

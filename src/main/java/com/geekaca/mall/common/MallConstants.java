@@ -1,9 +1,12 @@
 package com.geekaca.mall.common;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class MallConstants {
+
 
     public final static String FILE_UPLOAD_DIC = "c:\\dev\\codes\\newbee-mall-api\\static-files\\goods-img\\";
     /**

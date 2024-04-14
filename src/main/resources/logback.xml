@@ -22,7 +22,7 @@
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>
-                ${log.path}\news.-%d{yyyy-MM-dd}.log%i.gz
+                ${log.path}\mall.-%d{yyyy-MM-dd}.log%i.gz
             </fileNamePattern>
             <MaxFileSize>10Mb</MaxFileSize>
         </rollingPolicy>
@@ -44,6 +44,6 @@
 
     <root level="info">
         <appender-ref ref="Console"/>
-<!--        <appender-ref ref="FILE" />-->
+        <appender-ref ref="FILE" />
     </root>
 </configuration>

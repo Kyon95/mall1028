@@ -2,6 +2,7 @@ package com.geekaca.mall.config;
 
 import com.geekaca.mall.common.MallConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -10,6 +11,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 
 @Configuration
 public class MallWebMvcConfig extends WebMvcConfigurationSupport {
+    @Value("${upload.path}")
+    private String uploadPath;
+
     @Autowired
     private TokenInterceptor tokenInterceptor;
 
@@ -21,8 +25,8 @@ public class MallWebMvcConfig extends WebMvcConfigurationSupport {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
                 .resourceChain(false);
         // 放行图片访问路径
-        registry.addResourceHandler("/upload/**").addResourceLocations("file:" + MallConstants.FILE_UPLOAD_DIC);
-        registry.addResourceHandler("/goods-img/**").addResourceLocations("file:" + MallConstants.FILE_UPLOAD_DIC);
+        registry.addResourceHandler("/upload/**").addResourceLocations("file:" + uploadPath);
+        registry.addResourceHandler("/goods-img/**").addResourceLocations("file:" + uploadPath);
     }
 
     // 设置允许跨域访问

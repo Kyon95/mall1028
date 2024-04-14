@@ -1,6 +1,6 @@
 # 开发环境配置
 server:
-  port: 28019
+  port: 28020
 
 spring:
   mvc:
