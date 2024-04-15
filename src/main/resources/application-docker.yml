@@ -13,7 +13,7 @@ spring:
     # mysql-connector-java 8.0+ 使用这个新的接口
     driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/mall_db_v2?useSSL=false&useServerPrepStmts=true&characterEncoding=utf8
-    url: jdbc:mysql://host.docker.internal:13306/mall_db_v2?useSSL=false&useServerPrepStmts=true&characterEncoding=utf8
+    url: jdbc:mysql://172.17.0.1:13306/mall_db_v2?useSSL=false&useServerPrepStmts=true&characterEncoding=utf8
     username: root
     password: i3HqiJfPgXrg8U
     # 初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时
@@ -55,7 +55,8 @@ spring:
 # redis 连接配置， redis 连接池配置
   redis:
     #host: 127.0.0.1
-    host: host.docker.internal
+#    host: host.docker.internal
+    host: 172.17.0.1
     port: 6379
     password: test826
     jedis:
@@ -108,9 +109,9 @@ mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
 
 
-upload.path: /home/mall/images/
+upload.path: /home/yangxuanyou/mall/images/
 
-LOG_HOME: /home/yangxuanyou/mall/logs
+LOG_HOME: /home/yangxuanyou/mall/logs/
 
 upload.server: http://localhost:${server.port}
 

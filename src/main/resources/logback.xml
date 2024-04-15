@@ -17,7 +17,7 @@
             <charset>utf-8</charset>
         </encoder>
 
-        <file>${log.path}\testlog.log</file>
+        <file>${log.path}testlog.log</file>
 
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">

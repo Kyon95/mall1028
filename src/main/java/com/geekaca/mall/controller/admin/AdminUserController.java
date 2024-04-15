@@ -1,6 +1,7 @@
 package com.geekaca.mall.controller.admin;
 
 import com.auth0.jwt.interfaces.Claim;
+import com.geekaca.mall.common.Constants;
 import com.geekaca.mall.common.MallConstants;
 import com.geekaca.mall.controller.admin.param.AdminLoginParam;
 import com.geekaca.mall.domain.AdminUser;
@@ -105,9 +106,9 @@ public class AdminUserController {
         //为了生成随机的文件名字 + 扩展名
         tempName.append(curDtime).append(r.nextInt(100)).append(suffixName);
         String newFileName = tempName.toString();
-        File fileDirectory = new File(MallConstants.FILE_UPLOAD_DIC);
+        File fileDirectory = new File(Constants.FILE_UPLOAD_DIC);
         //创建文件
-        File destFile = new File(MallConstants.FILE_UPLOAD_DIC + newFileName);
+        File destFile = new File(Constants.FILE_UPLOAD_DIC + newFileName);
         try {
             if (!fileDirectory.exists()) {
                 if (!fileDirectory.mkdir()) {
