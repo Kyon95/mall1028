@@ -41,6 +41,16 @@ public class ShoppingCartController {
         }
     }
 
+    @DeleteMapping("/shop-cart/{id}")
+    public Result DeleteCartItem(@PathVariable Long id, @RequestHeader("Token") String token) {
+        int i = shoppingCartService.deleteCartItem(id);
+        if (i>0){
+            return ResultGenerator.genSuccessResult();
+        }else {
+            return ResultGenerator.genFailResult("删除失败");
+        }
+    }
+
     @GetMapping("/shop-cart")
     public Result getCartList(@RequestHeader("Token") String token) {
         Map<String, Claim> userToken = JwtUtil.verifyToken(token);
