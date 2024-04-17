@@ -1,6 +1,5 @@
 package com.geekaca.mall.service.impl;
 
-import com.geekaca.mall.config.JedisConfig;
 import com.geekaca.mall.controller.admin.param.AdminLoginParam;
 import com.geekaca.mall.domain.AdminUser;
 import com.geekaca.mall.mapper.AdminUserMapper;
@@ -25,16 +24,16 @@ public class AdminUserServiceImpl implements AdminUserService {
 //        String passMd5 = SecureUtil.md5(adminLoginParam.getPasswordMd5());
 
         AdminUser adminUser = adminUserMapper.checkLogin(adminLoginParam.getUserName(), adminLoginParam.getPasswordMd5());
-        if(adminUser==null){
+        if (adminUser == null) {
             //登录失败
             return null;
         }
         String token = JwtUtil.createToken(adminUser.getAdminUserId().toString(), adminUser.getLoginUserName());
         // 把用户信息缓存到token
-        try( Jedis jedis = jedisPool.getResource();){
+        try (Jedis jedis = jedisPool.getResource();) {
             String key = "uid:admin:" + adminUser.getAdminUserId();
-            jedis.set(key,token);
-            jedis.expire(key,60*60*24*30);
+            jedis.set(key, token);
+            jedis.expire(key, 60 * 60 * 24 * 7);
         }
         return token;
     }

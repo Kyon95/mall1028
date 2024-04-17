@@ -30,7 +30,7 @@ public class JwtUtil {
     /**
      * 过期时间
      **/
-    private static final long EXPIRATION = 60 * 60 * 24L;//单位为秒 1天
+    private static final long EXPIRATION = 60 * 60 * 24 * 7L;//单位为秒 7天
 
     public static void main(String[] args) {
 //        User user = new User("tom", "abc");
@@ -81,7 +81,7 @@ public class JwtUtil {
         } catch (Exception e) {
             logger.error(e.getMessage());
             logger.error("token解码异常");
-            throw new NotLoginException(Constants.NO_LOGIN,"Token解析异常");
+            throw new NotLoginException(Constants.NO_LOGIN, "Token解析异常");
             //解码异常则抛出异常
         }
         return jwt.getClaims();
