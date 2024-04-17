@@ -40,7 +40,7 @@ public class MallUserServiceImpl implements MallUserService {
         try(Jedis jedis = jedisPool.getResource();){
             String key = "uid:user:" + checkLogin.getUserId();
             jedis.set(key,token);
-            jedis.expire(key,60*60*3);
+            jedis.expire(key,60*60*24*7L);
         }
         return token;
     }

@@ -33,7 +33,7 @@ public class AdminUserServiceImpl implements AdminUserService {
         try (Jedis jedis = jedisPool.getResource();) {
             String key = "uid:admin:" + adminUser.getAdminUserId();
             jedis.set(key, token);
-            jedis.expire(key, 60 * 60 * 24 * 7);
+            jedis.expire(key, 60 * 60 * 24 * 7L);
         }
         return token;
     }
