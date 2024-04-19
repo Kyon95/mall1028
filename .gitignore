@@ -39,3 +39,4 @@ mvnw.cmd
 log.path_IS_UNDEFINED/news.-2024-03-28.log0.gz
 
 *.gz
+/src/test/java/silver/
